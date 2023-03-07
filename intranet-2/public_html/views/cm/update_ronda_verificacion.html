@@ -1,0 +1,140 @@
+<style>
+    .checkbox-slider-md input + span{
+        position: absolute;
+    }
+    @media print{
+        @page {size: landscape}
+        th{
+            z-index: -1;
+            font-size: 0.85em;
+        }
+        td{
+            font-size: 0.85em;
+            text-align: center;
+        }
+        .table>tbody>tr>th,
+        .table>tbody>tr>td {
+            border-top: 0;
+        }
+        .row-item:nth-child(5n) {
+            page-break-after: always !important;
+        }
+        tfoot tr, tfoot td{
+            border: 0px !important;
+        }
+        @media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 90%; } }
+    }
+</style>
+<div class="row" ng-controller="UpdateRondaVerificacionCtrl">
+    <ul class="nav nav-tabs">
+        <li ng-class="{'active' : m.TipoMedicamentoId === op}" ng-repeat="m in TipoMedicamentos track by $index"><a  id="Polivalente" role="tab" aria-expanded="true">{{m.Nombre}}</a></li>
+    </ul>
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <button ng-show="RondaVerificacionId" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>
+        <button ng-show="RondaVerificacionId" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+    </div>
+    <form role="form" name="Datos" novalidate>
+        <div id="myTabContent" class="tab-content">
+            <div role="tabpanel">
+
+                <div class="row"  id="RondaActualizar">
+                    <div class="row col-sm-12">
+                        <div class="row col-sm-12">
+                            <div style="position: absolute;left:0px; transform: translate(30px, 0px)">
+                                <img ng-src="{{Empresa.Logo}}" width="200"/>
+                            </div>
+                            <div  class="col-sm-12" style="text-align: center;font-family: Candara !important;">
+                                <span style="font-family: Candara !important;font-size: 20px;">
+                                    <strong>COPIA CONTROLADA</strong>
+                                </span><br/>
+                                <span style="font-family: Candara !important;font-size: 13px;">
+                                    <strong>RONDA DE VERIFICACIÓN DE ORDEN MÉDICA <br/>SERVICIO FARMACÉUTICO</strong>
+                                </span> <br/>
+                                <span style="font-family: Candara !important;font-size: 9px;">
+                                    GC-SF-GB-F-15  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ver. 03  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pagina 1 de 1 <br/>
+                                    Emision: 08-07-2014 Vigencia:07-02-2019
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-xs-12" style="margin-bottom: 5px;">
+                            <div class="col-sm-1" ng-hide="RV.TipoRonda == 'Loteado'">
+                                <label>
+                                    Servicio:
+                                </label>
+                            </div>
+                            <div class="col-sm-3" ng-hide="RV.TipoRonda == 'Loteado'">
+                                <span ng-show="ToPrint">{{Sector}}</span>
+                                <select  ng-options="s.Sector as s.Descripcion for s in Sectores" class="form-control no-print" 
+                                         ng-change="ChangeSector()" ng-model="Sector" name="Sector" 
+                                         style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                    <option value="">--</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <label>
+                                    Fecha:
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <div  ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                                    <input ng-hide="RondaVerificacionId" readonly ng-change="SaveLocal()" type="text" ng-model="RV.Fecha" name="Fecha" 
+                                           class="form-control no-print" required>
+                                    <input ng-show="RondaVerificacionId" readonly type="text" ng-model="RV.Fecha" name="Fecha" 
+                                           class="form-control no-print" required>
+                                    <span ng-show="ToPrint">{{RV.Fecha}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" style="z-index: 100">
+                            <thead class="bordered-orange">
+                                <tr>
+                                    <th  style="width: 5%;background-color: rgba(0,0,0,0.2) !important;">NOMBRE DEL PACIENTE</th>
+                                    <th class="no-print" style="width: 1%">CONTINUA</th>
+                                    <th style="width: 3%;background-color: rgba(0,0,0,0.2) !important;" ng-repeat="m in Medicamentos"> {{m.NombreAbreviado}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="p in RV.Pacientes" ng-hide="p.EstadoPaciente == 'Nuevo'" ng-class="{'no-print': p.NoImprimirVacio}" class="row-item">
+                                    <th style="font-size:0.8em">
+                                        {{p.PNombre}} {{p.SNombre}} {{p.PApellido}} {{p.SApellido}} <br>
+                                        {{p.IdAfiliado}}
+                                    </th>
+                                    <td class="no-print"> 
+                                        <div  style="padding: 0px !important">
+                                            <label>
+                                                <span><strong>{{p.EstadoPaciente}}</strong></span>
+                                            </label>
+                                            <input ng-click="ChangeEstadoPaciente(p, $index)" type="checkbox" 
+                                                   ng-checked="p.EstadoPaciente !== 'Suspender'"
+                                                   style="width: 20px;height: 20px"/>
+                                        </div> 
+                                    </td>
+                                    <td ng-repeat="m in p.ListadoMedicamentos">
+                                        <input type="text" ng-show="RondaVerificacionId && !m.Notiene" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Dosis_2{{$index}}" placeholder="Dosis (mg)" ng-model="m.Dosis" class="form-control no-print" only-digits>
+                                        <input type="text" ng-show="RondaVerificacionId && !m.Notiene" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Volumen_2{{$index}}" placeholder="Volumen (mL)" ng-model="m.Volumen" class="form-control no-print" only-digits>
+                                        <input type="text" ng-show="RondaVerificacionId && !m.Notiene" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Cantidad_2{{$index}}" placeholder="Cantidad" ng-model="m.Cantidad" class="form-control no-print" only-digits>
+                                        <select ng-hide="m.Notiene || ToPrint" ng-options="v.DispositivoMedicoId as v.Nombre for v in Vehiculos" class="form-control no-print" ng-disabled="p.EstadoPaciente === 'Suspender'" ng-model="m.VehiculoId" name="VehiculoId{{$index}}" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                        </select>
+                                        <div ng-show="ToPrint && !m.Notiene" style="font-size: 0.95em">
+                                            <div class="col-sm-8">{{m.Dosis}} mg <br/> {{m.Volumen}} mL</div>                                            
+                                            <div class="col-sm-2">X {{m.Cantidad}}</div>
+                                            <div class="col-sm-12">{{m.Vehiculo}}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot style="border: none !important;">
+                                <tr style="border: none !important;">
+                                    <td colspan="20" style="text-align: center;border: none !important;"><img src="/intranet-2/public_html/image/pie_pagina.png" alt=""></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </form>
+</div>

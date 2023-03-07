@@ -1,0 +1,408 @@
+<style>
+    @media print {
+        #impresion_evento{
+            transform: translate(0pt ,5pt);
+            font-size: 0.9em;
+        }
+        @media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 90%; } }
+    }
+</style>
+<div class="col-sm-12" ng-controller="TransporteMaternaCtrl">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h2>Listado de eventos</h2>
+            <div class="ibox-tools" style="transform: translateX(-50px);">
+                <ul class="nav navbar-right" style="color:black;">
+                    <li>
+                        <select class="form-control" ng-model="TipoEvento" ng-change='BuscarEventos()' style="height: 35.59px !important;">
+                            <option ng-selected="TipoEvento == 'Solicitado'" ng-value="'Solicitado'" value="Solicitado">Solicitado</option>
+                            <option ng-selected="TipoEvento == 'Gestionado'" ng-value="'Gestionado'" value='Gestionado'>Gestionado</option>
+                            <option ng-selected="TipoEvento == 'Sin Costo'" ng-value="'Sin Costo'" value='Sin Costo'>Sin Costo</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <button class="btn btn-info" ng-click="CrearEventoModal()">Crear Evento</button>
+            <div class="col-sm-12" ng-if="cargado">
+                <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                    <thead class="bordered-blue">
+                        <tr>
+                            <th class="text-center" style="width: 3%">ID</th>
+                            <th class="text-center" style="width: 10%">Fecha</th>
+                            <th class="text-center" style="width: 10%">Nombres</th>
+                            <th class="text-center" style="width: 10%">Tipo Evento</th>
+                            <th class="text-center" style="width: 10%">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="CrearEventoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Evento</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-10" style="margin: 0 auto;">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.Documento.$valid, 'has-error': Datos.Documento.$invalid}">
+                                            <label for="Documento">Documento</label>
+                                            <input type="text" capitalize class="form-control" id="Documento" ng-model="Evento.Documento" 
+                                                   ng-change="GetMaternaByDocumento()" maxlength="280"  name="Documento" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.Nombres.$valid, 'has-error': Datos.Nombres.$invalid}">
+                                            <label for="Nombres">Nombres</label>
+                                            <input type="text" capitalize class="form-control" id="Nombres" ng-model="Evento.Nombres" maxlength="280"  name="Nombres" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.Telefono.$valid, 'has-error': Datos.Telefono.$invalid}">
+                                            <label for="Telefono">Telefono</label>
+                                            <input type="tel" class="form-control" id="Telefono" ng-model="Evento.Telefono" maxlength="280"  name="Telefono" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.FechaParto.$valid, 'has-error': Datos.FechaParto.$invalid}">
+                                            <label for="FechaParto">Fecha de Parto</label>
+                                            <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" class="form-control" id="FechaParto" 
+                                                   ng-model="Evento.FechaParto" name="FechaParto">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.TipoEvento.$valid, 'has-error': Datos.TipoEvento.$invalid}">
+                                            <label for="TipoEvento">Tipo Evento</label>
+                                            <select class="form-control" id="TipoEvento" 
+                                                ng-change="Evento.TipoTransporte = Evento.TipoEvento == 'Parto Externo' ? 'Ninguno' : 'Particular'" 
+                                                ng-model="Evento.TipoEvento" name="TipoEvento">
+                                                <option value="Control Prenatal" ng-selected="Evento.TipoEvento == 'Control Prenatal'">Control Prenatal</option>
+                                                <option value="Parto">Parto</option>  
+                                                <option value="Parto Externo">Parto Externo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.TipoTransporte.$valid, 'has-error': Datos.TipoTransporte.$invalid}">
+                                            <label for="TipoTransporte">Tipo Transporte</label>
+                                            <select class="form-control" id="TipoTransporte" ng-model="Evento.TipoTransporte" name="TipoTransporte" ng-change="ChangeTransporte()">
+                                                <option value="Particular" ng-selected="Evento.TipoTransporte == 'Particular'">Particular</option>
+                                                <option value="Interno">Interno</option>  
+                                                <option value="Brigada">Brigada</option>  
+                                                <option ng-show="Evento.TipoEvento == 'Parto Externo'" value="Ninguno">Ninguno</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.DepartamentoId.$valid, 'has-error': Datos.DepartamentoId.$invalid}">
+                                            <label for="DepartamentoId">Departamento</label>
+                                            <select class="form-control" id="DepartamentoId" ng-model="Evento.DepartamentoId" name="DepartamentoId" 
+                                                    ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" disabled>
+                                                <option value="">--</option>                              
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div ng-class="{'has-success': Datos.MunicipioId.$valid, 'has-error': Datos.MunicipioId.$invalid}">
+                                            <label for="MunicipioId">Municipio</label>
+                                            <select class="form-control" id="MunicipioId" ng-model="Evento.MunicipioId" name="MunicipioId" 
+                                                    ng-options="item.CiudadId as item.Ciudad for item in Municipios" ng-change="ConsultarTarifaByMunicipio()">
+                                                <option value="">--</option>                              
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6" style="margin-top:20px;margin-bottom:20px;">
+                                        <a style="padding: 0px !important" ng-click="setAcompanante()">
+                                            <div class="checkbox checkbox-slider-md checkbox-slider--b checkbox-slider-info">
+                                                <label>
+                                                    <input type="checkbox" ng-checked="Evento.Acompanante"><span>Acompañante</span>
+                                                </label>
+                                            </div>     
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div ng-class="{'has-success': Datos.Procedimiento.$valid, 'has-error': Datos.Procedimiento.$invalid}">
+                                            <label for="Procedimiento">Procedimiento</label>
+                                            <textarea class="form-control" id="Procedimiento" ng-model="Evento.Procedimiento" maxlength="280" rows="2" name="Procedimiento" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div ng-class="{'has-success': Datos.Comentario.$valid, 'has-error': Datos.Comentario.$invalid}">
+                                            <label for="Comentario">Comentario</label>
+                                            <textarea class="form-control" id="Comentario" ng-model="Evento.Comentario" maxlength="280" rows="2" name="Comentario"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top: 25px;" ng-show="Evento.TipoTransporte == 'Particular' && Evento.TipoEvento != 'Parto Externo'">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th ng-show="Evento.Acompanante" style="width: 40%">Descripción</th>
+                                                <th ng-hide="Evento.Acompanante" style="width: 75%">Descripción</th>
+                                                <th style="width: 20%" ng-show="Evento.Acompanante">Valor (Materna)</th>
+                                                <th style="width: 20%" ng-show="Evento.Acompanante" >Valor (Acompañante)</th>
+                                                <th style="width: 15%" >Valor Completo</th>
+                                                <th style="width: 5%">Opciones</th>
+                                            </tr>
+                                            <tr ng-repeat="d in Evento.Detalles track by $index" style="background: {{d.Color}}">
+                                                <td>{{d.Nombre}}</td>
+                                                <td ng-show="Evento.Acompanante">
+                                                    <input type="number" class="form-control" ng-change="CambiarPrecio(d)" ng-model="d.PrecioMaterna" min="0" readonly>
+                                                </td>
+                                                <td ng-show="Evento.Acompanante">
+                                                    <input type="number" class="form-control" ng-change="CambiarPrecio(d)" ng-model="d.PrecioAcompanante" min="0" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" ng-model="d.Precio" min="0" readonly>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger" ng-click="RemoverDetalle($index)"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th ng-show="Evento.Acompanante" colspan="4" style="text-align: right">TOTAL</th>
+                                                <th ng-hide="Evento.Acompanante" colspan="2" style="text-align: right">TOTAL</th>
+                                                <th>{{Evento.Detalles| autoSuma: 'Precio' | currency : '$'}}</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarEvento()">
+                            <span ng-hide="CargandoBandera">Guardar</span>
+                            <i class="fa fa-spinner fa-spin" ng-show="CargandoBandera"></i>
+                        </button>
+                        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateEventoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Ver Evento</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div id="impresion_evento">
+                        <div class="row">
+                            <div class="col-sm-10" style="margin: 0 auto;">
+                                <div class="row" id="Titulo_evento">
+                                    <div class="col-sm-4">
+                                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                    </div>
+                                    <div class="col-sm-4 pull-left text-center" bind-html-compile="Encabezado.EncabezadoMaternas">
+                                    </div>
+                                </div>
+                                <form role="form" name="UDatos" novalidate>
+                                    <div style="margin-top: 3px;">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Evento ID</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.EventoId}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Elaborado por</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.CreatedBy}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Fecha registro materna</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.FechaRegistroMaterna}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Fecha registro evento</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.FechaRegistro}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Nombre Lider</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Lider}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Teléfono Lider</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.TelefonoLider}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Documento</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Documento}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Nombres</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Nombres}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Fecha de parto</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.FechaParto}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Tipo Evento</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.TipoEvento}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Tipo Transporte</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.TipoTransporte}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Teléfono</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Telefono}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Departamento</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Departamento}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <div><strong>Municipio</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Municipio}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 no-print">
+                                                <a style="padding: 0px !important" ng-click="setAcompanante()">
+                                                    <div class="checkbox checkbox-slider-md checkbox-slider--b checkbox-slider-info">
+                                                        <label>
+                                                            <input type="checkbox" ng-checked="UEvento.Acompanante"><span>Acompañante</span>
+                                                        </label>
+                                                    </div>     
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div>
+                                                    <div><strong>Procedimiento</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Procedimiento}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div>
+                                                    <div><strong>Comentario</strong></div>
+                                                    <div style="padding-bottom: 5px;padding-top: 3px;">{{UEvento.Comentario}}</div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="margin-top: 7px;margin-bottom:7px;">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th ng-show="UEvento.Acompanante" style="width: 40%">Descripción</th>
+                                                <th ng-hide="UEvento.Acompanante" style="width: 75%">Descripción</th>
+                                                <th style="width: 20%" ng-show="UEvento.Acompanante">Valor (Materna)</th>
+                                                <th style="width: 20%" ng-show="UEvento.Acompanante" >Valor (Acompañante)</th>
+                                                <th style="width: 15%" >Valor Completo</th>
+                                                <!--<th style="width: 5%">Opciones</th>-->
+                                            </tr>
+                                            <tr ng-repeat="d in UEvento.Detalles track by $index" style="background: {{d.Color}}">
+                                                <td>{{d.Nombre}}</td>
+
+                                                <td ng-show="UEvento.Acompanante">
+                                                    {{d.PrecioMaterna}}
+                                                </td>
+                                                <td ng-show="UEvento.Acompanante">
+                                                    {{d.PrecioAcompanante}}
+                                                </td>
+                                                <td>
+                                                    {{d.Precio}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th ng-show="UEvento.Acompanante" colspan="3" style="text-align: right">TOTAL</th>
+                                                <th ng-hide="UEvento.Acompanante" colspan="1" style="text-align: right">TOTAL</th>
+                                                <th>{{UEvento.Detalles| autoSuma: 'Precio' | currency : '$'}}</th>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-12" style="margin-top: 7px;margin-bottom:7px;" ng-show="EventosAnteriores.length > 0">
+                                        <h3>Listado de eventos anteriores</h3>
+                                        <table class="table table-bordered">
+                                            <thead class="bordered-blue">
+                                                <tr>
+                                                    <th class="text-center" style="width: 3%">ID</th>
+                                                    <th class="text-center" style="width: 10%">Fecha</th>
+                                                    <th class="text-center" style="width: 10%">Nombres</th>
+                                                    <th class="text-center" style="width: 10%">Tipo Evento</th>
+                                                    <th class="text-center" style="width: 10%">Tipo Transporte</th>
+                                                    <th class="text-center" style="width: 10%">Total dinero entregado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="e in EventosAnteriores">
+                                                    <td>{{e.EventoId}}</td>
+                                                    <td>{{e.CreatedAt}}</td>
+                                                    <td>{{e.Nombres}}</td>
+                                                    <td>{{e.TipoEvento}}</td>
+                                                    <td>{{e.TipoTransporte}}</td>
+                                                    <td>{{e.TotalEntregado | currency : '$'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+<!--                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

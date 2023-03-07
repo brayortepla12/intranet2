@@ -1,0 +1,485 @@
+<style>
+    #TablaImpresion>tbody>tr>td, #TablaImpresion>tbody>tr>th, #TablaImpresion>tfoot>tr>td, #TablaImpresion>tfoot>tr>th, #TablaImpresion>thead>tr>td, #TablaImpresion>thead>tr>th{
+        padding: 0 !important;
+        font-size: 0.85em;
+    }
+</style>
+<div class="x_panel" ng-controller="ReporteServicioSSTCtrl" id="myElementId">
+    <div class="x_title default-primary-color">
+        <h2 class="text-primary-color">Reporte Servicio</h2>
+        <div class="col-xs-2 pull-right top_search">
+            <div class="input-group">
+                <input type="text" ng-model="ReporteId" ng-pattern="onlyNumbers" ng-change="Reset()" ng-enter="GetReporteById()" class="form-control" placeholder="Busqueda rapida">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="GetReporteById()" type="button"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="text-center col-sm-12" style="margin-top: 25px;" ng-hide="ProcesandoPeticion">
+            <button class="btn btn-success" ng-hide="ReporteId" ng-click="Guardar()">Guardar</button>
+            <button class="btn btn-success" ng-show="ReporteId" ng-click="Actualizar()">Actualizar</button>
+            <button class="btn btn-default" ng-show="ReporteId" ng-click="Imprimir()">Imprimir</button>
+            <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+        </div>
+        <div class="col-sm-10 col-sm-offset-1" ng-hide="ImprimirReporte">
+            <form role="form" name="Datos" novalidate id="configform">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                    </div>
+                    <div class="col-sm-4 text-center"  bind-html-compile="Encabezado.EncabezadoReporte">
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <h5 style="margin-right: 1px"><strong>NUMERO DE REPORTE</strong></h5>
+                        <input style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px" readonly type="text" ng-model="NumeroReporte" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">INFORMACION GENERAL</th>
+                                </tr>
+                                <tr>
+                                    <td>SEDE</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid || reporte.SedeId == '--'}">
+                                            <select class="form-control" ng-model="reporte.SedeId" name="SedeId"  ng-change="ChangeServicios()">
+                                                <option selected="">--</option>
+                                                <option ng-repeat="s in Sedes track by $index" 
+                                                        ng-selected="reporte.SedeId == s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+
+                                    <td>FECHA INSPECCIÓN</td>
+                                    <td colspan="3">
+                                        <input type="text" ng-model="reporte.FechaInspeccion" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SERVICO</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid || reporte.ServicioId == '--'}">
+                                            <select class="form-control" ng-model="reporte.ServicioId" name="ServicioId" ng-change="ChangeEquipos()" required>
+                                                <option selected="">--</option>
+                                                <option ng-repeat="s in Servicios track by $index"   ng-selected="reporte.ServicioId == s.ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        EQUIPO
+                                    </td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': reporte.EquipoId, 'has-error': reporte.EquipoId == '--'}">
+                                            <select class="form-control" ng-model="sol" name="EquipoId" ng-change="ChangeEquipo(sol)" required>
+                                                <option>--</option>
+                                                <option ng-repeat="e in Equipos track by $index" ng-selected="e.HojaVidaId === reporte.EquipoId" ng-value='{{$index}}' value='{{$index}}'>{{e.Equipo}} - {{e.TipoArticulo}} - {{e.NSerial}} - {{e.NumeroExtintor}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>UBICACION</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.Ubicacion.$valid, 'has-error': Datos.Ubicacion.$invalid}">
+                                            <input type="text" name="Ubicacion" ng-model="reporte.Ubicacion" readonly 
+                                                   class="form-control caja_texto" maxlength="199" capitalize
+                                                   >
+                                        </div>
+                                    </td>
+                                    <td>FECHA RECARGA</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.FechaRecarga.$valid, 'has-error': Datos.FechaRecarga.$invalid}">
+                                            <input type="text" name="FechaRecarga" ng-model="reporte.FechaRecarga"  
+                                                   onfocus="(this.type = 'date')" onblur="(this.type = 'text')"  class="form-control" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>FECHA VENCIMIENTO</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.FechaVencimiento.$valid, 'has-error': Datos.FechaVencimiento.$invalid}">
+                                            <input type="text" name="FechaVencimiento" ng-model="reporte.FechaVencimiento"  
+                                                   onfocus="(this.type = 'date')" onblur="(this.type = 'text')"  class="form-control" required>
+                                        </div>
+                                    </td>
+                                    <td>ACCESO</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.Acceso.$valid, 'has-error': Datos.Acceso.$invalid}">
+                                            <select class="form-control" ng-model="reporte.Acceso" name="Acceso" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.Acceso == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.Acceso == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.Acceso == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.Acceso == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.Acceso == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>DEMARCACIÓN</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.Demarcacion.$valid, 'has-error': Datos.Demarcacion.$invalid}">
+                                            <select class="form-control" ng-model="reporte.Demarcacion" name="Demarcacion" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.Demarcacion == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.Demarcacion == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.Demarcacion == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.Demarcacion == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.Demarcacion == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>SEÑALIZACIÓN</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.Senalizacion.$valid, 'has-error': Datos.Senalizacion.$invalid}">
+                                            <select class="form-control" ng-model="reporte.Senalizacion" name="Senalizacion" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.Senalizacion == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.Senalizacion == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.Senalizacion == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.Senalizacion == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.Senalizacion == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INSTALACIÓN EN SITIO ASIGNADO</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.InstalacionSitioAsignado.$valid, 'has-error': Datos.InstalacionSitioAsignado.$invalid}">
+                                            <select class="form-control" ng-model="reporte.InstalacionSitioAsignado" name="InstalacionSitioAsignado" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.InstalacionSitioAsignado == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.InstalacionSitioAsignado == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.InstalacionSitioAsignado == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.InstalacionSitioAsignado == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.InstalacionSitioAsignado == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>INSTRUCCIONES DE USO</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.InstruccionesUso.$valid, 'has-error': Datos.InstruccionesUso.$invalid}">
+                                            <select class="form-control" ng-model="reporte.InstruccionesUso" name="InstruccionesUso" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.InstruccionesUso == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.InstruccionesUso == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.InstruccionesUso == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.InstruccionesUso == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.InstruccionesUso == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ALTURA ADECUADA</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.AlturaAdecuada.$valid, 'has-error': Datos.AlturaAdecuada.$invalid}">
+                                            <select class="form-control" ng-model="reporte.AlturaAdecuada" name="AlturaAdecuada" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.AlturaAdecuada == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.AlturaAdecuada == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.AlturaAdecuada == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.AlturaAdecuada == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.AlturaAdecuada == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>CORNETA</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.Corneta.$valid, 'has-error': Datos.Corneta.$invalid}">
+                                            <select class="form-control" ng-model="reporte.Corneta" name="Corneta" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.Corneta == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.Corneta == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.Corneta == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.Corneta == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.Corneta == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>MANGUERA</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.Manguera.$valid, 'has-error': Datos.Manguera.$invalid}">
+                                            <select class="form-control" ng-model="reporte.Manguera" name="Manguera" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.Manguera == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.Manguera == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.Manguera == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.Manguera == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.Manguera == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>CARGA DEL EXTINTOR</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.CargaExtintor.$valid, 'has-error': Datos.CargaExtintor.$invalid}">
+                                            <select class="form-control" ng-model="reporte.CargaExtintor" name="CargaExtintor" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.CargaExtintor == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.CargaExtintor == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.CargaExtintor == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.CargaExtintor == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.CargaExtintor == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>MANIJA DE TRANSPORTE</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.ManijaTransporte.$valid, 'has-error': Datos.ManijaTransporte.$invalid}">
+                                            <select class="form-control" ng-model="reporte.ManijaTransporte" name="ManijaTransporte" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.ManijaTransporte == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.ManijaTransporte == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.ManijaTransporte == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.ManijaTransporte == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.ManijaTransporte == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>MANIJA DE DESCARGA</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.ManijaDescarga.$valid, 'has-error': Datos.ManijaDescarga.$invalid}">
+                                            <select class="form-control" ng-model="reporte.ManijaDescarga" name="ManijaDescarga" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.ManijaDescarga == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.ManijaDescarga == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.ManijaDescarga == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.ManijaDescarga == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.ManijaDescarga == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PASADOR</td>
+                                    <td colspan="2">
+                                        <div ng-class="{'has-success': Datos.Pasador.$valid, 'has-error': Datos.Pasador.$invalid}">
+                                            <select class="form-control" ng-model="reporte.Pasador" name="Pasador" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.Pasador == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.Pasador == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.Pasador == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.Pasador == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.Pasador == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>SELLO DE SEGURIDAD</td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.SelloSeguridad.$valid, 'has-error': Datos.SelloSeguridad.$invalid}">
+                                            <select class="form-control" ng-model="reporte.SelloSeguridad" name="SelloSeguridad" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option value="">--</option>
+                                                <option ng-selected="reporte.SelloSeguridad == 'OK'" value="OK">OK - EN BUEN ESTADO</option>
+                                                <option ng-selected="reporte.SelloSeguridad == 'RA'" value="RA">RA - REQUIERE ATENCIÓN</option>
+                                                <option ng-selected="reporte.SelloSeguridad == 'FS'" value="FS">FS - FUERA DE SERVICIO</option>
+                                                <option ng-selected="reporte.SelloSeguridad == 'ER'" value="ER">ER - EN RECARGA</option>
+                                                <option ng-selected="reporte.SelloSeguridad == 'Sse'" value="Sse">SSE - SITIO SIN EXTINTOR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RESPONSABLE</td>
+                                    <td colspan="5">
+                                        <div ng-class="{'has-success': Datos.Responsable.$valid, 'has-error': Datos.Responsable.$invalid}">
+                                            <input type="text" name="Responsable" ng-model="reporte.Responsable" maxlength="199" class="form-control caja_texto" capitalize required
+                                                       >
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>OBSERVACIÓN</td>
+                                    <td colspan="5">
+                                        <div ng-class="{'has-success': Datos.Observacion.$valid, 'has-error': Datos.Observacion.$invalid}">
+                                            <textarea rows="5" name="Observacion" ng-model="reporte.Observacion" class="form-control"></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="row" ng-show="ImprimirReporte">
+            <div class="col-sm-12" id="ReporteSST">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                    </div>
+                    <div class="col-sm-4 text-center"  bind-html-compile="Encabezado.EncabezadoReporte">
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <h5 style="margin-right: 1px"><strong>NUMERO DE REPORTE</strong></h5>
+                        <input style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px" readonly type="text" ng-model="NumeroReporte" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" colspan="7" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;" class="text-center cajaTitulo">INFORMACION GENERAL</th>
+                                </tr>
+                                <tr>
+                                    <th>SEDE</th>
+                                    <td colspan="2">
+                                        <div>
+                                            {{reporte.Sede}}
+                                        </div>
+                                    </td>
+
+                                    <th>FECHA INSPECCIÓN</th>
+                                    <td colspan="3">
+                                        {{reporte.FechaInspeccion}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>SERVICO</th>
+                                    <td colspan="2">
+                                        <div>
+                                            {{reporte.Servicio}}
+                                        </div>
+                                    </td>
+                                    <th>
+                                        EQUIPO
+                                    </th>
+                                    <td colspan="3">
+                                        {{reporte.Equipo}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>UBICACION</th>
+                                    <td colspan="2">
+                                        {{reporte.Ubicacion}}
+                                    </td>
+                                    <th>FECHA RECARGA</th>
+                                    <td colspan="3">
+                                        {{reporte.FechaRecarga}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>FECHA VENCIMIENTO</th>
+                                    <td colspan="2">
+                                        {{reporte.FechaVencimiento}}
+                                    </td>
+                                    <th>ACCESO</th>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': Datos.Acceso.$valid, 'has-error': Datos.Acceso.$invalid}">
+                                            {{reporte.Acceso}}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>DEMARCACIÓN</th>
+                                    <td colspan="2">
+                                        {{reporte.Demarcacion}}
+                                    </td>
+                                    <th>SEÑALIZACIÓN</th>
+                                    <td colspan="3">
+                                        {{reporte.Senalizacion}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>INSTALACIÓN EN SITIO ASIGNADO</th>
+                                    <td colspan="2">
+                                        {{reporte.InstalacionSitioAsignado}}
+                                    </td>
+                                    <th>INSTRUCCIONES DE USO</th>
+                                    <td colspan="3">
+                                        {{reporte.InstruccionesUso}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>ALTURA ADECUADA</th>
+                                    <td colspan="2">
+                                        {{reporte.AlturaAdecuada}}
+                                    </td>
+                                    <th>CORNETA</th>
+                                    <td colspan="3">
+                                        {{reporte.Corneta}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>MANGUERA</th>
+                                    <td colspan="2">
+                                        {{reporte.Manguera}}
+                                    </td>
+                                    <th>CARGA DEL EXTINTOR</th>
+                                    <td colspan="3">
+                                        {{reporte.CargaExtintor}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>MANIJA DE TRANSPORTE</th>
+                                    <td colspan="2">
+                                        {{reporte.ManijaTransporte}}
+                                    </td>
+                                    <th>MANIJA DE DESCARGA</th>
+                                    <td colspan="3">
+                                        {{reporte.ManijaDescarga}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>PASADOR</th>
+                                    <td colspan="2">
+                                        {{reporte.Pasador}}
+                                    </td>
+                                    <th>SELLO DE SEGURIDAD</th>
+                                    <td colspan="3">
+                                        {{reporte.SelloSeguridad}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>RESPONSABLE</th>
+                                    <td colspan="5">
+                                        {{reporte.Responsable}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>OBSERVACIÓN</th>
+                                    <td colspan="5"><p style="word-break: break-all">{{reporte.Observacion}}</p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="text-center col-sm-12" style="margin-top: 25px;" ng-hide="ProcesandoPeticion">
+            <button class="btn btn-success" ng-hide="ReporteId" ng-click="Guardar()">Guardar</button>
+            <button class="btn btn-success" ng-show="ReporteId" ng-click="Actualizar()">Actualizar</button>
+            <button class="btn btn-default" ng-show="ReporteId" ng-click="Imprimir()">Imprimir</button>
+            <button class="btn btn-success" ng-show="reporte.ReporteArchivo && reporte.RecibeFirma && reporte.ReporteArchivo != 'N/A'" ng-click="OpenArchivo(reporte.ReporteArchivo)">Ver archivo</button>
+            <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+        </div>
+    </div>
+</div>

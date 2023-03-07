@@ -1,0 +1,31 @@
+<div ng-controller="ListadoPermisoCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Listado de permisos<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+                    <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blueberry">
+                            <tr>
+                                <th class="text-center" style="width: 3%">ID</th>
+                                <th class="text-center" style="width: 10%">Fecha de emisión</th>
+                                <th class="text-center" style="width: 30%">Funcionario</th>
+                                <th class="text-center" style="width: 10%">Motivo</th>
+                                <th class="text-center" style="width: 15%">¿Cual?</th>
+                                <th class="text-center" style="width: 10%">Hora Inicio</th>
+                                <th class="text-center" style="width: 10%">Hora Fin</th>
+                                <th class="text-center" style="width: 5%">VB gestión humana</th>
+                                <!--<th class="text-center" style="width: 90%">Consumido?</th>-->
+                                <th class="text-center" style="width: 5%">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,460 @@
+<style>
+    @media print {
+        .Page { 
+            position: relative;
+            display: block;
+            page-break-after: always;
+            z-index: 0;
+            margin-top: 10pt;
+            margin-bottom: 10pt;
+            margin-right: 20pt;
+            margin-left: 20pt;
+        }
+        .break-after_2 {
+            display: block;
+            page-break-after: always;
+            position: relative;
+            top: 0pt;
+            bottom: 0pt;
+        }
+
+    }
+</style>
+<div class="x_panel" ng-controller="HistoriaClinicaCtrl">
+    <div class="x_title default-primary-color">
+        <h2 class="text-primary-color">Crear Historia Clinica</h2>
+        <div class="col-xs-2 pull-right top_search">
+            <div class="input-group">
+                <input type="text" ng-model="HistoriaId" ng-pattern="onlyNumbers" ng-change="Reset()" ng-enter="GetHistoriaById()" class="form-control" placeholder="Busqueda rapida">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="GetHistoriaById()" type="button"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <button ng-show="!Historia" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+        <button  ng-show="Historia" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+        <input ng-show="!Historia" type="reset" class="btn btn-danger" ng-click="Reset()" />
+    </div>
+    <div id="myElementId" class="Page"> <!-- ng-show="!ToPrint"-->
+        <div class="x_content" ng-show="!ver_reportes">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row" id="Header">
+                        <div class="col-xs-4">
+                            <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                        </div>
+                        <div class="col-xs-4 pull-left text-center" bind-html-compile="Encabezado.EncabezadoHistoria">
+                        </div>
+                        <div class="col-xs-4 text-right">
+                            <h5 style="margin-right: 1px"><strong>Historia Clinica</strong></h5>
+                            <input ng-show="Historia" style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="Paciente.HistoriaId" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="row after-Header">
+                        <div class="col-xs-12">
+                            <div>
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1. HISTORIA CLÍNICA O EXPEDIENTE CLÍNICO DEL PACIENTE</strong></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE COMPLETO DEL PACIENTE</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.Nombres.$valid, 'has-error': Datos.Nombres.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.Nombres" name="Nombres" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.Nombres" name="Nombres" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">DOCUMENTO</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Documento.$valid, 'has-error': Datos.Documento.$invalid}">
+                                                    <input ng-show="Historia" type="number" ng-model="Paciente.Documento" name="Documento" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="number" ng-model="Paciente.Documento" name="Documento" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">EDAD</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Edad.$valid, 'has-error': Datos.Edad.$invalid}">
+                                                    <input ng-show="Historia" type="number" min="0" max="120" ng-model="Paciente.Edad" name="Edad" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="number" min="0" max="120" ng-model="Paciente.Edad" name="Edad" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ESTADO CIVIL</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.EstadoCivil.$valid, 'has-error': Datos.EstadoCivil.$invalid}">
+                                                    <select class="form-control" ng-model="Paciente.EstadoCivil" name="EstadoCivil" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                        <option value="">--</option>
+                                                        <option ng-selected="Paciente.EstadoCivil == 'SOLTERO'">SOLTERO</option>
+                                                        <option ng-selected="Paciente.EstadoCivil == 'CASADO'">CASADO</option>
+                                                        <option ng-selected="Paciente.EstadoCivil == 'UNIÓN LIBRE'">UNIÓN LIBRE</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">RELIGIÓN</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Religion.$valid, 'has-error': Datos.Religion.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.Religion" name="Religion" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.Religion" name="Religion" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PROCEDENCIA</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Procedencia.$valid, 'has-error': Datos.Procedencia.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.Procedencia" name="Procedencia" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.Procedencia" name="Procedencia" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">RESIDENCIA ACTUAL</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.ResidenciaActual.$valid, 'has-error': Datos.ResidenciaActual.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.ResidenciaActual" name="ResidenciaActual" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.ResidenciaActual" name="ResidenciaActual" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">DIRECCIÓN ACTUAL</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.DireccionActual.$valid, 'has-error': Datos.DireccionActual.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.DireccionActual" name="DireccionActual" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.DireccionActual" name="DireccionActual" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TELÉFONO</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Telefono.$valid, 'has-error': Datos.Telefono.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.Telefono" name="Telefono" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.Telefono" name="Telefono" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">OCUPACIÓN</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Ocupacion.$valid, 'has-error': Datos.Ocupacion.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.Ocupacion" name="Ocupacion" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.Ocupacion" name="Ocupacion" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">RÉGIMEN DE SEGURIDAD SOCIAL EN SALUD</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.RegimenSeguridadSocial.$valid, 'has-error': Datos.RegimenSeguridadSocial.$invalid}">
+                                                    <select class="form-control" ng-model="Paciente.RegimenSeguridadSocial" name="RegimenSeguridadSocial" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                        <option value="">--</option>
+                                                        <option ng-selected="Paciente.RegimenSeguridadSocial == 'CONTRIBUTIVO'">CONTRIBUTIVO</option>
+                                                        <option ng-selected="Paciente.RegimenSeguridadSocial == 'SUBSIDIADO'">SUBSIDIADO</option>
+                                                        <option ng-selected="Paciente.RegimenSeguridadSocial == 'VINCULADO'">VINCULADO</option>
+                                                        <option ng-selected="Paciente.RegimenSeguridadSocial == 'N/A'">N/A</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ENTIDAD</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Entidad.$valid, 'has-error': Datos.Entidad.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.Entidad" name="Entidad" class="form-control caja_texto">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.Entidad" name="Entidad" class="form-control caja_texto" required>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>2 ANTECEDENTES PERSONALES</strong></h6>
+                            </div>
+                        </div>
+                        <div class="row break-after_2">
+                            <div class="col-xs-12">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PATOLOGICOS</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.Patologicos.$valid, 'has-error': Datos.Patologicos.$invalid}">
+                                                    <textarea type="text" ng-model="Paciente.HistoricaClinica.Patologicos" name="Patologicos" class="form-control" rows="5" required></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ENFERMEDADES DE LA INFANCIA</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.EnfermedadesInfancia.$valid, 'has-error': Datos.EnfermedadesInfancia.$invalid}">
+                                                    <textarea type="text" ng-model="Paciente.HistoricaClinica.EnfermedadesInfancia" name="EnfermedadesInfancia" class="form-control" rows="5" required></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row break-after after-Header">
+                            <div>
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ENFERMEDADES DE LA ADULTEZ</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.EnfermedadesAdultez.$valid, 'has-error': Datos.EnfermedadesAdultez.$invalid}">
+                                                        <textarea type="text" ng-model="Paciente.HistoricaClinica.EnfermedadesAdultez" name="EnfermedadesAdultez" class="form-control" rows="5" required></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">QUIRÚRGICOS</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Quirurgicos.$valid, 'has-error': Datos.Quirurgicos.$invalid}">
+                                                        <textarea type="text" ng-model="Paciente.HistoricaClinica.Quirurgicos" name="Quirurgicos" class="form-control" rows="5" required></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">HOSPITALIZACIONES</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Hospitalizaciones.$valid, 'has-error': Datos.Hospitalizaciones.$invalid}">
+                                                        <textarea type="text" ng-model="Paciente.HistoricaClinica.Hospitalizaciones" name="Hospitalizaciones" class="form-control" rows="5" required></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TRANSFUSIONES</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Transfusiones.$valid, 'has-error': Datos.Transfusiones.$invalid}">
+                                                        <textarea type="text" ng-model="Paciente.HistoricaClinica.Transfusiones" name="Transfusiones" class="form-control" rows="5" required></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TÓXICOS</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Toxicos.$valid, 'has-error': Datos.Toxicos.$invalid}">
+                                                        <textarea type="text" ng-model="Paciente.HistoricaClinica.Toxicos" name="Toxicos" class="form-control" rows="5" required></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ALÉRGICOS</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Alergicos.$valid, 'has-error': Datos.Alergicos.$invalid}">
+                                                        <textarea type="text" ng-model="Paciente.HistoricaClinica.Alergicos" name="Alergicos" class="form-control" rows="5" required></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row after-Header">
+                            <div class="col-xs-12">
+                                <div ng-class="{'has-success': Datos.TratamientoFarmacologicoActual.$valid, 'has-error': Datos.TratamientoFarmacologicoActual.$invalid}">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>3 TRATAMIENTO FARMACOLÓGICO QUE RECIBE ACTUALMENTE EL PACIENTE</strong></h6>
+                                    <textarea style="margin-top: -10px" ng-model="Paciente.HistoricaClinica.TratamientoFarmacologicoActual" name="TratamientoFarmacologicoActual" class="form-control" rows="5" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-class="{'has-success': Datos.AntecedentesFamiliares.$valid, 'has-error': Datos.AntecedentesFamiliares.$invalid}">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>4 ANTECEDENTES FAMILIARES</strong></h6>
+                                    <textarea style="margin-top: -10px" ng-model="Paciente.HistoricaClinica.AntecedentesFamiliares" name="AntecedentesFamiliares" class="form-control" rows="5" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>5 ANTECEDENTES PSICOSOCIALES</strong></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ALIMENTICIOS</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.Alimenticios.$valid, 'has-error': Datos.Alimenticios.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Alimenticios" name="Alimenticios" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Alimenticios" name="Alimenticios" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CIGARRILLO</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.Cigarrillo.$valid, 'has-error': Datos.Cigarrillo.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Cigarrillo" name="Cigarrillo" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Cigarrillo" name="Cigarrillo" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ALCOHOL</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.Alcohol.$valid, 'has-error': Datos.Alcohol.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Alcohol" name="Alcohol" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Alcohol" name="Alcohol" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">DROGAS</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.Drogas.$valid, 'has-error': Datos.Drogas.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Drogas" name="Drogas" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.HistoricaClinica.Drogas" name="Drogas" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-class="{'has-success': Datos.FactoresRiesgoCardiovasculares.$valid, 'has-error': Datos.FactoresRiesgoCardiovasculares.$invalid}">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>5 FACTORES DE RIESGO CARDIOVASCULARES</strong></h6>
+                                    <textarea style="margin-top: -10px" ng-model="Paciente.HistoricaClinica.FactoresRiesgoCardiovasculares" name="FactoresRiesgoCardiovasculares" class="form-control" rows="5" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row break-after_2">
+                            <div class="col-xs-12">
+                                <div ng-class="{'has-success': Datos.ManejoActual.$valid, 'has-error': Datos.ManejoActual.$invalid}">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>6 MANEJO ACTUAL DEL PACIENTE</strong></h6>
+                                    <textarea style="margin-top: -10px" ng-model="Paciente.HistoricaClinica.ManejoActual" name="ManejoActual" class="form-control" rows="5" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row after-Header">
+                            <div class="col-xs-12">
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>7 CONTACTOS</strong></h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TELÉFONO DE LA ESPOS@</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.TEsposo_a.$valid, 'has-error': Datos.TEsposo_a.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.TEsposo_a" name="TEsposo_a" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.TEsposo_a" name="TEsposo_a" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TELÉFONO DE LA MADRE Y/O PADRE</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.TMadre_Padre.$valid, 'has-error': Datos.TMadre_Padre.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.TMadre_Padre" name="TMadre_Padre" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.TMadre_Padre" name="TMadre_Padre" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TELÉFONO DEL HERMANO@</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.THermano_a.$valid, 'has-error': Datos.THermano_a.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.THermano_a" name="THermano_a" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.THermano_a" name="THermano_a" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TELÉFONO DE UN AMIGO@ SIGNIFICATIVO</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.TAmigo_a.$valid, 'has-error': Datos.TAmigo_a.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.TAmigo_a" name="TAmigo_a" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.TAmigo_a" name="TAmigo_a" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TELÉFONO DE UN HIJ@</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.THijo_a.$valid, 'has-error': Datos.THijo_a.$invalid}">
+                                                    <input ng-show="Historia" type="text" capitalize ng-model="Paciente.THijo_a" name="THijo_a" class="form-control caja_texto"  
+                                                           maxlength="199" minlength="2">
+                                                    <input ng-show="!Historia" type="text" capitalize ng-model="Paciente.THijo_a" name="THijo_a" class="form-control caja_texto" required  
+                                                           maxlength="199" minlength="2">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row after-Header">
+                            <div class="col-xs-12" ng-class="{'has-success': Datos.CodigoQR.$valid, 'has-error': Datos.CodigoQR.$invalid}">
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>8 ACTIVAR CODIGO QR</strong></h6>
+                                <textarea style="margin-top: -10px" ng-model="Paciente.CodigoQR" name="CodigoQR" class="form-control" rows="1" required></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                    {{Encabezado.Elaboro}}<br>
+                                    {{Encabezado.CargoElaboro}}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                                    {{Encabezado.Reviso}}<br>
+                                    {{Encabezado.CargoReviso}}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">APROBÓ</strong><br>
+                                    {{Encabezado.Aprobo}}<br>
+                                    {{Encabezado.CargoAprobo}}
+                                </p>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <button ng-show="!Historia" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+        <button  ng-show="Historia" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+        <input ng-show="!Historia" type="reset" class="btn btn-danger" ng-click="Reset()" />
+    </div>
+</div>

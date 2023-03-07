@@ -1,0 +1,22 @@
+<div class="row" ng-controller="LProSOLCtrl">
+  <div class="col-sm-12 mt-2">
+    <button class="btn btn-default" ng-click="GetProcesos()" ng-if="RLP">Sincronizar DB</button>
+  </div>
+  <div class="col-sm-12 mt-3" ng-if="LP">
+    <table ui-jq="dataTable" ui-options="Procesos"
+      class="table table-hover table-condensed table-striped table-bordered">
+      <thead class="bordered-blueberry">
+        <tr>
+          <th class="text-center" style="width: 2%">ID</th>
+          <th class="text-center" style="width: 6%">Protocolo</th>
+          <th class="text-center" style="width: 10%">Nombre Proceso</th>
+          <th class="text-center" style="width: 10%">Verificador En Curso</th>
+          <th class="text-center" style="width: 5%">Fecha</th>
+          <th class="text-center" style="width: 5%">Estado</th>
+          <th class="text-center" style="width: 5%">Opciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>

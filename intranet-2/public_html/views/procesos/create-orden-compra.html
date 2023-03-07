@@ -1,0 +1,213 @@
+<div class="row bg-white" ng-controller="CreateOrdenCompraCtrl">
+  <div class="col-sm-11 mx-auto">
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="btn btn-primary" ng-disabled="Isloading" ng-click="CrearOrdenCompra()">Crear orden</button>
+      </div>
+      <div class="col-sm-12 mt-3">
+        <form role="form" name="Datos" novalidate>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                <label for="Fecha">Fecha</label>
+                <input type="text" class="form-control" name="Fecha" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" ng-model="Orden.Fecha" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.ProcesoVerificacionId.$valid, 'has-error': Datos.ProcesoVerificacionId.$invalid}">
+                <label for="ProcesoVerificacionId">Revisa</label>
+                <select class="form-control" name="ProcesoVerificacionId" ng-model="Orden.ProcesoVerificacionId" 
+                    ng-options="o.ProcesoVerificacionId as o.NombreRevisa for o in ProcesosVerificacion"
+                    required>
+                    <option value="">--</option>  
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <h3>Datos del vendedor</h3>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.NumeroCotizacion.$valid, 'has-error': Datos.NumeroCotizacion.$invalid}">
+                <label for="NumeroCotizacion">Numero de cotización</label>
+                <input type="text" class="form-control" name="NumeroCotizacion" ng-model="Orden.NumeroCotizacion" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div>
+                <label for="Vendedor">Nombre de la empresa</label>
+                <div angucomplete-alt id="Vendedor"
+                  maxlength="70"
+                  pause="100"
+                  selected-object="LoadVendedor"
+                  remote-url="/Polivalente/api/Procesos.php?Dato_vendedor="
+                  title-field="Nit"
+                  description-field="Nombre"
+                  minlength="2"
+                  input-changed="inputChanged"
+                  input-class="form-control form-control-small"
+                  match-class="highlight"></div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.NitEmpresa.$valid, 'has-error': Datos.NitEmpresa.$invalid}">
+                <label for="NitEmpresa">Nit de la empresa</label>
+                <input type="text" class="form-control" name="NitEmpresa" ng-model="Orden.NitEmpresa" maxlength="50" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.DireccionEmpresa.$valid, 'has-error': Datos.DireccionEmpresa.$invalid}">
+                <label for="DireccionEmpresa">Dirección y ciudad de la empresa</label>
+                <input type="text" class="form-control" name="DireccionEmpresa" ng-model="Orden.DireccionEmpresa" maxlength="150" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.TelefonoEmpresa.$valid, 'has-error': Datos.TelefonoEmpresa.$invalid}">
+                <label for="TelefonoEmpresa">Número de contacto</label>
+                <input type="tel" class="form-control" name="TelefonoEmpresa" ng-model="Orden.TelefonoEmpresa" maxlength="20" required>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <h3>Datos del envio</h3>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.EnvNombre.$valid, 'has-error': Datos.EnvNombre.$invalid}">
+                <label for="EnvNombre">Enviar a</label>
+                <input type="text" class="form-control" name="EnvNombre" ng-model="Orden.EnvNombre" maxlength="120" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.EnvEmpresa.$valid, 'has-error': Datos.EnvEmpresa.$invalid}">
+                <label for="EnvEmpresa">Razón social</label>
+                <input type="text" class="form-control" name="EnvEmpresa" ng-model="Orden.EnvEmpresa" maxlength="150" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.EnvDireccion.$valid, 'has-error': Datos.EnvDireccion.$invalid}">
+                <label for="EnvDireccion">Dirección</label>
+                <input type="text" class="form-control" name="EnvDireccion" ng-model="Orden.EnvDireccion" maxlength="150" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.EnvCiudad.$valid, 'has-error': Datos.EnvCiudad.$invalid}">
+                <label for="EnvCiudad">Ciudad</label>
+                <input type="text" class="form-control" name="EnvCiudad" ng-model="Orden.EnvCiudad" maxlength="70" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.EnvTel.$valid, 'has-error': Datos.EnvTel.$invalid}">
+                <label for="EnvTel">Número de contacto</label>
+                <input type="tel" class="form-control" name="EnvTel" ng-model="Orden.EnvTel" maxlength="20" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.FormaPago.$valid, 'has-error': Datos.FormaPago.$invalid}">
+                <label for="FormaPago">Forma de pago</label>
+                <input type="text" class="form-control" name="FormaPago" ng-model="Orden.FormaPago" maxlength="70" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.Sede.$valid, 'has-error': Datos.Sede.$invalid}">
+                <label for="Sede">Sede</label>
+                <input type="text" class="form-control" name="Sede" ng-model="Orden.Sede" maxlength="20" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.Servicio.$valid, 'has-error': Datos.Servicio.$invalid}">
+                <label for="Servicio">Servicio</label>
+                <input type="text" class="form-control" name="Servicio" ng-model="Orden.Servicio" maxlength="120" required>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <h3>Detalles de la orden</h3>
+            </div>
+            <div class="col-sm-12">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>ITEM</th>
+                    <th>DESCRIPCIÓN</th>
+                    <th>CANTIDAD</th>
+                    <th>PRECIO UNITARIO</th>
+                    <th>TOTAL</th>
+                    <th>
+                      OPCIONES
+                      <button class="btn btn-info btn-xs" ng-click="AddDetalle()">Añadir detalle</button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="d in Orden.Detalles track by $index">
+                    <td>
+                      <div ng-class="{'has-success': Datos['Item' + $index].$valid, 'has-error': Datos['Item' + $index].$invalid}">
+                        <input type="text" ng-model="d.Item" name="Item{{ $index }}" class="form-control" maxlength="70" required>
+                      </div>
+                    </td>
+                    <td>
+                      <div ng-class="{'has-success': Datos['Descripcion' + $index].$valid, 'has-error': Datos['Descripcion' + $index].$invalid}">
+                        <input type="text" ng-model="d.Descripcion" name="Descripcion{{ $index }}" class="form-control" maxlength="250" required>
+                      </div>
+                    </td>
+                    <td>
+                      <div ng-class="{'has-success': Datos['Cantidad' + $index].$valid, 'has-error': Datos['Cantidad' + $index].$invalid}">
+                        <input type="text" ng-model="d.Cantidad" name="Cantidad{{ $index }}" class="form-control" required>
+                      </div>
+                    </td>
+                    <td>
+                      <div ng-class="{'has-success': Datos['PrecioUnitario' + $index].$valid, 'has-error': Datos['PrecioUnitario' + $index].$invalid}">
+                        <input type="number" step="50.00" ng-model="d.PrecioUnitario" name="PrecioUnitario{{ $index }}" class="form-control" required>
+                      </div>
+                    </td>
+                    <td>
+                      <div ng-class="{'has-success': Datos['Total' + $index].$valid, 'has-error': Datos['Total' + $index].$invalid}">
+                        <input type="number" step="50.00" ng-model="d.Total" name="Total{{ $index }}"  min="{{ d.PrecioUnitario }}" class="form-control" required>
+                      </div>
+                    </td>
+                    <td>
+                      <button class="btn btn-danger btn-xs" ng-click="EliminarDetalle($index)">Eliminar Detalle</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">SUBTOTAL</td>
+                    <td ng-class="{'has-success': Datos.SubTotal.$valid, 'has-error': Datos.SubTotal.$invalid}">
+                      <input type="number" step="50.00" ng-model="Orden.SubTotal" name="SubTotal" class="form-control" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">IVA (19%)</td>
+                    <td>
+                      <input type="number" step="50.00" ng-model="Orden.Iva" name="Iva" class="form-control" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">Envio</td>
+                    <td>
+                      <input type="number" step="50.00" ng-model="Orden.Envio" name="Envio" class="form-control" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">Otro</td>
+                    <td>
+                      <input type="number" step="50.00" ng-model="Orden.Otro" name="Otro" class="form-control" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">TOTAL</td>
+                    <td ng-class="{'has-success': Datos.Total.$valid, 'has-error': Datos.Total.$invalid}">
+                      <input type="number" step="50.00" ng-model="Orden.Total" name="Total" class="form-control" required>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+              <div ng-class="{'has-success': Datos.Observacion.$valid, 'has-error': Datos.Observacion.$invalid}">
+                <label for="Observacion">Observación o condiciones</label>
+                <textarea class="form-control" name="Observacion" ng-model="Orden.Observacion" maxlength="500"></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

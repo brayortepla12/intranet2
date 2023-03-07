@@ -1,0 +1,48 @@
+2021-01-26 16:36:50: insert failed Duplicate entry '2' for key 'PRIMARY'
+
+2021-01-26 16:48:58: insert failed Duplicate entry '3' for key 'PRIMARY'
+
+2021-01-27 08:52:21: insert failed Duplicate entry '4' for key 'PRIMARY'
+
+2021-01-27 08:52:29: insert failed Duplicate entry '4' for key 'PRIMARY'
+
+2021-01-27 09:06:15: insert failed Duplicate entry '4' for key 'PRIMARY'
+
+2021-01-27 09:11:30: insert failed Duplicate entry '4' for key 'PRIMARY'
+
+2021-01-27 09:16:54: insert failed Duplicate entry '4' for key 'PRIMARY'
+
+2021-02-06 11:03:36: insert failed 
+
+2021-02-06 11:31:02: insert failed 
+
+2021-02-06 11:31:07: insert failed 
+
+2021-02-06 11:32:24: insert failed 
+
+2021-02-06 11:33:31: insert failed 
+
+2021-02-06 11:52:07: insert failed 
+
+2021-02-06 11:54:13: insert failed 
+
+2021-02-06 11:55:38: insert failed 
+
+2021-02-06 11:57:49: insert failed 
+
+2021-02-08 08:46:03: insert failed 
+
+2021-02-08 08:46:47: insert failed 
+
+2021-02-08 08:52:22: insert failed 
+
+2021-02-08 08:53:35: insert failed 
+
+2021-02-08 08:54:47: insert failed 
+
+2021-02-08 09:11:29: insert failed 
+
+2021-02-08 09:12:01: insert failed 
+
+2021-02-08 09:13:34: insert failed 
+

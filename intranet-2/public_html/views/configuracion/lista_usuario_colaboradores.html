@@ -1,0 +1,358 @@
+<div class="row" ng-controller="UsuariosColCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h2>Listado de usuarios <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+                        <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Nombre Completo</th>
+                                    <th class="text-center">Cargo</th>
+                                    <th class="text-center">Documento</th>
+                                    <th class="text-center">Nombre Usuario</th>
+                                    <th class="text-center">Fecha vencimiento</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UsuarioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Usuario</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="NombreCompleto">Nombre Completo</label>
+                                <br>
+                                {{Usuario.NombreCompleto}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="Documento">Documento</label>
+                                <br>
+                                {{Usuario.Cedula}}
+                            </div>
+                            <div class="col-sm-4">
+                                <div>
+                                    <label for="Contrasena">Contraseña por defecto</label>
+                                    <input type="text" class="form-control" readonly value="1234">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div ng-class="{'has-success': c.FechaVecimiento.$valid, 'has-error': c.FechaVecimiento.$invalid}">
+                                    <label for="FechaVecimiento">Fecha Vencimiento</label>
+                                    <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" min="{{Hoy| date : 'yyyy-MM-dd'}}" capitalize class="form-control" id="FechaVecimiento" 
+                                           name="FechaVecimiento" ng-model="Usuario.FechaVecimiento" required>
+                                </div>
+                            </div>       
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarUsuario()" ng-disabled="c.Usuario.$invalid">Crear Usuario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="RUsuarioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Usuario</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datosr" novalidate>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div ng-class="{'has-success': Datosr.Persona.$valid, 'has-error': Datosr.Persona.$invalid}">
+                                    <label for="Persona">Persona</label>
+                                    <div ng-class="{'has-success': Datosr.NombreCompleto.$valid, 'has-error': Datosr.NombreCompleto.$invalid}">
+                                        <label for="NombreCompleto">Nombre Completo</label>
+                                        <input type="text" capitalize name="NombreCompleto" class="form-control" id="RNombreCompleto" ng-model="RUsuario.NombreCompleto" maxlength="199" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datosr.Contrasena.$valid, 'has-error': Datosr.Contrasena.$invalid || RUsuario.Contrasena2 != RUsuario.Contrasena}">
+                                    <label for="Contrasena">Contraseña</label>
+                                    <input type="password" class="form-control" id="RContrasena" name="Contrasena" ng-model="RUsuario.Contrasena" minlength="3" maxlength="280" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datosr.Contrasena2.$valid, 'has-error': Datosr.Contrasena2.$invalid || RUsuario.Contrasena2 != RUsuario.Contrasena}">
+                                    <label for="Contrasena2">Confirmar Contraseña</label>
+                                    <input type="password" class="form-control" id="RContrasena2" name="Contrasena2" ng-model="RUsuario.Contrasena2" minlength="3" maxlength="10" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="UpdatePassUsuario()" ng-disabled="Datosr.$invalid">Actualizar Contraseña</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Usuario = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateUsuarioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Actualizar Usuario</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div ng-class="{'has-success': Datos.Persona.$valid, 'has-error': Datos.Persona.$invalid}">
+                                    <label for="Persona">Persona</label>
+                                    <angucomplete-alt id="update-persona"
+                                                      placeholder="Buscar persona"
+                                                      pause="100"
+                                                      selected-object="UPersona"
+                                                      local-data="Personas"
+                                                      search-fields="Nombres"
+                                                      title-field="Nombres"
+                                                      minlength="1"
+                                                      input-class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div ng-class="{'has-success': Datos.Email.$valid, 'has-error': Datos.Email.$invalid}">
+                                    <label for="Email">Email</label>
+                                    <input type="text" class="form-control" id="UEmail" ng-model="UpdateUsuario.Email" maxlength="280"  name="Email" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div ng-class="{'has-success': Datos.FechaVecimiento.$valid, 'has-error': Datos.FechaVecimiento.$invalid}">
+                                    <label for="FechaVecimiento">Fecha Vencimiento</label>
+                                    <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" min="{{Hoy| date : 'yyyy-MM-dd'}}" capitalize class="form-control" id="UFechaVecimiento" 
+                                           name="FechaVecimiento" ng-model="UpdateUsuario.FechaVecimiento" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div ng-class="{'has-success': Datos.Cargo.$valid, 'has-error': Datos.Cargo.$invalid}">
+                                    <label for="Cargo">Cargo</label>
+                                    <input type="text" capitalize class="form-control" id="UCargo" 
+                                           name="Cargo" ng-model="UpdateUsuario.Cargo" maxlength="100" readonly>
+                                </div>
+                            </div> 
+                            <div class="col-sm-4">
+                                <div ng-class="{'has-success': Datos.Estado.$valid, 'has-error': Datos.Estado.$invalid}">
+                                    <label for="Estado">Estado</label>
+                                    <input type="checkbox" class="form-control" id="UEstado" 
+                                           name="Estado" ng-click="UpdateUsuario.Estado = UpdateUsuario.Estado == '1' ? '0' : '1'" ng-checked="UpdateUsuario.Estado == '1'">
+                                </div>
+                            </div> 
+                            <div class="col-md-12">
+                                <label for="Firma">Firma</label>
+                                <img ng-if="!image" width="200" src="{{UpdateUsuario.Firma}}" style="height: 137px; max-height: 137px; width: 250px" alt="">
+                                <img ng-if="image" width="200" src="{{image}}" style="height: 137px; max-height: 137px; width: 250px" alt="">
+                                <input type="file" id="firma-update" my-upload accept="image/*" image="DataImgUpdate" resize-max-height="800" resize-max-width="800" 
+                                       resize-quality="0.7" resize-type="image/jpg" ng-image-compress  class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="ActualizarUsuario()" ng-disabled="c.Usuario.$invalid">Actualizar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="UpdateUsuario = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UsuarioPermisoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Añadir permisos a {{select.NombreCompleto}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="list-group">
+                                <a ng-repeat="m in Relacion track by $index" class="list-group-item list-group-item-action"
+                                   ng-class="{'active': {{'modulo' + $index}}}" id="modulo{{$index}}" 
+                                   ng-click="SeleccionarModulo(m, $index)">{{m.Nombre}}</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="col-sm-12" ng-show="SelectModule.length > 0">
+                                <div class="btn-group" role="group" style="margin-bottom: 25px;">
+                                    <button type="button" class="btn btn-secondary" ng-click="MarcarPermisos(ModuloId, 1)">Marcar Todo</button>
+                                    <button type="button" class="btn btn-secondary" ng-click="MarcarPermisos(ModuloId, 0)">Desmarcar Todo</button>
+                                </div>
+                            </div>
+                            <div class="list-group">
+                                <a ng-repeat="s in SelectModule track by $index" style="padding: 0px !important;" ng-style="{'background': s.Color}"
+                                   class="list-group-item list-group-item-action" ng-click="SelectPermiso(s, $index)">
+                                    <div class="checkbox checkbox-slider-md checkbox-slider--b  checkbox-slider-info">
+                                        <label>
+                                            <input type="checkbox" ng-checked="s.isSelected"><span>{{s.label}} - {{s.State}} - {{s.Tipo}}</span>
+                                        </label>
+                                    </div>     
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UsuarioServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Añadir servicios a {{select.NombreCompleto}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="list-group">
+                                <a ng-repeat="s in RelacionServicio track by $index" class="list-group-item list-group-item-action"
+                                   ng-class="{'active': {{'servicio' + $index}}}" id="servicio{{$index}}" 
+                                   ng-click="SeleccionarServicio(s, $index)">{{s.Nombre}}</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="col-sm-12" ng-show="SelectServicio.length > 0">
+                                <div class="btn-group" role="group" style="margin-bottom: 25px;">
+                                    <button type="button" class="btn btn-secondary" ng-click="MarcarSedes(SedeId, 1)">Marcar Todo</button>
+                                    <button type="button" class="btn btn-secondary" ng-click="MarcarSedes(SedeId, 0)">Desmarcar Todo</button>
+                                </div>
+                            </div>
+                            <div class="list-group">
+                                <a ng-repeat="s in SelectServicio track by $index" style="padding: 0px !important"
+                                   class="list-group-item list-group-item-action" ng-click="SelectAServicio(s, $index)">
+                                    <div class="checkbox checkbox-slider-md checkbox-slider--b  checkbox-slider-info" style="padding: 0px !important">
+                                        <label>
+                                            <input type="checkbox" ng-checked="s.isSelected"><span>{{s.Nombre}}</span>
+                                        </label>
+                                    </div>     
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="UsuarioRolModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Seleccionar Roles</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- <div class="col-sm-12">
+                                <div class="btn-group" role="group" style="margin-bottom: 25px;">
+                                    <button type="button" class="btn btn-secondary" ng-click="MarcarRoles(1)">Marcar Todo</button>
+                                    <button type="button" class="btn btn-secondary" ng-click="MarcarRoles(0)">Desmarcar Todo</button>
+                                </div>
+                            </div> -->
+                            <div class="list-group">
+                                <a ng-repeat="r in Roles track by $index" style="padding: 0px !important"
+                                   class="list-group-item list-group-item-action" ng-click="SelectARol(r, $index)">
+                                    <div class="checkbox checkbox-slider-md checkbox-slider--b  checkbox-slider-info" style="padding: 0px !important">
+                                        <label>
+                                            <input type="checkbox" ng-checked="r.IsSelected"><span>{{r.Nombre}}</span>
+                                        </label>
+                                    </div>     
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

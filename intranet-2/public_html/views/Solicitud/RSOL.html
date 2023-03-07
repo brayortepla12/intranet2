@@ -1,0 +1,29 @@
+<div class="row" ng-controller="RSOLCtrl">
+  <div class="col-12 mt-2">
+    <button class="btn btn-primary" ng-click="NuevoReporte()" ng-if="!CS">Nuevo Reporte</button>
+    <button class="btn btn-default" ng-click="GetReportes()" ng-if="LR && !CS">Sincronizar DB</button>
+    <button class="btn btn-default" ng-click="Atras()" ng-if="CS">Atras</button>
+    <button class="btn btn-success" ng-click="CerrarSolicitud()" ng-if="!CS">Cerrar Solicitud</button>
+  </div>
+  <div class="col-sm-12 mt-2" ng-if="RC && !CS">
+    <table id="Solicitudes" ui-jq="dataTable" ui-options="Reportes"
+      class="table table-hover table-condensed table-striped table-bordered">
+      <thead class="bordered-blueberry">
+        <tr>
+          <th class="text-center" style="width: 2%;">Reporte ID</th>
+          <th class="text-center" style="width: 5%;">Ubicación</th>
+          <th class="text-center" style="width: 4%;">TipoServicio</th>
+          <th class="text-center" style="width: 5%;">Solicitante</th>
+          <th class="text-center" style="width: 8%;">Equipo</th>
+          <th class="text-center" style="width: 5%;">Creado Por</th>
+          <th class="text-center" style="width: 5%;">Fecha de Creación</th>
+          <th class="text-center" style="width: 5%;">Opciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="col-sm-12 mt-2" ng-if="CS">
+    <ng-include src="'/intranet-2/public_html/views/Solicitud/SolNewEvento.html'"></ng-include>
+  </div>
+</div>

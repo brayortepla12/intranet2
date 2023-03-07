@@ -1,0 +1,22 @@
+# CORS
+Header set Access-Control-Allow-Credentials: false
+Header set Access-Control-Allow-Origin: "*"
+Header set Access-Control-Allow-Methods: "GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH"
+# Permitimos requests ajax
+Header set Access-Control-Allow-Headers: "Origin, Content-Type, Accept, Authorization, X-Requested-With,Date,Server,X-Powered-By,Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Content-Length,Keep-Alive,Connection,Content-Type"
+
+
+
+
+Header set Access-Control-Expose-Headers: "Date, Server, X-Powered-By, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Content-Length, Keep-Alive, Connection, Content-Type"
+
+RewriteEngine On
+RewriteBase /
+ErrorDocument 404 /intranet-2
+ErrorDocument 403 /intranet-2
+RewriteCond %{REQUEST_URI} ^/Polivalente/$
+RewriteRule ^(.*)$ /intranet-2 [L]
+RewriteCond %{REQUEST_URI} ^/POLIVALENTE/$
+RewriteRule ^(.*)$ /intranet-2 [L]
+RewriteCond %{REQUEST_URI} ^/polivalente/$
+RewriteRule ^(.*)$ /intranet-2 [L]

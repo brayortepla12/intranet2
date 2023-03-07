@@ -1,0 +1,201 @@
+<div class="row" ng-controller="ArticuloCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Plantilla<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-6">
+                        <div class="form-group">
+                            <label for="TipoArticulo">
+                                Tipo de articulos
+                            </label>
+                            <select class="form-control" ng-model="TipoArticulo" ng-change="GetArticulos()"
+                                name="TipoArticulo">
+                                <option value='Almacen'>Almacen</option>
+                                <option value='Central'>Central</option>
+                                <option value='Polivalente'>Polivalente</option>
+                                <option value='Sistemas'>Sistemas</option>
+                                <option value='Biomedico'>Biomedico</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 pull-right" style="padding: 5px;margin-top: 20px;">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#ArticuloModal">Crear Articulo
+                            <i class="fa fa-plus-square-o" /></button>
+                    </div>
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions"
+                            class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 7%">Codigo Krystalos</th>
+                                    <th class="text-center" style="width: 15%">Nombre en Krystalos</th>
+                                    <th class="text-center" style="width: 7%">Codigo Interno</th>
+                                    <th class="text-center" style="width: 15%">Nombre</th>
+                                    <th class="text-center" style="width: 7%">Grupo</th>
+                                    <th class="text-center" style="width: 5%">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ArticuloModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Articulo</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c.Articulo" novalidate>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.Articulo.Nombre.$valid, 'has-error': c.Articulo.Nombre.$invalid}">
+                                <label for="Nombre">Nombre</label>
+                                <input type="text" capitalize class="form-control" id="Nombre"
+                                    ng-model="Articulo.Nombre" maxlength="280" name="Nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.Articulo.CodigoKrystalos.$valid,  'has-error': c.Articulo.CodigoKrystalos.$invalid }">
+                                <label for="CodigoKrystalos">Codigo Krystalos</label>
+                                <input type="text" capitalize class="form-control" id="CodigoKrystalos"
+                                    ng-model="Articulo.CodigoKrystalos" maxlength="280" name="CodigoKrystalos" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.Articulo.NombreKrystalos.$valid,  'has-error': c.Articulo.NombreKrystalos.$invalid }">
+                                <label for="NombreKrystalos">Nombre Krystalos</label>
+                                <input type="text" capitalize class="form-control" id="NombreKrystalos"
+                                    ng-model="Articulo.NombreKrystalos" maxlength="280" name="NombreKrystalos" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.Articulo.ArticuloPara.$valid,  'has-error': c.Articulo.ArticuloPara.$invalid}">
+                                <label for="ArticuloPara">
+                                    Tipo Articulo
+                                </label>
+                                <select class="form-control" ng-model="Articulo.ArticuloPara" name="ArticuloPara"
+                                    required>
+                                    <option value='Almacen'>Almacen</option>
+                                    <option value='Central'>Central</option>
+                                    <option value='Polivalente'>Polivalente</option>
+                                    <option value='Sistemas'>Sistemas</option>
+                                    <option value='Biomedico'>Biomedico</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.Articulo.GrupoId.$valid,  'has-error': c.Articulo.GrupoId.$invalid}">
+                                <label for="GrupoId">
+                                    Grupo
+                                </label>
+                                <select class="form-control" ng-model="Articulo.GrupoId" name="GrupoId" required>
+                                    <option ng-repeat="s in Grupos track by $index" ng-value='{{s.GrupoId}}'
+                                        value='{{s.GrupoId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarArticulo()"
+                            ng-disabled="c.Articulo.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Articulo = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateArticuloModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Actualizar Articulo</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c.UArticulo" novalidate>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.UArticulo.Nombre.$valid, 'has-error': c.UArticulo.Nombre.$invalid}">
+                                <label for="Nombre">Nombre</label>
+                                <input type="text" capitalize class="form-control" id="Nombre"
+                                    ng-model="UArticulo.Nombre" maxlength="280" name="Nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.UArticulo.CodigoKrystalos.$valid, 'has-error': c.UArticulo.CodigoKrystalos.$invalid}">
+                                <label for="CodigoKrystalos">Codigo Krystalos</label>
+                                <input type="text" capitalize class="form-control" id="CodigoKrystalos"
+                                    ng-model="UArticulo.CodigoKrystalos" maxlength="280" name="CodigoKrystalos"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.UArticulo.NombreKrystalos.$valid, 'has-error': c.UArticulo.NombreKrystalos.$invalid}">
+                                <label for="NombreKrystalos">Nombre Krystalos</label>
+                                <input type="text" capitalize class="form-control" id="NombreKrystalos"
+                                    ng-model="UArticulo.NombreKrystalos" maxlength="280" name="NombreKrystalos"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                ng-class="{'has-success': c.UArticulo.GrupoId.$valid, 'has-error': c.UArticulo.GrupoId.$invalid}">
+                                <label>
+                                    Grupo
+                                </label>
+                                <select class="form-control" ng-model="UArticulo.GrupoId" name="GrupoId" required>
+                                    <option ng-repeat="s in Grupos track by $index"
+                                        ng-selected="s.GrupoId == UArticulo.GrupoId" ng-value='{{s.GrupoId}}'
+                                        value='{{s.GrupoId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="UpdateArticulo()"
+                            ng-disabled="c.UArticulo.$invalid">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

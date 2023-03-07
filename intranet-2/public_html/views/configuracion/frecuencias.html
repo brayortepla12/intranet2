@@ -1,0 +1,84 @@
+<div class="row" ng-controller="FrecuenciaCtrl">
+    <div class="col-sm-2 pull-right" style="padding: 5px;">
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#FrecuenciaModal">Crear Frecuencia <i class="fa fa-plus-square-o" /></button>
+    </div>
+    <div class="col-sm-12">
+        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Numero de Meses</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Frecuencias" ng-include="getTemplate(item)">
+                    <script type="text/ng-template" id="display">
+                        <td>
+                            {{item.Nombre}}
+                        </td>
+                        <td>
+                            {{item.NumeroMeses}}
+                        </td>
+                        <td>
+                            <center>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                            </center>
+                        </td>
+                    </script>
+                    <script type="text/ng-template" id="edit">
+                        <td><input type="text" ng-model="select.Nombre" class="form-control input-sm" capitalize /></td>
+                        <td><input type="number" min="1" max="12" class="form-control input-sm" ng-model="select.NumeroMeses" ></td>
+                        <td>
+                            <center>
+                                <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                            </center>
+                        </td>
+                    </script>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="FrecuenciaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="col-sm-11">
+                  <h2 class="modal-title">Crear Frecuencia</h2>
+              </div>
+              <div class="col-sm-1">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-body">
+              <form role="form" name="c.Frecuencia" novalidate>
+                  <div class="col-md-12">
+                      <div class="form-group" ng-class="{ 'has-error': c.Frecuencia.Nombre.$invalid && !c.Frecuencia.Nombre.$pristine }">
+                          <label for="CodigoFrecuencia">Nombre</label>
+                          <input type="text" capitalize class="form-control" id="CodigoFrecuencia" ng-model="Frecuencia.Nombre" maxlength="280"  name="CodigoFrecuencia" required>
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-group" ng-class="{ 'has-error': c.Frecuencia.Nombre.$invalid && !c.Frecuencia.Nombre.$pristine }">
+                          <label for="CodigoFrecuencia">Numero Meses</label>
+                          <input type="number" min="1" max="12" class="form-control" id="CodigoFrecuencia" ng-model="Frecuencia.NumeroMeses"  name="CodigoFrecuencia" required>
+                      </div>
+                  </div>
+              </form>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-footer">
+              <div class="text-center col-sm-12" style="margin-top: 25px;">
+                  <button class="btn btn-success" ng-click="GuardarFrecuencia()" ng-disabled="c.Frecuencia.$invalid">Guardar</button>
+                  <input type="reset" class="btn btn-danger" ng-click="Frecuencia = {}" />
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

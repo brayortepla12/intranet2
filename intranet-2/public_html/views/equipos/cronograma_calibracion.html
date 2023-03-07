@@ -1,0 +1,169 @@
+<style>
+    @media print{
+        @page {size: landscape}
+        body{
+            font-size: 1em;
+        }
+        th{
+            z-index: -1;
+        }
+        td{
+            padding: 3px !important;
+        }
+    }
+</style>
+<div class="row" ng-controller="CalibracionCtrl">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="form-check">
+                            <label>
+                                Año
+                            </label>
+                            <input type="number" class="form-control" min="2017" max="2100" step="1" ng-model="Year" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <label class="col-sm-12">
+                    Seleccione los servicios que desea consultar
+                </label>
+                <select class="form-control" ng-model="ServicioId" ng-change="AddServicios()" name="Servicio" required>
+                    <option>--</option>
+                    <option ng-repeat="s in Servicios track by $index"  ng-value='{{$index}}' value='{{$index}}'> {{s.Nombre}} - {{s.NombreSede}}</option>
+                </select>
+            </div>
+            <div class="col-sm-2 text-center">
+                <br>
+                <button class="btn btn-primary" ng-click="BuscarCalibracion()">Buscar <i class="fa fa-search "/></button>
+                <button ng-show="Listados" class="btn btn-default" ng-click="Imprimir()">Imprimir <i class="fa fa-print"/></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" id="calibracion">
+        <div ng-repeat="cc in Listados.pack">
+            <div class="break-after" >
+                <br/>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img ng-src="{{Empresa.Logo}}" width="180" alt="">
+                    </div>
+                    <div class="col-xs-4 pull-left text-center">
+                        <p style="font-size: 0.7em !important">
+                            <strong style="font-size: 1.2em !important">CRONOGRAMA DE CALIBRACIONES DE INSTALACIONES FISICAS</strong>
+                            <div class="text-center" bind-html-compile="Encabezado.EncabezadoCronograma"></div>
+                        </p>
+                    </div>
+                    <div class="col-xs-6" style="text-align: right;">
+                        <strong>Proceso/área: {{LabelServicios}}</strong> 
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Año: {{Year}}</strong> 
+                    </div>
+                </div>
+                <div class="row" style="transform: translate(0px,-8px)">
+                    <div class="col-md-10 col-md-offset-1 col-xs-12"  id="myElementId">
+                        <table id="TablaCalibracion" class="table1 table table-bordered">
+                            <tbody>
+                                <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                    <th>ITEM</th>
+                                    <th>EQUIPO</th>
+                                    <th>MARCA</th>
+                                    <th>MODELO</th>
+                                    <th>SERIE</th>
+                                    <th>SERVICIO</th>
+                                    <th>UBICACIÓN</th>
+                                    <th>PERIODICIDAD</th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>ENERO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>FEBRERO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>MARZO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>ABRIL</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>MAYO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>JUNIO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>JULIO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>AGOSTO</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>SEPTIEMBRE</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>OCTUBRE</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>NOVIEMBRE</span>
+                                    </th>
+                                    <th class="verticalTableHeader vertical" style="height: 110px; font-size: 0.8em">
+                                        <span>DICIEMBRE</span>
+                                    </th>
+                                    <th>RESPONSABLE</th>
+                                </tr>
+                                <tr ng-repeat="c in cc" style="font-size: 0.7em" ng-show="c.Cronograma">
+                                    <td style="text-align: center">{{c.HojaVidaId}}</td>
+                                    <td>{{c.Equipo}}</td>
+                                    <td>{{c.Marca}}</td>
+                                    <td>{{c.Modelo}}</td>
+                                    <td>{{c.Serie}}</td>
+                                    <td>{{c.Servicio}}</td>
+                                    <td>{{c.Ubicacion}}</td>
+                                    <td>{{c.Frecuencia}}</td>
+                                    <td style="z-index: 1000;" ng-repeat="d in c.Cronograma track by $index" ng-class="{'oscuro2': d.Estado, 'oscuro': d.data == 'no tiene'
+                                        , 'hecho': d.data != 'no tiene' && d || c.Mes == d.n}" ng-click="Goto(d.data)">
+                                        <span ng-show="d.data != 'no tiene' && d"></span>
+                                        <span ng-show="d.data == 'no tiene' && c.FechaCalibracion2" style="color:white"></span>
+                                        <span ng-show="d.data == 'no tiene' && !c.FechaCalibracion2" style="color:white"></span>
+                                    </td>
+                                    <td>{{c.Responsable}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="row text-center" style="font-size: 0.9em">
+                    <div class="col-xs-4">
+                        <p>
+                            <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                            <strong style="font-size: 1em">ELABORÓ</strong><br>
+                            {{Encabezado.Elaboro}}<br>
+                            {{Encabezado.CargoElaboro}}
+                        </p>
+                    </div>
+                    <div class="col-xs-4">
+                        <p>
+                            <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                            <strong style="font-size: 1em">REVISÓ</strong><br>
+                            {{Encabezado.Reviso}}<br>
+                            {{Encabezado.CargoReviso}}
+                        </p>
+                    </div>
+                    <div class="col-xs-4">
+                        <p>
+                            <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                            <strong style="font-size: 1em">APROBÓ</strong><br>
+                            {{Encabezado.Aprobo}}<br>
+                            {{Encabezado.CargoAprobo}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

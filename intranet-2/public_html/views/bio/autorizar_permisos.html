@@ -1,0 +1,128 @@
+<div ng-controller="AutorizarPermisoCtrl">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h2>Autorizar Permisos<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label style="font-weight: bold;">
+                        Codigo tarjeta funcionario
+                    </label>
+                    <input type="text" ng-model="CodigoTarjeta" id="CodigoTarjeta" class="form-control" ng-enter="BuscarPermisos()" />
+                </div>
+                <div class="col-sm-4" ng-show="Persona.Nombres && !Persona.VBGestionHumana">
+                    <button class="btn btn-primary" ng-click="Autorizar()" style="transform: translate(0px,25px)">
+                        <span ng-hide="Bandera_btn">Autorizar Permiso</span>
+                        <i class="fa fa-spinner fa-spin" ng-show="Bandera_btn"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4" style="margin-top: 20px;" ng-show="Persona.Nombres">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <img ng-src="{{Empresa.Logo}}" width="100" alt="">
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-center">
+                                <h5><strong>AUTORIZACIÓN DE PERMISO</strong></h5>
+                                GH-F-05 Ver. 01<br>
+                                Emisión: 03-12-2013 Vigencia:16-12-2013
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <strong>Identificación:</strong> {{Persona.Cedula}}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <strong>Fecha:</strong> {{Persona.CreatedAt}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <strong>Funcionario</strong> {{Persona.Nombres}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label style="font-weight: bold;">
+                                            Motivo
+                                        </label>
+                                        <div class="row">
+                                            <!--                                        <div class="form-group col-lg-4 col-sm-4">
+                                                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Cita Médica</label>
+                                                                                        <div class="form-check float-right">
+                                                                                            <input class="form-check-input" ng-checked="Persona.Motivo == 'Cita Médica'" disabled 
+                                                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                                                        </div>
+                                                                                    </div>-->
+                                            <div class="form-group col-lg-4 col-sm-4">
+                                                <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Laboral</label>
+                                                <div class="form-check float-right">
+                                                    <input class="form-check-input" ng-checked="Persona.Motivo == 'Laboral'" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-4 col-sm-4">
+                                                <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Personal</label>
+                                                <div class="form-check float-right">
+                                                    <input class="form-check-input" ng-checked="Persona.Motivo == 'Personal'" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>¿Cual?</strong>
+                                                {{Persona.Cual}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <strong>Fecha Inicio</strong>
+                                                {{Persona.FechaInicio}}
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <strong>Fecha Final</strong>
+                                                {{Persona.FechaFin}}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <img ng-src="{{Persona.VBJefe}}" width="100"><br>
+                                                <strong>Vo. Bo. Jefe de Área</strong>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <img ng-src="{{Persona.VBGestionHumana}}" width="100"><br>
+                                                <strong>Gestión Humana</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="margin-top: 20px;" ng-show="Permisos.length > 0">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th>Fecha evento</th>
+                            <th>Tipo</th>
+                            <th>Dispositivo</th>
+                            <th>Aplicar</th>
+                        </tr>
+                        <tr ng-repeat="p in Permisos">
+                            <td>{{p.Fecha}}</td>
+                            <td>{{p.Tipo}}</td>
+                            <td>{{p.Dispositivo}}</td>
+                            <td>
+                                <input class="form-check-input" type="checkbox" ng-checked="p.Validar == 1" ng-click="p.Validar = p.Validar == 1 ? 0 : 1">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

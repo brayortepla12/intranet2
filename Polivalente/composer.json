@@ -1,0 +1,26 @@
+{
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0",
+        "phpoffice/phpspreadsheet": "^1.9",
+        "vlucas/phpdotenv": "^5.1",
+        "pusher/pusher-php-server": "^4.1",
+        "robmorgan/phinx": "^0.12.1",
+        "symfony/yaml": "^5.1",
+        "wrench/wrench": "2.0.8",
+        "react/stream": "0.4.6",
+        "react/socket": "0.4.6",
+        "react/promise": "2.5.1",
+        "react/event-loop": "0.4.2",
+        "guzzle/stream": "3.9.2",
+        "guzzle/parser": "3.9.2",
+        "guzzle/http": "3.9.2",
+        "guzzle/common": "3.9.2",
+        "gamegos/jwt": "^0.1.1",
+        "gamegos/jws": "^1.0.1",
+        "symfony/event-dispatcher": "^5.1",
+        "phpoption/phpoption": "^1.7",
+        "spatie/async": "^1.5",
+        "mpdf/mpdf": "^8.0",
+        "firebase/php-jwt": "^5.2"
+    }
+}

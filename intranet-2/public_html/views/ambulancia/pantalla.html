@@ -1,0 +1,160 @@
+<style>
+    .amarillo{
+        background: #FDFF78 !important;
+    }
+    .rojo{
+        background: red !important;
+        color: white !important;
+    }
+    .borderojo{
+        border:4px solid red !important;
+    }
+    .frame {
+        background: #f4e921;
+        color: black;
+        border: 8px double black;
+        text-transform: uppercase;
+        box-shadow: black 3px 2px 3px;
+        border-radius: 15px;
+        padding-top: 3px;
+        font-family: helvetica;
+        font-weight: 900;
+        height: 60px;
+        width: 120px;
+        margin: 0px auto;
+    }
+    .frame header {
+        width: 100%;
+        height: 130px;
+        background: red;
+        border-radius: 10px 10px 0 0;
+        padding-top: 5px;
+        margin-top: -4px;
+    }
+    .frame .sticker {
+        margin-top: 17px;
+        width: 85px;
+        padding: 13px;
+        background: white;
+        display: inline-block;
+        color: red;
+        font-size: 36px;
+        box-shadow: inset 1px 1px 1px;
+        vertical-align: top;
+    }
+    .frame .s1 {
+        margin-left: 20px;
+    }
+    .frame .s2 {
+        margin-left: 119px;
+    }
+    .frame .state {
+        font-family: "Alex Brush";
+        text-transform: none;
+        text-align: center;
+        display: inline-block;
+        width: 245px;
+        margin: 0 160px;
+        font-size: 96px;
+        /*    position: absolute;*/
+    }
+    .frame .number {
+        font-size: 15px;
+        text-align: center;
+        /*text-shadow: black 3px 2px 3px;*/
+        -webkit-transform: scale(1.2, 2.5);
+        transform: scale(1.2, 2.5);
+        margin-top: 10px;
+        -webkit-filter: invert(12%);
+    }
+    .caja-ambulancia:hover{
+        background: rgba(0,0,0,0.2);
+    }
+</style>
+<div class="row" ng-controller="PantallaAmbuCtrl">
+
+    <div class="col-sm-12">
+        <h3>Listado de moviles</h3>
+        <div class="row">
+            <div class="col-12 container"  style="background: white;">
+                <ul class="list-unstyled row">
+                    <li class="list-item col-4 border-top py-2 caja-ambulancia" ng-repeat="m in Moviles" ng-click="ShowInformacion(m)" 
+                        style="cursor:pointer; border: 1px solid black;">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class='frame'>
+                                    <div class='number'>{{m.Placa}}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <div class="row">
+                                    <div class="col-sm-3 text-center">
+                                        <img ng-src="/intranet-2/public_html/image/{{m.EstadoMovil}}.png" width="40" title="{{m.EstadoMovil}}" />
+                                    </div>
+                                    <div class="col-sm-3 text-center">
+                                        <img src="/intranet-2/public_html/image/tecnomecanica.png" ng-if="m.VTecnomecanica <= 60 && m.VTecnomecanica != null" 
+                                             ng-class="{'borderojo': m.VTecnomecanica < 0}" width="40" title="Tecnomecacina" />
+                                    </div>
+                                    <div class="col-sm-3 text-center">
+                                        <img src="/intranet-2/public_html/image/soat.jpg" ng-if="m.VSoat <= 60 && m.VSoat != null" 
+                                             ng-class="{'borderojo': m.VSoat < 0}" width="40" title="Soat" />
+                                    </div>
+                                    <div class="col-sm-3 text-center" ng-repeat="d in m.Cronograma">
+                                        <img ng-if="m.KmActual >= d.ProximoCambio - 500 && d.UrlImagen != null" ng-src="{{d.UrlImagen}}" 
+                                             ng-class="{'borderojo': m.KmActual > d.ProximoCambio}" title="{{d.Descripcion}}" width="40"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <h3><strong>Km Actual:</strong><br/> {{m.KmActual}}</h3>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="VerInformacionModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Información {{Movil.Placa}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <h3><strong>Km Actual:</strong> {{Movil.KmActual}}</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" ng-class="{'rojo': Movil.VTecnomecanica < 0}">
+                            <strong>Tecnomecanica vence en:</strong> {{Movil.VTecnomecanica}}
+                        </li>
+                        <li class="list-group-item" ng-class="{'rojo': Movil.VSoat < 0}">
+                            <strong>SOAT vence en:</strong> {{Movil.VSoat}}
+                        </li>
+                        <li class="list-group-item" ng-repeat="d in Movil.Cronograma" ng-class="{'amarillo': Movil.KmActual >= d.ProximoCambio - 500 && d.ProximoCambio != null,
+                            'rojo': Movil.KmActual > d.ProximoCambio && d.ProximoCambio != null}">
+                            <strong>{{d.Descripcion}}</strong><br/>
+                            <strong>Km Ultimo Cambio:</strong> {{d.KmUltimoCambio}}<br/> 
+                            <strong>Frecuencia:</strong> {{d.FrecuenciaKm}} <br/>
+                            <strong>Proximo Cambio:</strong> {{d.ProximoCambio}}<br/>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <!--                <div class="modal-footer">
+                                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                                        <a class="btn btn-success" ng-href="/Polivalente#/sistemas/ver_hoja_vida/{{ServicioId}}/" target="_blank" ng-disabled="c.$invalid">Vista Impresion</a>
+                                    </div>
+                                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

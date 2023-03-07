@@ -1,0 +1,19 @@
+<div class="row" ng-controller="AuthViaticoCtrl">
+  <div class="col-sm-10 mx-auto">
+    <div class="row">
+      <div class="col-sm-12 mt-3">
+        <label for="firmar">Firma</label>
+        <div class="row">
+          <div class="col-sm-12">
+            <signature-pad class="bg-white" accept="accept" clear="clear" height="220" width="568" dataurl="dataurl" style="border: 1px solid black;"></signature-pad>
+          </div>
+        </div>
+        <!-- <img ng-src="{{ ResFirma }}" width="200" alt="firma-responsable"> -->
+      </div>
+      <div class="col-sm-12">
+        <button class="btn btn-secondary" ng-if="ResFirma !== ''" ng-click="VolverFirmar()">Volver a firmar</button>
+        <button class="btn btn-primary" ng-disabled="IsLoading" ng-click="AutorizarSolicitud()">Autorizar solicitud</button>
+      </div>
+    </div>
+  </div>
+</div>

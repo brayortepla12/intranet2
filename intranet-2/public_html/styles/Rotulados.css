@@ -1,0 +1,36 @@
+@media print {
+    @Page{
+        margin: 0pt 0pt 0pt 0pt;
+    }
+    .Page { 
+        position: relative;
+        display: block;
+        page-break-after: always;
+        z-index: 0;
+    }
+    .break-after {
+        display: block;
+        page-break-after: always;
+        position: relative;
+        top: 0pt;
+        bottom: 0pt;
+    }
+    .Derecha{
+        float: right;
+        width: 420px;
+        transform: translate(-50px,18px);
+    }
+    .Izquierda{
+        float: left;
+        width: 420px;
+        transform: translate(22px,18px);
+    }
+    
+    td, th {
+        padding: 0px !important;
+    }
+}
+@media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 41%; } }
+td, th {
+    padding: 0px !important;
+}

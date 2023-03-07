@@ -1,0 +1,101 @@
+<div class="col-sm-12" ng-controller="AgendaMaternaCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Consultar Agenda</h2>
+            <div class="ibox-tools" style="transform: translateX(-50px);">
+                <ul class="nav navbar-right" style="color:black;">
+                    <li>
+                        <select class="form-control" ng-change="ConsultarPorFechas()" ng-model="Mes" style="height: 35.59px !important;">
+                            <option ng-selected="Mes == 1" ng-value='1' value='1'> Enero</option>
+                            <option ng-selected="Mes == 2" ng-value='2' value='2'> Febrero</option>
+                            <option ng-selected="Mes == 3" ng-value='3' value='3'> Marzo</option>
+                            <option ng-selected="Mes == 4" ng-value='4' value='4'> Abril</option>
+                            <option ng-selected="Mes == 5" ng-value='5' value='5'> Mayo</option>
+                            <option ng-selected="Mes == 6" ng-value='6' value='6'> Junio</option>
+                            <option ng-selected="Mes == 7" ng-value='7' value='7'> Julio</option>
+                            <option ng-selected="Mes == 8" ng-value='8' value='8'> Agosto</option>
+                            <option ng-selected="Mes == 9" ng-value='9' value='9'> Septiembre</option>
+                            <option ng-selected="Mes == 10" ng-value='10' value='10'> Octubre</option>
+                            <option ng-selected="Mes == 11" ng-value='11' value='11'> Noviembre</option>
+                            <option ng-selected="Mes == 12" ng-value='12' value='12'> Diciembre</option>
+                        </select>
+                    </li>
+                    <li>
+                        <input type="text" ng-model='Year' ng-change="ConsultarPorFechas()" class="form-control"/>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-12" ng-if="cargado">
+                <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                    <thead class="bordered-blueberry">
+                        <tr>
+                            <th class="text-center" style="width: 3%">ID</th>
+                            <th class="text-center" style="width: 10%">Fecha Registro</th>
+                            <th class="text-center" style="width: 10%">Nombres</th>
+                            <th class="text-center" style="width: 10%">Municipio</th>
+                            <th class="text-center" style="width: 8%">F.P.P.</th>
+                            <th class="text-center" style="width: 5%">Teléfono Materna</th>
+                            <th class="text-center" style="width: 10%">Lider</th>
+                            <th class="text-center" style="width: 5%">Teléfono Lider</th>
+                            <th class="text-center" style="width: 5%">Estado</th>
+                            <th class="text-center" style="width: 10%">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="EventosModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Listado de eventos</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blue">
+                            <tr>
+                                <th class="text-center" style="width: 3%">ID</th>
+                                <th class="text-center" style="width: 10%">Fecha</th>
+                                <th class="text-center" style="width: 10%">Nombres</th>
+                                <th class="text-center" style="width: 10%">Tipo Evento</th>
+                                <th class="text-center" style="width: 10%">Tipo Transporte</th>
+                                <th class="text-center" style="width: 10%">Total dinero entregado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="e in Eventos">
+                                <td>{{e.EventoId}}</td>
+                                <td>{{e.CreatedAt}}</td>
+                                <td>{{e.Nombres}}</td>
+                                <td>{{e.TipoEvento}}</td>
+                                <td>{{e.TipoTransporte}}</td>
+                                <td>{{e.TotalEntregado | currency : '$'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <!--                <div class="modal-footer">
+                                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                                        <button class="btn btn-success" ng-click="GuardarMaterna()">Guardar</button>
+                                        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                                    </div>
+                                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

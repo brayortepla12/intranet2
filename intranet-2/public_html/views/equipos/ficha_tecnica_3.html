@@ -1,0 +1,778 @@
+<div class="x_panel" ng-controller="FichaTecnicaSSTCtrl">
+    <div class="x_title default-primary-color">
+        <h2 class="text-primary-color">HOJA DE VIDA</h2>
+        <div class="col-xs-2 pull-right top_search">
+            <div class="input-group">
+                <input type="text" ng-model="HojaVidaId" ng-pattern="onlyNumbers" ng-change="Reset()" ng-enter="GetHojaVidaById()" class="form-control" placeholder="Busqueda rapida">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="GetHojaVidaById()" type="button"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="dospaginas" ng-show="ToPrint">
+        <main role="main">
+            <section class="tabs">
+                <div class="tabbed-content">
+                    <div class="break-after" id="tablaprimera">
+                        <div class="Page">
+                            <div>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                    </div>
+                                    <div class="col-xs-4 pull-left text-center" bind-html-compile="Encabezado.EncabezadoHojaVida">
+                                    </div>
+                                    <div class="col-xs-4 text-right">
+                                        <h5 style="margin-right: 1px;font-size: 0.9em !important;"><strong>NUMERO DE HOJA DE VIDA</strong></h5>
+                                        <input style="font-size: 1em !important; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="ficha.HojaVidaId" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12">
+                                        <h4><strong>1.FICHA TECNICA</strong></h4>
+                                    </div>
+                                </div>
+                                <form role="form" name="Datos" novalidate>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <table class="tabla1 table table-bordered">
+                                                <tbody>
+                                                    <tr ng-show="Sedes.length > 1">
+                                                        <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SEDE</th>
+                                                        <td>
+                                                            {{ficha.Sede}}
+                                                        </td>
+                                                        <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERVICIO</th>
+                                                        <td>
+                                                            {{ficha.Servicio}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">UBICACION</th>
+                                                        <td>
+                                                            {{ficha.Ubicacion}}
+                                                        </td>
+                                                        <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA INSTALACIÓN</th>
+                                                        <td>
+                                                            {{ficha.FechaInstalacion}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;""><strong>1,1 IDENTICICACION</strong></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-6" style="padding: 0px !important">
+                                                <div class="text-center" style="margin-bottom: 2px">
+                                                    <img ng-show="HojaVida" ng-if="image" ng-src="{{image}}" style="height: 167px; max-height: 167px; max-width: 400px;" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6" style="padding: 0px !important">
+                                                <table class="tabla1 table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE EQUIPO</th>
+                                                            <td>
+                                                                {{ficha.Nombre}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PROVEEDOR</th>
+                                                            <td>
+                                                                {{ficha.Fabricante}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MODELO</th>
+                                                            <td>
+                                                                {{ficha.Modelo}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO</th>
+                                                            <td>
+                                                                {{ficha.NSerial}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SECTOR</th>
+                                                            <td>
+                                                                {{ficha.Sector}}
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO ARTICULO</th>
+                                                            <td>
+                                                                {{ficha.TipoArticulo}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,2 INFORMACION TECNICA</strong></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12" >
+                                            <div class="col-xs-12" style="padding: 0px">
+                                                <table class="tabla1 table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CLASE EXTINTOR</th>
+                                                            <td>
+                                                                {{ficha.ClaseExtintor}}
+                                                            </td>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NUMERO EXTINTOR</th>
+                                                            <td>
+                                                                {{ficha.NumeroExtintor}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA RECARGA</th>
+                                                            <td>
+                                                                {{ficha.FechaRecarga}}
+                                                            </td>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA VENCIMIENTO</th>
+                                                            <td>
+                                                                {{ficha.FechaVencimiento}}
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,3 RECOMENDACIONES DE FRABRICANTE</strong></h6>
+                                            <p style="font-size: 10px; border:1px solid black; margin-top: -10px;" class="angular-with-newlines">{{ficha.RecomendacioneFabricante}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-center col-xs-12" style="margin-top: 25px;">
+                                        <button ng-show="!HojaVidaId" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                                        <!--<button ng-show="HojaVida" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>-->
+                                        <input ng-show="!HojaVidaId" type="reset" class="btn btn-danger" ng-click="Reset()" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-controller="ListadoReportesSSTCtrl" ng-if="ToPrint" id="pagina2">
+                        <div class="break-after" ng-repeat="rr in Reportes2.pack">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                </div>
+                                <div class="col-xs-8 pull-left text-center" bind-html-compile="Encabezado.EncabezadoHojaVida_sst">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-xs-12">
+                                <div class="col-xs-1">UBICACIÓN EXTINTOR</div>
+                                <div class="col-xs-3" style="border: 1px solid black">{{ficha.Ubicacion}}</div>
+                                <div class="col-xs-1">N°</div>
+                                <div class="col-xs-3" style="border: 1px solid black">{{ficha.NumeroExtintor}}</div>
+                                <div class="col-xs-1">FECHA INSTALACIÓN</div>
+                                <div class="col-xs-3" style="border: 1px solid black">{{ficha.FechaInstalacion}}</div>
+                            </div>
+                            <div class="row Page">
+                                <div class="col-md-10 col-md-offset-1 col-xs-12"  id="myElementId">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <table id="TablaReportes" class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Fecha Inspección</th>
+                                                        <th>Tipo</th>
+                                                        <th>Modelo</th>
+                                                        <th>Fecha Recarga</th>
+                                                        <th>Fecha Vencimiento</th>
+                                                        <th>A</th>
+                                                        <th>D</th>
+                                                        <th>S</th>
+                                                        <th>I</th>
+                                                        <th>U</th>
+                                                        <th>H</th>
+                                                        <th>CO</th>
+                                                        <th>M</th>
+                                                        <th>C</th>
+                                                        <th>MT</th>
+                                                        <th>MD</th>
+                                                        <th>PA</th>
+                                                        <th>SS</th>
+                                                        <th>Responsable</th>
+                                                        <th>Observación</th>
+                                                    </tr>
+                                                    <!--                                    <tr style="background: #888;">
+                                                                                            <td>DIA</td>
+                                                                                            <td>MES</td>
+                                                                                            <td>AÑO</td>
+                                                                                        </tr>-->
+                                                    <tr ng-repeat="r in Reportes">
+                                                        <td>{{r.FechaInspeccion}}</td>
+                                                        <td>{{r.ClaseExtintor}}</td>
+                                                        <td>{{r.Modelo}}</td>
+                                                        <td>{{r.FechaRecarga}}</td>
+                                                        <td>{{r.FechaVencimiento}}</td>
+                                                        <td>{{r.Acceso}}</td>
+                                                        <td>{{r.Demarcacion}}</td>
+                                                        <td>{{r.Senalizacion}}</td>
+                                                        <td>{{r.InstalacionSitioAsignado}}</td>
+                                                        <td>{{r.InstruccionesUso}}</td>
+                                                        <td>{{r.AlturaAdecuada}}</td>
+                                                        <td>{{r.Corneta}}</td>
+                                                        <td>{{r.Manguera}}</td>
+                                                        <td>{{r.CargaExtintor}}</td>
+                                                        <td>{{r.ManijaTransporte}}</td>
+                                                        <td>{{r.ManijaDescarga}}</td>
+                                                        <td>{{r.Pasador}}</td>
+                                                        <td>{{r.SelloSeguridad}}</td>
+                                                        <td>
+                                                            {{r.Responsable}}
+                                                        </td>
+                                                        <td>
+                                                            <p style="word-break: break-all;">{{r.Observacion}}</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-xs-12" style="margin-top: 20px;">
+                                            <div class="col-xs-8">
+                                                <div class="col-xs-12 text-center" style="background-color: rgba(0,0,0,0.2) !important; border: 2px solid black">
+                                                    <strong>CONVENCIONES</strong>
+                                                </div>
+                                                <div class="col-xs-12" style="border-bottom: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                                                    <div class="col-xs-4">
+                                                        <div>A:   Acceso</div>
+                                                        <div>D:   Demarcación</div>
+                                                        <div>S:   Señalizacion</div>
+                                                        <div>I:   Instalación en sitio asignado</div>
+                                                        <div>Co:  Corneta</div>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <div>U:   Instrucciones de uso</div>
+                                                        <div>H:   Altura adecuada</div>
+                                                        <div>C:   Carga del extintor</div>
+                                                        <div>M:   Manguera</div>
+                                                        <div>MT:  Manija de transporte</div>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <div>MD:  Manija de descarga</div>
+                                                        <div>PA:  Pasador</div>
+                                                        <div>SS:  Sello de seguridad</div>
+                                                        <div>R:   Ruedas</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div class="col-xs-12 text-center" style="background-color: rgba(0,0,0,0.2) !important; border: 2px solid black">
+                                                    <strong>DIAGNOSTICO</strong>
+                                                </div>
+                                                <div class="col-xs-12" style="border-bottom: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                                                    <div class="col-xs-12">
+                                                        <div>OK:   En buen estado</div>
+                                                        <div>RA:   Requiere atención</div>
+                                                        <div>FS:   Fuera de servicio</div>
+                                                        <div>ER:   En recarga</div>
+                                                        <div>Sse:  Sitio sin extintor</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <div class="row text-center" id="Footer" style="font-size: 0.9em">
+            <div class="col-xs-4">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaElaboro_sst}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">ELABORÓ</strong><br>
+                    {{Encabezado.Elaboro_sst}}<br>
+                    {{Encabezado.CargoElaboro_sst}}
+                </p>
+            </div>
+            <div class="col-xs-4">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                    {{Encabezado.Reviso}}<br>
+                    {{Encabezado.CargoReviso}}
+                </p>
+            </div>
+            <div class="col-xs-4">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">APROBÓ</strong><br>
+                    {{Encabezado.Aprobo}}<br>
+                    {{Encabezado.CargoAprobo}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div ng-show="!ToPrint">
+        <div class="x_content" ng-show="!ver_reportes">
+            <div class="row">
+                <div class="text-center col-xs-12" style="margin-top: 25px;">
+                    <!--<button ng-show="!HojaVidaId" class="btn btn-default" ng-click="GuardarBorrador()">Guardar Borrador</button>-->
+                    <button ng-show="!HojaVidaId" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                    <button ng-show="HojaVida" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                    <button ng-show="HojaVida" class="btn btn-success" ng-click="UpdateHojaVida()">Actualizar</button>
+                    <!--<button ng-show="HojaVida" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>-->
+                    <input ng-show="!HojaVidaId" type="reset" class="btn btn-danger" ng-click="Reset()" />
+                </div>
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                        </div>
+                        <div class="col-xs-10 pull-left text-center" bind-html-compile="Encabezado.EncabezadoHojaVida_sst">
+                        </div>
+                        <!--                        <div class="col-xs-4 text-right">
+                                                    <h5 style="margin-right: 1px"><strong>NUMERO DE HOJA DE VIDA</strong></h5>
+                                                    <input ng-show="HojaVida" style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="ficha.HojaVidaId" class="form-control" readonly>
+                                                    <input ng-show="!HojaVida" style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="NumeroHojaVida" class="form-control" readonly>
+                                                </div>-->
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-12">
+                            <h4><strong>1.FICHA TECNICA</strong></h4>
+                        </div>
+                    </div>
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th  ng-show="Sedes.length > 1" scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SEDE</th>
+                                            <td  ng-show="Sedes.length > 1" style='width: 300px;'>
+                                                <div ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid
+                                                                    || ficha.SedeId == '--'}">
+                                                    <!--                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Sede" name="SedeId" class="form-control caja_texto"  capitalize 
+                                                                                                               maxlength="199"readonly>-->
+                                                    <select class="form-control" ng-model="ficha.SedeId" name="SedeId"  ng-change="ChangeServicios()"
+                                                            style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                        <option selected>--</option>
+                                                        <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == ficha.SedeId" ng-value='{{s.SedeId}}' 
+                                                                value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERVICIO</th>
+                                            <td>
+                                                <div ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid
+                                                                    || ficha.ServicioId == '--'}">
+                                                    <!--                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Servicio" name="ServicioId" class="form-control caja_texto"  capitalize 
+                                                                                                               maxlength="199"readonly>-->
+                                                    <select class="form-control" ng-model="ficha.ServicioId" name="ServicioId" 
+                                                            style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                        <option selected="">--</option>
+                                                        <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId == ficha.ServicioId" 
+                                                                ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">UBICACION</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.Ubicacion.$valid, 'has-error': Datos.Ubicacion.$invalid}">
+                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Ubicacion" name="Ubicacion" class="form-control caja_texto"  capitalize 
+                                                           maxlength="199">
+                                                    <input ng-show="!HojaVida" type="text" capitalize ng-model="ficha.Ubicacion" name="Ubicacion" class="form-control caja_texto" required capitalize 
+                                                           maxlength="199">
+                                                </div>
+                                            </td>
+                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA INSTALACIÓN</th>
+                                            <td>
+                                                <div  ng-class="{'has-success': Datos.FechaInstalacion.$valid, 'has-error': Datos.FechaInstalacion.$invalid}">
+                                                    <input  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" type="text" ng-model="ficha.FechaInstalacion" name="FechaInstalacion" 
+                                                            class="form-control caja_texto" required 
+                                                            maxlength="199">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,1 IDENTICICACION</strong></h6>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div>
+                                <div class="col-xs-6">
+                                    <div class="text-center">
+                                        <!--                                        <img ng-show="HojaVida" ng-if="image" src="{{image}}" style="height: 260px; max-height: 260px; max-width: 500px;" alt="">-->
+                                        <img ng-if="image" width="500" src="{{image}}" style="height: 237px; max-height: 237px; width: 350px" alt="">
+                                        <input type="file" my-upload accept="image/*" image="DataImg" resize-max-height="800" resize-max-width="800" 
+                                               resize-quality="0.7" resize-type="image/jpg" ng-image-compress ng-model="ARCHIVO" class="form-control caja_texto">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE EQUIPO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                                                        <input  ng-show="HojaVida" type="text" capitalize ng-model="ficha.Nombre" name="Nombre" class="form-control caja_texto"  capitalize 
+                                                                maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Nombre" ng-model="ficha.Nombre" class="form-control caja_texto"
+                                                               maxlength="199"required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PROVEEDOR</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Fabricante.$valid, 'has-error': Datos.Fabricante.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Fabricante" name="Fabricante" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Fabricante" ng-model="ficha.Fabricante" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MODELO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Modelo.$valid, 'has-error': Datos.Modelo.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Modelo" name="Modelo" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Modelo" ng-model="ficha.Modelo" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.NSerial.$valid, 'has-error': Datos.NSerial.$invalid}">
+                                                        <select class="form-control" ng-model="ficha.NSerial" name="NSerial" 
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option value="">--</option>
+                                                            <option ng-selected="ficha.NSerial == 'CLASE A'">CLASE A</option>
+                                                            <option ng-selected="ficha.NSerial == 'CLASE B'">CLASE B</option>
+                                                            <option ng-selected="ficha.NSerial == 'CLASE C'">CLASE C</option>
+                                                            <option ng-selected="ficha.NSerial == 'CLASE D'">CLASE D</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SECTOR</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Sector.$valid, 'has-error': Datos.Sector.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Sector" name="Sector" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Sector" ng-model="ficha.Sector" class="form-control caja_texto"
+                                                               maxlength="199" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO DE ARTICULO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.TipoArticulo.$valid, 'has-error': Datos.TipoArticulo.$invalid}">
+                                                        <select class="form-control" ng-model="ficha.TipoArticulo" name="TipoArticulo" 
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option value="">--</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'EXTINTOR'">EXTINTOR</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'ALARMA DE HUMO'">ALARMA DE HUMO</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,2 INFORMACION TECNICA</strong></h6>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div>
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CLASE DE EXTINTOR</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.ClaseExtintor.$valid, 'has-error': Datos.ClaseExtintor.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.ClaseExtintor" name="ClaseExtintor" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="ClaseExtintor" ng-model="ficha.ClaseExtintor" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NUMERO EXTINTOR</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.NumeroExtintor.$valid, 'has-error': Datos.NumeroExtintor.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" ng-model="ficha.NumeroExtintor" name="NumeroExtintor" class="form-control caja_texto"  
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" name="NumeroExtintor" ng-model="ficha.NumeroExtintor" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA DE RECARGA</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.FechaRecarga.$valid, 'has-error': Datos.FechaRecarga.$invalid}">
+                                                        <input ng-show="HojaVida"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" type="text" ng-model="ficha.FechaRecarga" name="FechaRecarga" class="form-control caja_texto"  
+                                                               maxlength="199" readonly>
+                                                        <input ng-show="!HojaVida" type="text"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" name="FechaRecarga" ng-model="ficha.FechaRecarga" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA DE VENCIMIENTO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.FechaVencimiento.$valid, 'has-error': Datos.FechaVencimiento.$invalid}">
+                                                        <input ng-show="HojaVida"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" type="text" ng-model="ficha.FechaVencimiento" name="FechaVencimiento" class="form-control caja_texto"  
+                                                               maxlength="199" readonly>
+                                                        <input ng-show="!HojaVida" type="text"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" name="FechaVencimiento" ng-model="ficha.FechaVencimiento" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-class="{'has-success': Datos.RecomendacioneFabricante.$valid, 'has-error': Datos.RecomendacioneFabricante.$invalid}">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,3 OBSERVACIONES</strong></h6>
+                                    <textarea ng-show="HojaVida" style="margin-top: -10px" name="RecomendacioneFabricante" class="form-control" ng-model="ficha.RecomendacioneFabricante" rows="7" 
+                                              maxlength="5000"></textarea>
+                                    <textarea ng-show="!HojaVida" style="margin-top: -10px" name="RecomendacioneFabricante" class="form-control" ng-model="ficha.RecomendacioneFabricante" rows="7" 
+                                              maxlength="5000"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaElaboro_sst}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                    {{Encabezado.Elaboro_sst}}<br>
+                                    {{Encabezado.CargoElaboro_sst}}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                                    {{Encabezado.Reviso}}<br>
+                                    {{Encabezado.CargoReviso}}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">APROBÓ</strong><br>
+                                    {{Encabezado.Aprobo}}<br>
+                                    {{Encabezado.CargoAprobo}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center col-xs-12" style="margin-top: 25px;">
+                            <button ng-show="!HojaVidaId" class="btn btn-default" ng-click="GuardarBorrador()">Guardar Borrador</button>
+                            <button ng-show="!HojaVidaId" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                            <!--<button ng-show="HojaVida" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>-->
+                            <input ng-show="!HojaVidaId" type="reset" class="btn btn-danger" ng-click="Reset()" />
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="x_content" ng-if="ver_reportes">
+            <div class="row" ng-controller="ListadoReportesSSTCtrl">
+                <div class="text-center col-xs-12" style="margin-top: 25px;">
+                    <button ng-show="HojaVida" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                </div>
+                <div class="col-md-10 col-md-offset-1"  id="myElementId">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                        </div>
+                        <div class="col-xs-10 pull-left text-center" bind-html-compile="Encabezado.EncabezadoHojaVida_sst">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">UBICACIÓN EXTINTOR</div>
+                        <div class="col-xs-3" style="border: 1px solid black">{{ficha.Ubicacion}}</div>
+                        <div class="col-xs-1">N°</div>
+                        <div class="col-xs-3" style="border: 1px solid black">{{ficha.NumeroExtintor}}</div>
+                        <div class="col-xs-1">FECHA INSTALACIÓN</div>
+                        <div class="col-xs-3" style="border: 1px solid black">{{ficha.FechaInstalacion}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table id="TablaReportes" class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Fecha Inspección</th>
+                                        <th>Tipo</th>
+                                        <th>Modelo</th>
+                                        <th>Fecha Recarga</th>
+                                        <th>Fecha Vencimiento</th>
+                                        <th>A</th>
+                                        <th>D</th>
+                                        <th>S</th>
+                                        <th>I</th>
+                                        <th>U</th>
+                                        <th>H</th>
+                                        <th>CO</th>
+                                        <th>M</th>
+                                        <th>C</th>
+                                        <th>MT</th>
+                                        <th>MD</th>
+                                        <th>PA</th>
+                                        <th>SS</th>
+                                        <th>Responsable</th>
+                                        <th>Observación</th>
+                                    </tr>
+                                    <!--                                    <tr style="background: #888;">
+                                                                            <td>DIA</td>
+                                                                            <td>MES</td>
+                                                                            <td>AÑO</td>
+                                                                        </tr>-->
+                                    <tr ng-repeat="r in Reportes">
+                                        <td>{{r.FechaInspeccion}}</td>
+                                        <td>{{r.ClaseExtintor}}</td>
+                                        <td>{{r.Modelo}}</td>
+                                        <td>{{r.FechaRecarga}}</td>
+                                        <td>{{r.FechaVencimiento}}</td>
+                                        <td>{{r.Acceso}}</td>
+                                        <td>{{r.Demarcacion}}</td>
+                                        <td>{{r.Senalizacion}}</td>
+                                        <td>{{r.InstalacionSitioAsignado}}</td>
+                                        <td>{{r.InstruccionesUso}}</td>
+                                        <td>{{r.AlturaAdecuada}}</td>
+                                        <td>{{r.Corneta}}</td>
+                                        <td>{{r.Manguera}}</td>
+                                        <td>{{r.CargaExtintor}}</td>
+                                        <td>{{r.ManijaTransporte}}</td>
+                                        <td>{{r.ManijaDescarga}}</td>
+                                        <td>{{r.Pasador}}</td>
+                                        <td>{{r.SelloSeguridad}}</td>
+                                        <td>
+                                            {{r.Responsable}}
+                                        </td>
+                                        <td>
+                                            <p style="word-break: break-all;">{{r.Observacion}}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 20px;font-size: 1em !important">
+                            <div class="col-xs-8">
+                                <div class="col-xs-12 text-center" style="background-color: rgba(0,0,0,0.2) !important; border: 2px solid black">
+                                    <strong>CONVENCIONES</strong>
+                                </div>
+                                <div class="col-xs-12" style="border-bottom: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                                    <div class="col-xs-4">
+                                        <div>A:   Acceso</div>
+                                        <div>D:   Demarcación</div>
+                                        <div>S:   Señalizacion</div>
+                                        <div>I:   Instalación en sitio asignado</div>
+                                        <div>Co:  Corneta</div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div>U:   Instrucciones de uso</div>
+                                        <div>H:   Altura adecuada</div>
+                                        <div>C:   Carga del extintor</div>
+                                        <div>M:   Manguera</div>
+                                        <div>MT:  Manija de transporte</div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div>MD:  Manija de descarga</div>
+                                        <div>PA:  Pasador</div>
+                                        <div>SS:  Sello de seguridad</div>
+                                        <div>R:   Ruedas</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="col-xs-12 text-center" style="background-color: rgba(0,0,0,0.2) !important; border: 2px solid black">
+                                    <strong>DIAGNOSTICO</strong>
+                                </div>
+                                <div class="col-xs-12" style="border-bottom: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                                    <div class="col-xs-12">
+                                        <div>OK:   En buen estado</div>
+                                        <div>RA:   Requiere atención</div>
+                                        <div>FS:   Fuera de servicio</div>
+                                        <div>ER:   En recarga</div>
+                                        <div>Sse:  Sitio sin extintor</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                        <div class="col-xs-4">
+                            <p>
+                                <img ng-src="{{Encabezado.FirmaElaboro_sst}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                {{Encabezado.Elaboro_sst}}<br>
+                                {{Encabezado.CargoElaboro_sst}}
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p>
+                                <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                <strong style="font-size: 1em">REVISÓ</strong><br>
+                                {{Encabezado.Reviso}}<br>
+                                {{Encabezado.CargoReviso}}
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p>
+                                <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                <strong style="font-size: 1em">APROBÓ</strong><br>
+                                {{Encabezado.Aprobo}}<br>
+                                {{Encabezado.CargoAprobo}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

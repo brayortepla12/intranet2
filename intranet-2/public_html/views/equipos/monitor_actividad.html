@@ -1,0 +1,37 @@
+<div class="col-sm-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Resumen de Actividad</h2>
+            <div class="filter">
+<!--                <div class="inner-addon left-addon" style="width: 200px;float: right">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    <input type="daterange" ng-model="Dates" class="form-control" ng-change="ConsultarEstadisticas()" ranges="ranges">
+                </div>-->
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table class="table table-bordered">
+                <tr>
+                    <th>UsuarioId</th>
+                    <th>Usuario</th>
+                    <th>Nombre Completo</th>
+                    <th>IP</th>
+                    <th>Nombre Equipo</th>
+                    <th>Aplicación</th>
+                    <th>Vista / Current State</th>
+                </tr>
+                <tr ng-repeat="c in Clientes" ng-show="c.UsuarioId">
+                    <td>{{c.UsuarioId}}</td>
+                    <td>{{c.Usuario}}</td>
+                    <td>{{c.NombreCompleto}}</td>
+                    <td>{{c.IP}}</td>
+                    <td>{{c.Maquina}}</td>
+                    <td>{{c.Aplicacion}}</td>
+                    <td>{{c.CurrentState}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>

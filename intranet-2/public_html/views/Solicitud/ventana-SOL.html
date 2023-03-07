@@ -1,0 +1,11 @@
+<div class="row bg-white" ng-controller="VENSOLCtrl">
+  <div class="col-sm-12" ng-if="PREFIJO === 'pol'">
+    <ng-include src="'/intranet-2/public_html/views/equipos/ReporteServicio.html'"></ng-include>
+  </div>
+  <div class="col-sm-12" ng-if="PREFIJO === 'sistemas'">
+    <ng-include src="'/intranet-2/public_html/views/equipos/ReporteServicio_sistemas.html'"></ng-include>
+  </div>
+  <div class="col-sm-12" ng-if="PREFIJO === 'biomedicos'">
+    <ng-include src="'/intranet-2/public_html/views/biomedico/ReporteServicio.html'"></ng-include>
+  </div>
+</div>

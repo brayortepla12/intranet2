@@ -1,0 +1,130 @@
+<div ng-controller="VSOLCtrl">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" ng-click="atras()"><i class="fa fa-arrow-left"
+          style="font-size: 1.3em !important"></i> Atras</a>
+    </li>
+    <li class="nav-item" ng-class="{'active': Orden === 0}">
+      <a class="nav-link" data-toggle="tab" style="cursor: pointer" ng-click="changeView(0)">Detalle de la solicitud</a>
+    </li>
+    <li class="nav-item" ng-class="{'active': Orden === 1}">
+      <a class="nav-link" data-toggle="tab" style="cursor: pointer" ng-click="changeView(1)">Reporte</a>
+    </li>
+    <li class="nav-item" ng-class="{'active': Orden === 2}">
+      <a class="nav-link" data-toggle="tab" style="cursor: pointer" ng-click="changeView(2);">Proceso</a>
+    </li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane" ng-class="{'active': Orden === 0}" ng-if="Orden === 0">
+      <div class="row">
+        <div class="col-sm-12 mt-3">
+          <div class="row">
+            <!-- <div class="col-sm-12 mb-3">
+                      <div class="row">
+                          <div class="col-sm-2">
+                              <img src="/intranet-2/public_html/image/cield.png" width="200" alt="logo-cield-hd">
+                          </div>
+                          <div class="col-sm-10 text-center">
+                              <h4>SOLICITUD PARA MANTENIMIENTO CORRECTIVO</h4>
+                              <p>
+                                  GP-F-17 Ver.1 Pagina 1 de 1<br>
+                                  Emisión:16-05-2020 Vigencia: 18-05-2020
+                              </p>
+                          </div>
+                      </div>
+                  </div> -->
+            <div class="col-sm-12">
+              <table class="table table-bordered">
+                <tr>
+                  <th class="caja-th">FECHA</th>
+                  <td>
+                    {{Solicitud.FechaSolicitud}}
+                  </td>
+                  <th class="caja-th">SEDE</th>
+                  <td>
+                    {{Solicitud.Sede}}
+                  </td>
+                  <th class="caja-th">SERVICIO</th>
+                  <td colspan="5">
+                    {{Solicitud.Servicio}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="caja-th">EQUIPO</th>
+                  <td>
+                    {{Solicitud.Equipo}}
+                  </td>
+                  <th class="caja-th">UBICACIÓN</th>
+                  <td>
+                    {{Solicitud.Ubicacion}}
+                  </td>
+                  <th class="caja-th">MARCA</th>
+                  <td>
+                    {{Solicitud.Marca}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="caja-th">SERIE</th>
+                  <td>
+                    {{Solicitud.Serie}}
+                  </td>
+                  <th class="caja-th">INVENTARIO</th>
+                  <td colspan="3">
+                    {{Solicitud.Inventario}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="caja-th" colspan="7">DESCRIPCIÓN DE LA SOLICITUD</th>
+                </tr>
+                <tr>
+                  <td colspan="10">
+                    {{Solicitud.Descripcion}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="caja-th">SOLICITANTE</th>
+                  <td colspan="9">
+                    {{Solicitud.NombreUsuarioSolicita}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="caja-th">CARGO</th>
+                  <td colspan="9">
+                    {{Solicitud.CargoUsuarioSolicita}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-sm-12 mt-3 text-center">
+              <div class="row justify-content-center">
+                  <div class="col-sm-3">
+                      <h5>ELEBORACIÓN</h5>
+                      MIASEL CRESPO OROZCO<br>
+                      SUBGERENTE DE APOYO
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>REVISIÓN ESTRUCTURAL</h5>
+                      KEYLA PINEDA VALERA<br>
+                      COORD. DE ASEG. DE LA CALIDAD
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>APROBACIÓN</h5>
+                      MARIA MORILLO DAZA<br>
+                      GERENTE
+                  </div>
+              </div>
+          </div> -->
+      </div>
+    </div>
+    <div class="tab-pane" ng-class="{'active': Orden === 1}" ng-if="Orden === 1">
+      <ng-include src="'/intranet-2/public_html/views/Solicitud/RSOL.html'"></ng-include>
+    </div>
+    <div class="tab-pane" ng-class="{'active': Orden === 2}" ng-if="Orden === 2">
+      <ng-include src="'/intranet-2/public_html/views/Solicitud/LProSOL.html'"></ng-include>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,149 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <img alt="image" class="rounded-circle" width="40" ng-src="{{Foto}}"/>
+                    <a data-toggle="dropdown" class="dropdown-toggle">
+                        <span class="text-muted text-xs block">Bienvenido, <b class="caret"></b></span>
+                        <span class="block m-t-xs font-bold">{{NombreUsuario}}</span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li class="dropdown-item"><a ui-sref='app.cambiar_contrasena'> Cambiar Contraseña</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><a ng-click="logout()"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN
+                </div>
+            </li>
+            <li ng-sref="app.inicio" onclick="RemoveClassActivo(); RemoveClassCurrent()" ng-class="{'active': opcion == 'app'}">
+                <a ui-sref="app.inicio"> <i class="fa fa-home"></i><span class="nav-label">Inicio</span></a>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('ambulancia')}" ng-show="isInArray(MenuApp, 'ambulancia')">
+                <a><i class="fas fa-ambulance"></i> <span class="nav-label">Ambulancia</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('ambulancia') && m.Tipo === 'ver vista'" ui-sref="{{m.State}}"><a>{{m.label}} </a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('almacen')}" ng-show="isInArray(MenuApp, 'almacen')">
+                <a><i class="fa fa-archive"></i> <span class="nav-label">Almacen</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('almacen') && m.Tipo === 'ver vista'" ui-sref="{{m.State}}"><a>{{m.label}} </a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('farmacia')}" ng-show="isInArray(MenuApp, 'farmacia')">
+                <a><i class="fas fa-syringe"></i> <span class="nav-label">Farmacia</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'farmacia'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('farmacia') && m.Tipo === 'ver vista'" ui-sref="{{m.State}}"
+                        ><a>{{m.label}} </a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('bs')}" ng-show="isInArray(MenuApp, 'bs')"><a><i class="fas fa-tint"></i> <span class="nav-label">Banco de sangre</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'bs'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('bs') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: !(navegacion.startsWith('biomedicos')) && navegacion.startsWith('bio')}" ng-show="isInArray(MenuApp, 'bio')"><a><i class="fas fa-fingerprint"></i> <span class="nav-label">Biometrico</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'bio'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="!m.State.startsWith('biomedicos') && m.State.startsWith('bio') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('biomedicos')}" ng-show="isInArray(MenuApp, 'biomedicos')"><a><i class="fas fa-laptop-medical"></i> <span class="nav-label">Biomedico</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'biomedicos'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('biomedicos') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('gh')}" ng-show="isInArray(MenuApp, 'gh')"><a><i class="fa fa-hospital-o" aria-hidden="true"></i> <span class="nav-label">Gestión Humana</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'gh'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('gh') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('autorizacion')}" ng-show="isInArray(MenuApp, 'autorizacion')"><a><i class="fa fa-envelope-open-o"></i> <span class="nav-label">Autorización</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'autorizacion'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('autorizacion') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('cm')}" ng-show="isInArray(MenuApp, 'cm')"><a><i class="fa fa-flask"></i> <span class="nav-label">Central de Mezclas</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'cm'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('cm') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('hemodinamia')}" ng-show="isInArray(MenuApp, 'hemodinamia')"><a><i class="fa fa-stethoscope"></i> <span class="nav-label">Hemodinamia</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'hemodinamia'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('hemodinamia') && m.Tipo === 'ver vista'" ui-sref="{{m.State}}"
+                        ><a>{{m.label}} </a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('polivalente')}" ng-show="isInArray(MenuApp, 'polivalente')"><a><i class="fa fa-wrench"></i> <span class="nav-label">Polivalente</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'polivalente'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('polivalente') && m.Tipo === 'ver vista'" ui-sref="{{m.State}}"
+                        ><a>{{m.label}} </a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('sistemas')}" ng-show="isInArray(MenuApp, 'sistemas')"><a><i class="fa fa-desktop"></i> <span class="nav-label">Sistemas</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'sistemas'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('sistemas') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('sa')}" ng-show="isInArray(MenuApp, 'sa')"><a><i class="fas fa-drumstick-bite"></i> <span class="nav-label">Servicio Alimenticio</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'sa'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('sa') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('sst')}" ng-show="isInArray(MenuApp, 'sst')"><a><i class="fa fa-exclamation-triangle"></i> <span class="nav-label">SST</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'sst'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('sst') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('solicitud')}" ng-show="isInArray(MenuApp, 'solicitud')"><a><i class="fa fa-th"></i> <span class="nav-label">Solicitud</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'solicitud'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('solicitud') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('observador_virtual')}" ng-show="isInArray(MenuApp, 'observador_virtual')"><a><i class="fa fa-desktop"></i> <span class="nav-label">Observador Virtual</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'observador_virtual'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('observador_virtual') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('pc')}" ng-show="isInArray(MenuApp, 'pc')"><a><i class="fa fa-product-hunt"></i> <span class="nav-label">P. de Compras</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'pc'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('pc') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('tel')}" ng-show="isInArray(MenuApp, 'tel')"><a><i class="fas fa-mobile-alt"></i> <span class="nav-label">Telefono</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'tel'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('tel') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('tm')}" ng-show="isInArray(MenuApp, 'tm')"><a><i class="fa fa-bus"></i> <span class="nav-label">Transporte Maternas</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'tm'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('tm') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('thc')}" ng-show="isInArray(MenuApp, 'thc')"><a><i class="fas fa-notes-medical"></i> <span class="nav-label">THC</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'thc'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('thc') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('viatico')}" ng-show="isInArray(MenuApp, 'viatico')"><a><i class="fas fa-plane"></i> <span class="nav-label">Viatico</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'viatico'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('viatico') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+            <li onclick="ChangeClass(this); RemoveClassActivo()" ng-class="{active: navegacion.startsWith('configuracion')}" ng-show="isInArray(MenuApp, 'configuracion')"><a><i class="fa fa-gears"></i> <span class="nav-label">Configuración</span> <span class="fa fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{'Activo': opcion == 'configuracion'}">
+                    <li onclick="RemoveClassCurrent(this)" ng-repeat="m in MenuApp| orderBy : 'label' track by $index" ng-class="{'active': navegacion === m.State}" ng-if="m.State.startsWith('configuracion') && m.Tipo === 'ver vista'"  ui-sref="{{m.State}}"><a>{{m.label}}</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<div class="clearfix"></div>
+
+
+<!-- /menu profile quick info -->
+
+<script src="/intranet-2/build/vendor/bootstrap/dist/js/inspinia.js?n=1.4.3" type="text/javascript"></script>

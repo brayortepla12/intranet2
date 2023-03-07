@@ -1,0 +1,151 @@
+<div class="row bg-white" ng-controller="LegSolViaticoCtrl">
+  <div class="col-sm-11 mx-auto">
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="btn btn-primary" ng-disabled="Isloading" ng-click="LegalizarViatico()">Legalizar viatico</button>
+      </div>
+      <div class="col-sm-12 mt-3">
+        <form role="form" name="Datos" novalidate>
+          <div class="row" ng-if="Leg.TipoLegalizacion === 'Normal'">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.Descripcion.$valid, 'has-error': Datos.Descripcion.$invalid}">
+                <label for="Descripcion">Descripcion</label>
+                <input type="text" class="form-control" name="Descripcion" ng-model="Leg.Descripcion" minlength="5" maxlength="50" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                <label for="Nombre">Nombre</label>
+                <input type="text" capitalize class="form-control" name="Nombre" readonly ng-model="Leg.ANombreDe" required>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div ng-class="{'has-success': Datos.ResCedula.$valid, 'has-error': Datos.ResCedula.$invalid}">
+                <label for="ResCedula">Cedula</label>
+                <input type="text" class="form-control" name="ResCedula" readonly ng-model="Leg.ResCedula" required>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>
+                        Fecha
+                      </th>
+                      <th ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        Nombres Y Apellidos Del Paciente
+                      </th>
+                      <th style="width: 50px;" ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        Origen
+                      </th>
+                      <th style="width: 50px;" ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        Destino
+                      </th>
+                      <th>
+                        Factura
+                      </th>
+                      <th colspan="2">
+                        <span ng-if="Leg.TipoLegalizacion === 'Aguachica'"></span>
+                        {{ Leg.TipoLegalizacion === 'Aguachica' ? 'Razón Social' : 'Responsable' }}
+                      </th>
+                      <th ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        Tripulación
+                      </th>
+                      <th colspan="3">
+                        Concepto
+                      </th>
+                      <th style="width: 150px">
+                        Valor
+                      </th>
+                      <th>
+                        Anexar Soporte
+                      </th>
+                      <th style="width: 70px"><button class="btn btn-xs btn-success" ng-click="AddConcepto()">Nuevo Concepto</button></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="c in Leg.Conceptos track by $index">
+                      <td>
+                        <div ng-class="{'has-success': Datos['Fecha' + $index].$valid, 'has-error': Datos['Fecha' + $index].$invalid}">
+                          <input type="text" ng-model="c.Fecha" name="Fecha{{ $index }}" class="form-control" 
+                          onfocus="(this.type = 'date')" onblur="(this.type = 'text')" required>
+                        </div>
+                      </td>
+                      <td ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        <div ng-class="{'has-success': Datos['NombresPaciente' + $index].$valid, 'has-error': Datos['NombresPaciente' + $index].$invalid}">
+                          <input capitalize type="text" ng-model="c.NombresPaciente" name="NombresPaciente{{ $index }}" class="form-control" required>
+                        </div>
+                      </td>
+                      <td ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        <div ng-class="{'has-success': Datos['Origen' + $index].$valid, 'has-error': Datos['Origen' + $index].$invalid}">
+                          <input capitalize type="text" ng-model="c.Origen" name="Origen{{ $index }}" class="form-control" required>
+                        </div>
+                      </td>
+                      <td ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        <div ng-class="{'has-success': Datos['Destino' + $index].$valid, 'has-error': Datos['Destino' + $index].$invalid}">
+                          <input capitalize type="text" ng-model="c.Destino" name="Destino{{ $index }}" class="form-control" required>
+                        </div>
+                      </td>
+                      <td>
+                        <div ng-class="{'has-success': Datos['Factura' + $index].$valid, 'has-error': Datos['Factura' + $index].$invalid}">
+                          <input capitalize type="text" ng-model="c.Factura" name="Factura{{ $index }}" class="form-control" maxlength="20" required>
+                        </div>
+                      </td>
+                      <td colspan="2">
+                        <div ng-class="{'has-success': Datos['Responsable' + $index].$valid, 'has-error': Datos['Responsable' + $index].$invalid}">
+                          <textarea capitalize type="text" ng-model="c.Responsable" name="Responsable{{ $index }}" maxlength="50" class="form-control" required></textarea>
+                        </div>
+                      </td>
+                      <td ng-if="Leg.TipoLegalizacion === 'Aguachica'">
+                        <div ng-class="{'has-success': Datos['Tripulacion' + $index].$valid, 'has-error': Datos['Tripulacion' + $index].$invalid}">
+                          <textarea capitalize type="text" ng-model="c.Tripulacion" name="Tripulacion{{ $index }}" class="form-control" required></textarea>
+                        </div>
+                      </td>
+                      <td colspan="3">
+                        <div ng-class="{'has-success': Datos['Conceptos' + $index].$valid, 'has-error': Datos['Conceptos' + $index].$invalid}">
+                          <textarea capitalize type="text" ng-model="c.Concepto" maxlength="150" name="Conceptos{{ $index }}" class="form-control" required></textarea>
+                        </div>
+                      </td>
+                      <td><input type="number" min="0" step="50" ng-model="c.Valor" class="form-control"></td>
+                      <td>
+                        <input type="file" ng-model="c.Anexo" ng-file-model="c.Anexo" class="form-control"/>
+                      </td>
+                      <td><button class="btn btn-xs btn-danger" ng-click="EliminarConcepto($index)">Eliminar Concepto</button></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th  ng-if="Leg.TipoLegalizacion === 'Normal'">Nota contable</th>
+                      <td  ng-if="Leg.TipoLegalizacion === 'Normal'">
+                        <input type="text" ng-model="Leg.NC" name="NC" class="form-control">
+                      </td>
+                      <th  ng-if="Leg.TipoLegalizacion === 'Normal'">Recibo de caja</th>
+                      <td  ng-if="Leg.TipoLegalizacion === 'Normal'">
+                        <div ng-class="{'has-success': Datos.RC.$valid, 'has-error': Datos.RC.$invalid}">
+                          <input type="text" ng-model="Leg.RC" name="RC" class="form-control" ng-required="Leg.DL > 0">
+                        </div>
+                      </td>
+                      <th  ng-if="Leg.TipoLegalizacion === 'Normal'">Devolucion</th>
+                      <td  ng-if="Leg.TipoLegalizacion === 'Normal'">
+                        <div ng-class="{'has-success': Datos.DL.$valid, 'has-error': Datos.DL.$invalid}">
+                          <input type="number" min="0" step="50" ng-model="Leg.DL" name="DL" class="form-control">
+                        </div>
+                      </td>
+                      <th>TOTAL EGRESOS</th>
+                      <td>
+                        {{ TotalEgreso | currency: "$": 0 }}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

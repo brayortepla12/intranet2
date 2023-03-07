@@ -1,0 +1,102 @@
+<div id="tabla_listReportes" class="row" ng-controller="FormatoRondaAmbientalCtrl">
+    <div class="col-sm-12" ng-if="cargado">
+        <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+            <thead class="bordered-blueberry">
+                <tr>
+                    <th class="text-center" style="width: 1%">ID</th>
+                    <th class="text-center" style="width: 10%">Titulo</th>
+                    <th class="text-center" style="width: 5%">Creado Por</th>
+                    <th class="text-center" style="width: 5%">Fecha de Creación</th>
+                    <th class="text-center" style="width: 5%">Opciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="FormatoServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Añadir servicios a {{select.Titulo}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-2">
+                        <div class="list-group">
+                            <a ng-repeat="s in RelacionServicio | orderBy : 'Nombre' track by $index" class="list-group-item list-group-item-action"
+                               ng-class="{'active': {{'servicio'+$index}}}" id="servicio{{$index}}" 
+                               ng-click="SeleccionarServicio(s,$index)">{{s.Nombre}}</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="list-group">
+                            <a ng-repeat="s in SelectServicio track by $index" style="padding: 0px !important"
+                               class="list-group-item list-group-item-action" ng-click="SelectAServicio(s, $index)">
+                                <div class="checkbox checkbox-slider-md checkbox-slider--b  checkbox-slider-info" style="padding: 0px !important">
+                                    <label>
+                                        <input type="checkbox" ng-checked="s.isSelected"><span>{{s.Nombre}}</span>
+                                    </label>
+                                </div>     
+                            </a>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ItemsFormatoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Items</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blueberry">
+                            <tr>
+                                <th class="text-center" style="width: 1%">ID</th>
+                                <th class="text-center" style="width: 10%">Descripción</th>
+                                <th class="text-center" style="width: 5%">Creado Por</th>
+                                <th class="text-center" style="width: 5%">Fecha de Creación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="o in Items">
+                                <td>{{o.Identificador}}</td>
+                                <td>{{o.Descripcion}}</td>
+                                <td>{{o.CreatedBy}}</td>
+                                <td>{{o.CreatedAt}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+<!--                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-href="/Polivalente#/mantenimiento/ver_reporte_servicio/{{SedeId}}/{{ServicioId}}/{{Year}}/{{Mes}}" target="_blank" ng-disabled="c.$invalid">Vista Impresion</a>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

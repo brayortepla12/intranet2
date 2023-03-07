@@ -1,0 +1,146 @@
+<div class="row" ng-controller="PermisoCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h2>Listado de permisos <small></small></h2>
+                <div class="ibox-tools">
+                    <div class="inner-addon left-addon" style="width: 200px;float: right; color: black !important">
+                        <i class="fa fa-search"></i>
+                        <input type="text" ng-model="txt" class="form-control">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-2 float-right" style="padding: 5px;">
+                        <button class="btn btn-primary"  data-toggle="modal" data-target="#PermisoModal">Crear Permiso <i class="fa fa-plus-square-o" /></button>
+                    </div>
+                    <div class="col-sm-12">
+                        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:3%" class="text-center">ID</th>
+                                    <th class="text-center">State</th>
+                                    <th class="text-center">Label</th>
+                                    <th class="text-center">Tipo</th>
+                                    <th class="text-center">Modulo</th>
+                                    <th class="text-center">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in Permisos| orderBy : 'State' | filter : txt" ng-include="getTemplate(item)">
+                            <script type="text/ng-template" id="display">
+                                <td>
+                                {{item.PermisoId}}
+                                </td>
+                                <td>
+                                {{item.State}}
+                                </td>
+                                <td>
+                                {{item.label}}
+                                </td>
+                                <td>
+                                {{item.Tipo}}
+                                </td>
+                                <td>
+                                {{item.Modulo}}
+                                </td>
+                                <td>
+                                <center>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                                </center>
+                                </td>
+                            </script>
+                            <script type="text/ng-template" id="edit">
+                                <td>
+                                {{select.PermisoId}}
+                                </td>
+                                <td><input type="text" ng-model="select.State" class="form-control input-sm" /></td>
+                                <td><input type="text" ng-model="select.label" class="form-control input-sm" /></td>
+                                <td>
+                                <select class="form-control" ng-model="select.Tipo" name="Tipo"  required>
+                                <option>ver vista</option>
+                                <option>ver oculto</option>
+                                </select>
+                                </td>
+                                <td>
+                                <select class="form-control" ng-model="select.ModuloId" name="Modulo"  required>
+                                <option ng-repeat="m in Modulos | orderBy : 'Nombre' track by $index" ng-selected="select.ModuloId === m.ModuloId"  ng-value='{{m.ModuloId}}' value='{{m.ModuloId}}'> {{m.Nombre}}</option>
+                                </select>
+                                </td>
+                                <td>
+                                <center>
+                                <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                                </center>
+                                </td>
+                            </script>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="PermisoModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="col-sm-11">
+                                    <h2 class="modal-title">Crear Permiso</h2>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form" name="c" novalidate>
+                                    <div class="col-md-12">
+                                        <div ng-class="{'has-success': c.State.$valid, 'has-error': c.State.$invalid}">
+                                            <label for="State">State</label>
+                                            <input type="text" class="form-control" id="State" ng-model="Permiso.State" maxlength="280"  name="State" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div ng-class="{'has-success': c.label.$valid, 'has-error': c.label.$invalid}">
+                                            <label for="label">Label</label>
+                                            <input type="text" class="form-control" id="label" ng-model="Permiso.label" maxlength="280"  name="label" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div ng-class="{'has-success': c.Tipo.$valid, 'has-error': c.Tipo.$invalid}">
+                                            <label for="Tipo">Tipo</label>
+                                            <select class="form-control" ng-model="Permiso.Tipo" name="Tipo"  required>
+                                                <option>ver vista</option>
+                                                <option>ver oculto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div ng-class="{'has-success': c.ModuloId.$valid, 'has-error': c.ModuloId.$invalid}">
+                                            <label for="ModuloId">Modulo</label>
+                                            <select class="form-control" ng-model="Permiso.ModuloId" name="ModuloId"  required>
+                                                <option ng-repeat="m in Modulos| orderBy : 'Nombre' track by $index" ng-value='{{m.ModuloId}}' value='{{m.ModuloId}}'> {{m.Nombre}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="text-center col-sm-12" style="margin-top: 25px;">
+                                    <button class="btn btn-success" ng-click="GuardarPermiso()" ng-disabled="c.Permiso.$invalid">Guardar</button>
+                                    <input type="reset" class="btn btn-danger" ng-click="Permiso = {}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

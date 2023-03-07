@@ -1,0 +1,286 @@
+<div ng-controller="EntregaTELCtrl">
+  <div class="row">
+      <div class="col-sm-12">
+          <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <h2>Solicitudes<small></small></h2>
+                  <div class="ibox-tools" style="transform: translateX(-50px);">
+                      <ul class="nav navbar-right" style="color:black;">
+                          <li ng-if="Mes !== 'TODOS'">
+                              <select id="dia-select" class="form-control" ng-disabled="Mes == 'TODOS'" ng-model="Dia" ng-change="GetSolicitudes()" style="height: 35.59px !important;">
+                                  <option>TODOS</option>
+                                  <option ng-repeat="i in []| ranges : UltimoDiaMes" ng-value="'{{i}}'" value='{{i}}'>{{i}}</option>
+                              </select>
+                          </li>
+                          <li>
+                              <select class="form-control" ng-model="Mes" ng-change="GetSolicitudes()" style="height: 35.59px !important;">
+                                  <option>TODOS</option>
+                                  <option ng-selected="Mes == 1" ng-value="'1'" value='1'>Enero</option>
+                                  <option ng-selected="Mes == 2" ng-value="'2'" value='2'>Febrero</option>
+                                  <option ng-selected="Mes == 3" ng-value="'3'" value='3'>Marzo</option>
+                                  <option ng-selected="Mes == 4" ng-value="'4'" value='4'>Abril</option>
+                                  <option ng-selected="Mes == 5" ng-value="'5'" value='5'>Mayo</option>
+                                  <option ng-selected="Mes == 6" ng-value="'6'" value='6'>Junio</option>
+                                  <option ng-selected="Mes == 7" ng-value="'7'" value='7'>Julio</option>
+                                  <option ng-selected="Mes == 8" ng-value="'8'" value='8'>Agosto</option>
+                                  <option ng-selected="Mes == 9" ng-value="'9'" value='9'>Septiembre</option>
+                                  <option ng-selected="Mes == 10" ng-value="'10'" value='10'>Octubre</option>
+                                  <option ng-selected="Mes == 11" ng-value="'11'" value='11'>Noviembre</option>
+                                  <option ng-selected="Mes == 12" ng-value="'12'" value='12'>Diciembre</option>
+                              </select>
+                          </li>
+                          <li>
+                              <input type="text" ng-model='Year' ng-enter="GetSolicitudes()" class="form-control" onfocus="(this.type = 'number')" onblur="(this.type = 'text')"/>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <button class="btn btn-default" ng-if="NEN || VSOL || VEN" ng-click="Atras()">Atras</button>
+                    <button class="btn btn-default" ng-if="VEN" ng-click="Imprimir('H1')">Imprimir Entrega</button>
+                    <button class="btn btn-default" ng-if="VEN" ng-click="Imprimir('H2')">Imprimir Politicas</button>
+                    <button class="btn btn-primary" ng-if="VSOL && Sol.Estado === 'Activo' && !NEN" ng-click="NewEntrega()">Nueva Entrega</button>
+                    <button class="btn btn-success" ng-if="NEN" ng-click="CrearEntrega()">
+                      <span ng-hide="IsLoading">Crear Entrega</span>
+                      <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+                    </button>
+                  </div>
+                </div>
+                  <div class="row" ng-if="LSOL && !NEN && !VSOL && !VEN">
+                      <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                          <table id="LHD" ui-jq="dataTable" ui-options="SolDATA" class="table table-hover table-condensed table-striped table-bordered">
+                              <thead class="bordered-blueberry">
+                                  <tr>
+                                      <th scope="col" class="text-center" style="width: 3%">ID</th>
+                                      <th scope="col" class="text-center" style="width: 5%">Fecha</th>
+                                      <th scope="col" class="text-center" style="width: 7%">Solicita</th>
+                                      <th scope="col" class="text-center" style="width: 7%">Telefono</th>
+                                      <th scope="col" class="text-center" style="width: 5%">Estado</th>
+                                      <th scope="col" class="text-center" style="width: 15%">Opciones</th>
+                                  </tr>
+                              </thead>
+                              <tbody></tbody>
+                          </table>
+                      </div>
+                  </div>
+                  <div ng-if="VSOL && !NEN">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                          <strong>Fecha de solicitud</strong>
+                          <input type="text" class="form-control" ng-model="Sol.Fecha" name="Fecha" onfocus="(this.type = 'datetime-local')"
+                            onblur="(this.type = 'text')" disabled />
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div ng-class="{'has-success': Datos.Linea.$valid, 'has-error': Datos.Linea.$invalid}">
+                          <strong>Lineas</strong><br>
+                          {{Sol.Responsable}} - {{Sol.Telefono}}
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div ng-class="{ 'has-success': Datos.DescripcionDano.$valid, 'has-error': Datos.DescripcionDano.$invalid }">
+                          <strong>Descripción del daño</strong>
+                          <textarea type="text" class="form-control" ng-model="Sol.DescripcionDano" maxlength="200" name="DescripcionDano"
+                            disabled></textarea>
+                        </div>
+                      </div>
+                      <div class="col-sm-12" style="margin-bottom: 40px">
+                        <strong>Imagen:</strong>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <img ng-src="/Polivalente/error_tel/{{Sol.UrlImagen}}" style="height: 150px; max-height: 150px; width: 150px" alt="">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12" ng-if="HT">
+                        <hr>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Fecha</th>
+                              <th>Marca</th>
+                              <th>Modelo</th>
+                              <th>Color</th>
+                              <th>IMEI1</th>
+                              <th>IMEI2</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="h in Historial">
+                              <td>{{h.Fecha}}</td>
+                              <td>{{h.Marca}}</td>
+                              <td>{{h.Modelo}}</td>
+                              <td>{{h.Color}}</td>
+                              <td>{{h.IMEI1}}</td>
+                              <td>{{h.IMEI2}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-if="NEN">
+                    <div class="row mt-3">
+                      <div ng-class="{'col-sm-8': Sol.Estado === 'Activo', 'col-sm-12': Sol.Estado === 'Entregado'}">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <img src="/intranet-2/public_html/image/cield.png" id="logo-cield" style="width: 200px !important;" alt="logo-cield-hd">
+                          </div>
+                          <div class="col-sm-4">
+                            <p style="position: absolute; bottom: 0;">{{ Entrega.Ciudad }}, {{ DIA }} {{ MES }} del {{ YEAR }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <p>Señor</p>
+                            <p class="font-weight-bold">{{ Entrega.Solicita | uppercase}}</p>
+                            <p>{{ Entrega.Cargo }}</p>
+                            <p class="font-weight-bold">{{ Entrega.Institucion | uppercase}}</p>
+                            <p>{{ Entrega.Ciudad }}</p>
+                          </div>
+                          <div class="col-sm-12 mt-5">
+                            <p>Cordial Saludo</p>
+                          </div>
+                          <div class="col-sm-12 mt-2">
+                            <p>En busca de mejorar los procesos de la institución se le hace entrega de un celular {{ Entrega.Marca | uppercase}} {{ Entrega.Modelo | uppercase}}
+                              {{ Entrega.Tipo }}, posee las siguientes especificaciones: 
+                            </p>
+                          </div>
+                          <div class="col-sm-12 mt-1 text-center">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>IMEI</th>
+                                  <th>COLOR</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    {{ Entrega.IMEI1 }} <br>
+                                    {{ Entrega.IMEI2 }}
+                                  </td>
+                                  <td>{{ Entrega.Color }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-sm-12 mt-3">
+                            <p>{{ Entrega.Descripcion }}</p>
+                          </div>
+                          <div class="col-sm-12 mt-4">
+                            <p>Atentamente,</p>
+                          </div>
+                          <div class="col-sm-12 mt-5">
+                            <p class="font-weight-bold">CARLOS MENA</p>
+                            <p>CONTROL INTERNO</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4 bg-secondary" ng-if="Sol.Estado === 'Activo'">
+                        <h4 class="text-light">Formulario</h4>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <label class="text-light" for="Solicita">Nombre Solicita</label>
+                            <input type="text" class="form-control" ng-model="Entrega.Solicita" />
+                          </div>
+                          <div class="col-sm-12">
+                            <label class="text-light" for="Cargo">Cargo Solicita</label>
+                            <input type="text" class="form-control" ng-model="Entrega.Cargo" />
+                          </div>
+                          <div class="col-sm-12">
+                            <label class="text-light" for="Inventario">Inventario</label>
+                            <select class="form-control" ng-model="Entrega.InventarioId" ng-change="ChangeInventario()">
+                              <option value="">--</option>
+                              <option ng-repeat="o in Inventarios" ng-value="'{{o.InventarioId}}'" ng-if="o.Stock === 1">{{o.InventarioId}}: {{o.Marca}} {{o.Modelo}} {{o.IMEI1.substr(o.IMEI1.length - 5)}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-12">
+                            <label class="text-light" for="Tipo">Estado del equipo</label>
+                            <input type="text" class="form-control" ng-model="Entrega.Tipo" />
+                          </div>
+                          <div class="col-sm-12">
+                            <label class="text-light" for="Descripcion">Descripción</label>
+                            <textarea type="text" class="form-control" ng-model="Entrega.Descripcion"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-if="VEN">
+                    <div class="row mt-3">
+                      <div class="col-sm-12" id="H1">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <img src="/intranet-2/public_html/image/cield.png" id="logo-cield" style="width: 200px !important;" alt="logo-cield-hd">
+                          </div>
+                          <div class="col-sm-8">
+                            <p>{{ Entrega.Ciudad }}, {{ DIA }} {{ MES }} del {{ YEAR }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <p>Señor</p>
+                            <p class="font-weight-bold">{{ Entrega.Solicita | uppercase}}</p>
+                            <p>{{ Entrega.CargoSolicita }}</p>
+                            <p class="font-weight-bold">{{ Entrega.Institucion | uppercase}}</p>
+                            <p>{{ Entrega.Ciudad }}</p>
+                          </div>
+                          <div class="col-sm-12 mt-5">
+                            <p>Cordial Saludo</p>
+                          </div>
+                          <div class="col-sm-12 mt-2">
+                            <p>En busca de mejorar los procesos de la institución se le hace entrega de un celular {{ Entrega.Marca | uppercase}} {{ Entrega.Modelo | uppercase}}
+                              {{ Entrega.Tipo }}, posee las siguientes especificaciones: 
+                            </p>
+                          </div>
+                          <div class="col-lg-12 col-sm-12 mt-1 text-center" style="text-align: center !important;">
+                            <table class="table table-bordered" style="text-align: center !important;">
+                              <thead>
+                                <tr>
+                                  <th>IMEI</th>
+                                  <th>COLOR</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    {{ Entrega.IMEI1 }} <br>
+                                    {{ Entrega.IMEI2 }}
+                                  </td>
+                                  <td>{{ Entrega.Color }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-sm-12" style="margin-top: 30pt;">
+                            <p>{{ Entrega.Descripcion }}</p>
+                          </div>
+                          <div class="col-sm-12" style="margin-top: 40pt;">
+                            <p>Atentamente,</p>
+                          </div>
+                          <div class="col-sm-6" style="margin-top: 40pt;">
+                            <img ng-src="{{ Entrega.FirmaEntrega }}" width="150">
+                            <p><strong>{{ Entrega.Entrega }}</strong><br>
+                              {{ Entrega.CargoEntrega }}</p>
+                          </div>
+                          <div class="col-sm-6" style="margin-top: 40pt;">
+                            <img ng-src="{{ Entrega.FirmaSolicita }}" width="150">
+                            <p><strong>{{ Entrega.Solicita }}</strong><br>
+                              {{ Entrega.CargoSolicita }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-include ng-if="PPOL" src="'/intranet-2/public_html/views/tel/Politicas.html'"></ng-include>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

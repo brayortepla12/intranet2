@@ -1,0 +1,19 @@
+<div id="wrapper" ng-controller="NavCtrl">
+  <div
+    data-ng-include=" '/intranet-2/public_html/views/partials/navbar.html?v=2.8.19'"
+  ></div>
+  <div class="loadingContainer"></div>
+  <!-- page content -->
+  <div id="page-wrapper" class="gray-bg" ng-controller="WhoAdminCtrl">
+    <!-- top navigation -->
+    <div
+      class="row border-bottom"
+      data-ng-include=" '/intranet-2/public_html/views/partials/Botones.html?v=2.8.19'"
+    ></div>
+    <!-- /top navigation -->
+    <div class="wrapper wrapper-content" ui-view>
+      <!-- Your Content Goes Here -->
+    </div>
+  </div>
+  <!-- /page content -->
+</div>

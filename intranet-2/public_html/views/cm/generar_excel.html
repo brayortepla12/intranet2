@@ -1,0 +1,465 @@
+<style>
+    /*.page-break-table  { display: none; }*/
+
+    .Derecha{
+        float: right;
+        width: 400px;
+    }
+    .Izquierda{
+        float: left;
+        width: 400px;
+    }
+</style>
+<div class="row" ng-controller="GenerarExcelRVCtrl">
+    <h1 ng-show="PRUEBAS">MODO PRUEBAS</h1>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-lg-4" style="margin-bottom: 25px;">
+                <div>
+                    <label>
+                        Medicamentos:
+                    </label>
+                    <select ng-options="m.MedicamentoId as m.NombreAbreviado for m in Medicamentos" class="form-control" ng-model="MedicamentoId" ng-change="ChangeMedicamento()" name="MedicamentoId" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center col-lg-4" style="margin-top: 25px;">
+                <button ng-show="DetallesRonda.DetallesRondaVerificacion.length > 0 && DetallesRonda.NumeroEnMes" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                <button ng-show="DetallesRonda.DetallesRondaVerificacion.length > 0" class="btn btn-warning" ng-click="SelectModal()">Usuarios</button>
+                <button ng-show="DetallesRonda.DetallesRondaVerificacion.length > 0 && !DetallesRonda.NumeroEnMes" class="btn btn-success" ng-click="GenerarLote()">Generar Consecutivo</button>        
+                <button ng-show="DetallesRonda.DetallesRondaVerificacion.length > 0 && !DetallesRonda.NumeroEnMes" class="btn btn-default" ng-click="Archivos()">Archivos</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="TablaPreviewExcel">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cld.png" width="200"/>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9" style="text-align: center;font-family: Candara !important;">
+                <h3 style="font-family: Candara !important;font-size: 25px !important;">
+                    <strong>COPIA CONTROLADA</strong>
+                </h3>
+                <h5 style="font-family: Candara !important;font-size: 18px !important;">
+                    <strong>ORDEN DE PRODUCCION ANTIBIOTICOS, OTROS MEDICAMENTOS ESTERILES Y ONCOLOGICOS</strong>
+                </h5>
+                <p style="font-family: Candara !important;font-size: 12px !important;">
+                    GC-SF-GB-F-15  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ver. 03  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pagina 1 de 1 <br/>
+                    Emision: 08-07-2014 Vigencia:07-02-2019
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered table-striped table-hover table-responsive" id="TablaCentralMezclas" style="font-size: 0.9em !important;font-family: Candara !important;">
+                    <thead>
+                        <tr style="background-color: rgba(0,0,0,0.2) !important; padding: 0px">
+                            <th colspan="3" style="font-size: 1em;">ORDEN DE PRODUCCIÓN</th>
+                            <th colspan="3" style="font-size: 1em;">{{DetallesRonda.Prefijo}}- {{DetallesRonda.OrdenProduccion}} - {{DetallesRonda.NumeroEnMes}}</th>
+                            <th style="font-size: 1em;"></th>
+                            <th colspan="4" style="font-size: 1em;">FECHA</th>
+                            <th colspan="7" style="font-size: 1em;">{{DetallesRonda.Fecha| date : 'dd-MM-yyyy'}}</th>
+                        </tr>
+                        <tr style="background-color: rgba(0,0,0,0.2) !important; padding: 0px">
+                            <th colspan="3" style="font-size: 1em;">FECHA LIMITE DE USO 2-8°</th>
+                            <th colspan="3" style="font-size: 1em;">{{DetallesRonda.FechaLimiteUso2_8| date : 'dd-MM-yyyy'}}</th>
+                            <th style="font-size: 1em;"></th>
+                            <th colspan="4" style="font-size: 1em;">FECHA LIMITE DE USO 20°-25°C</th>
+                            <th colspan="7" style="font-size: 1em;">{{DetallesRonda.FechaLimiteUso20_25| date : 'dd-MM-yyyy'}}</th>
+                        </tr>
+                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                            <th style="font-size: 1em !important;">ITEM</th>
+                            <th style="font-size: 1em !important;">CLIENTE / SERVICIO</th>
+                            <th style="font-size: 1em !important; width: 330px !important;">PACIENTE</th>
+                            <th style="font-size: 1em !important;">MEDICAMENTO</th>
+                            <th style="font-size: 1em !important;">CONCENTRACIÓN (mg)</th>
+                            <th style="font-size: 1em !important;">RECONSTITUYENTE</th>
+                            <th style="font-size: 1em !important;">VOLUMEN DE RECONSTITUCION (mL)</th>
+                            <th style="font-size: 1em !important;">VOLUMEN FINAL (mL)</th>
+                            <th style="font-size: 1em !important;">VIALES O AMPOLLAS UTILIZADOS</th>
+                            <th style="font-size: 1em !important;">VOLUMEN A TOMAR (mL)</th>
+                            <th style="font-size: 1em !important; width: 130px !important;">VEHICULO</th>
+                            <th style="font-size: 1em !important;">VOLUMEN VEHICULO (mL)</th>
+                            <th style="font-size: 1em !important;">DOSIS (mg)</th>
+                            <th style="font-size: 1em !important;">VOLUMEN (mL)</th>
+                            <th style="font-size: 1em !important;">CONC. FINAL</th>
+                            <th style="font-size: 1em !important;">CANTIDAD A PREPARAR</th>
+                            <th style="font-size: 1em !important; width: 150px !important;">LOTE</th>
+                            <th style="font-size: 1em;" class="no-print">OPCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in DetallesRonda.DetallesRondaVerificacion" class="row-item">
+                            <td>{{d.Item}}</td>
+                            <td>{{d.Sector}}</td>
+                            <td>{{(d.NombrePaciente.replace('HIJO DE', "H/")).replace('HIJA DE', "H/")}} <br> <span class="no-print">{{d.NoAdmision}}</span></td>
+                            <td>{{d.Medicamento}}</td>
+                            <td>{{d.Concentracion}}</td>
+                            <td>{{d.Recostituyente}}</td>
+                            <td>{{d.VolumenReconstitucion}}</td>
+                            <td>{{d.VolumenFinal}}</td>
+                            <td>{{d.VialesAmpollasUtilizados| numberEx : 2}}</td>
+                            <td>{{d.VolumenATomar| numberEx : 2}}</td>
+                            <td>{{d.Vehiculo.startsWith("SSN") ? "SSN 0.9%" : d.Vehiculo}}</td>
+                            <td>{{d.VolumenVehiculo| numberEx : 2}}</td>
+                            <td>{{d.Dosis}}</td>
+                            <td>{{d.Volumen}}</td>
+                            <td>{{d.ConcFinal}}</td>
+                            <td>{{d.Cantidad}}</td>
+                            <td>{{d.Lote}}</td>
+                            <td class="no-print">
+                                <button class="btn btn-primary btn-icon btn-xs white" ng-show="d.Verificado" ng-click="GenerateStickers(d)">
+                                    <i class="fa fa-print"></i>
+                                </button>
+                                <button class="btn btn-warning btn-icon btn-xs white" ng-show="!d.Verificado && DetallesRonda.DireccionTecnicaId == UsuarioId" ng-click="Verificar(d)">
+                                    <i class="fa fa-square-o"></i>
+                                </button>
+                                <button class="btn btn-danger btn-icon btn-xs white" ng-click="Eliminar(d)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-default btn-icon btn-xs" data-toggle="tooltip" title="Verificado" ng-show="d.Verificado">
+                                    <i class="fa fa-check-square-o"></i>
+                                </button>
+                                <button class="btn btn-info btn-icon btn-xs" data-toggle="tooltip" title="Ver Historico" ng-click="GetHistoricoByPacienteAndMedicamentoId(d.IdAfiliado)">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                    <tfoot>
+                        <tr style="height: 30px">
+                            <th style="font-size: 1em;" colspan="2">DIRECCION TECNICA</th>
+                            <th style="font-size: 1em;" colspan="2">
+                                <!--{{DetallesRonda.NombreDireccionTecnica}} <img ng-src="{{DetallesRonda.FirmaDireccionTecnica}}" width="50" alt="">-->
+                            </th>
+                            <th style="font-size: 1em;" colspan="4">ASEGURAMIENTO DE LA CALIDAD</th>
+                            <th style="font-size: 1em;" colspan="3">
+                                <!--<button class="btn btn-primary" ng-click='FirmarACalidad()'>Firmar</button>-->
+                            </th>
+                            <th style="font-size: 1em;" colspan="4">QUIMICO FARMACEUTICO DE PRODUCCIÓN</th>
+                            <th style="font-size: 1em;" colspan="2">
+                                <!--{{DetallesRonda.NombreQFarmaceutico}} <img ng-src="{{DetallesRonda.FirmaQFarmaceutico}}" width="50" alt="">-->
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="18"></td>
+                        </tr>
+                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                            <th colspan="18" style="text-align: center;font-size: 1em;">IDENTIFICACIÓN DEL PRODUCTO INICIAL</th>
+                        </tr>
+                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                            <th style="font-size: 1em;">ITEM</th>
+                            <th style="font-size: 1em;" colspan="2">MEDICAMENTOS Y/O DISPOSITIVOS MEDICOS</th>
+                            <th style="font-size: 1em;">CONCENTRACIÓN</th>
+                            <th style="font-size: 1em;" colspan="2">LOTE</th>
+                            <th style="font-size: 1em;">FECHA VENCIMIENTO</th>
+                            <th style="font-size: 1em;" colspan="5">REGISTRO INVIMA</th>
+                            <th style="font-size: 1em;" colspan="3">LABORATORIO</th>
+                            <th style="font-size: 1em;" colspan="2">CANTIDAD</th>
+                        </tr>
+                        <tr ng-repeat="p in Productos" style="height: 20px;">
+                            <td>{{p.Item}}</td>
+                            <td colspan="2">{{p.DispositivoMedico}} </td>
+                            <td>{{p.Concentracion}}</td>
+                            <td colspan="2">{{p.Lote}}</td>
+                            <td></td>
+                            <td colspan="5">{{p.RegistroInvima}}</td>
+                            <td colspan="3">{{p.Laboratorio}}</td>
+                            <td colspan="2">{{p.Cantidad | number : 2}}</td>
+                            <td class="no-print" ng-show="p.IsDP">
+                                <button class="btn btn-danger btn-icon btn-xs white" ng-click="EliminarDispositivoMedico(p)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="no-print" style="height: 30px;">
+                            <td></td>
+                            <td colspan="2">
+                                <div angucomplete-alt id="ex8"
+                                     placeholder="Dispositivo Medico"
+                                     maxlength="200"
+                                     pause="200"
+                                     selected-object="Dispositivo.DispositivoMedicoId"
+                                     local-data="Dispositivos"
+                                     search-fields="Nombre"
+                                     title-field="Nombre"
+                                     minlength="1"
+                                     input-class="form-control form-control-small"
+                                     match-class="highlight"></div>
+                            </td>
+                            <td>{{Dispositivo.Concentracion}}</td>
+                            <td colspan="2">{{Dispositivo.Lote}}</td>
+                            <td></td>
+                            <td colspan="5">{{Dispositivo.RegistroInvima}}</td>
+                            <td colspan="3">{{Dispositivo.Laboratorio}}</td>
+                            <td colspan="2">
+                                <form role="form" name="Datos" novalidate>
+                                    <div  ng-show="Dispositivo" class="ng-scope" ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                                        <input type="number" ng-model="Dispositivo.Cantidad" name="Cantidad" 
+                                               class="form-control" ng-enter="AddDispositivoMedico()" required>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr style="height: 30px;">
+                            <th style="font-size: 1em;" colspan="2">AUXILIAR QUE ALISTA</th>
+                            <th style="font-size: 1em;" colspan="3">
+                                <!--{{DetallesRonda.NombreAFarmacia}} <img ng-src="{{DetallesRonda.FirmaAFarmacia}}" width="50" alt="">-->
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="row text-center" id="Footer" style="margin-top: 25px">
+            <div class="col-12 text-center">
+                <img src="/intranet-2/public_html/image/pie_pagina.png" alt="">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="HistoricoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Historico</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Dosis</th>
+                                <th>Volumen</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="h in Historico">
+                                <td>{{h.DetalleRondaVerificacionId}}</td>
+                                <td>{{h.CreatedAt}}</td>
+                                <td>{{h.Dosis}}</td>
+                                <td>{{h.Volumen}}</td>
+                                <td>{{h.Cantidad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="EtiquetasModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Imprimir Etiquetas</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <button class="btn btn-info" ng-click="ImprimirEtiqueta()">Imprimir</button>
+                    </div>
+                    <div id="Etiquetas">
+                        <div ng-repeat="etiqueta in Etiquetas track by $index">
+                            <div class="break-after">
+                                <div class="clearfix">
+                                    <div
+                                        ng-repeat="e in etiqueta track by $index"   
+                                        ng-class="{'float-right': ($index + 1) % 2 === 0, 'float-left': ($index + 1) % 2 !== 0}">
+                                        <table class="table" style="text-align: center">
+                                            <thead>
+                                                <tr class="no-print">
+                                                    <td></td>
+                                                    <td style="width: 100px !important"></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 160px !important">
+                                                        <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cld.png" width="100" height="20"/>
+                                                    </td>
+                                                    <td colspan="2" style="font-size: 1.4em !important;">{{e.Medicamento}} {{e.ConcFinal}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-size: 1.4em !important">
+                                                        PACIENTE
+                                                    </td>
+                                                    <td colspan="2"  style="font-size: 1.4em !important">{{e.NombrePaciente}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-size: 1.4em !important;">
+                                                        VEHICULO
+                                                    </td>
+                                                    <td colspan="2" style="font-size: 1.4em !important">{{e.Vehiculo.startsWith("SSN") ? "SSN 0.9%" : e.Vehiculo}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-size: 1.4em !important">
+                                                        LOTE
+                                                    </td>
+                                                    <td colspan="2" style="font-size: 1.4em !important">{{e.Lote}}</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" style="font-size: 1.2em !important">Fecha de preparación</td>
+                                                    <td style="font-size: 1.3em !important">{{DetallesRonda.Fecha}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-size: 1em !important">Fecha limite de uso 2-8°</td>
+                                                    <td style="font-size: 1em !important">{{DetallesRonda.FechaLimiteUso2_8}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-size: 1em !important">Fecha limite de uso 20-25°</td>
+                                                    <td style="font-size: 1em !important">{{DetallesRonda.FechaLimiteUso20_25}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-size: 0.85em !important">QF de producción:</td>
+                                                    <td style="font-size: 0.85em !important">{{DetallesRonda.NombreQFarmaceutico}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-size: 0.85em !important">Liberó:
+                                                        {{DetallesRonda.NombreACalidad}}
+                                                    </td>
+                                                    <td style="font-size: 1em">Vía de administración: IV
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-size: 0.85em !important">Rotulo Elaborado Por:
+                                                        {{Elabora}}
+                                                    </td>
+                                                    <td style="font-size: 1.4em !important">SERVICIO: {{e.Sector}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--                <div class="modal-footer">
+                                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                                        <button class="btn btn-success" ng-click="Guardar()" ng-hide="Guardando">Guardar</button>
+                                    </div>
+                                </div>-->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="SelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Seleccionar equipo para esta ronda</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group ng-scope col-md-4" ng-class="{'has-success': Datos.DireccionTecnicaId.$valid, 'has-error': Datos.DireccionTecnicaId.$invalid}">
+                        <label class="control-label" for="Nombre" >Dirección Tecnica</label>
+                        <select ng-options="u.UsuarioId as u.NombreCompleto 
+                        for u in Usuarios" class="form-control" ng-model="DetallesRonda.DireccionTecnicaId" name="DireccionTecnicaId" 
+                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                        </select>
+                    </div>
+                    <div class="form-group ng-scope col-md-4" ng-class="{'has-success': Datos.ACalidadId.$valid, 'has-error': Datos.ACalidadId.$invalid}">
+                        <label class="control-label" for="Nombre" >Aseguramiento de la calidad</label>
+                        <select ng-options="u.UsuarioId as u.NombreCompleto 
+                        for u in Usuarios" class="form-control" ng-model="DetallesRonda.ACalidadId" name="ACalidadId" 
+                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                        </select>
+                    </div>
+                    <div class="form-group ng-scope col-md-4" ng-class="{'has-success': Datos.QFarmaceuticoId.$valid, 'has-error': Datos.QFarmaceuticoId.$invalid}">
+                        <label class="control-label" for="Nombre" >Quimico farmaceutico</label>
+                        <select ng-options="u.UsuarioId as u.NombreCompleto 
+                        for u in Usuarios" class="form-control" ng-model="DetallesRonda.QFarmaceuticoId" name="QFarmaceuticoId" 
+                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                        </select>
+                    </div>
+                    <div class="form-group ng-scope col-md-4" ng-class="{'has-success': Datos.AFarmaciaId.$valid, 'has-error': Datos.AFarmaciaId.$invalid}">
+                        <label class="control-label" for="Nombre" >Auxiliar que alista</label>
+                        <select ng-options="u.UsuarioId as u.NombreCompleto 
+                        for u in Usuarios" class="form-control" ng-model="DetallesRonda.AFarmaciaId" name="AFarmaciaId" 
+                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="SeleccionarUsuarios()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ArchivoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Generar Archivos</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" ng-click="Goto('cm.FVerificacionApro_Etiquetas')" style="cursor:pointer">Formato de verificación y Aprobación  de etiquetas</a>
+                        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="SeleccionarUsuarios()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

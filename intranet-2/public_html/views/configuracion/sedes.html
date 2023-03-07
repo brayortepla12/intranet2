@@ -1,0 +1,84 @@
+<div class="row" ng-controller="SedeCtrl">
+    <div class="col-sm-2 pull-right" style="padding: 5px;">
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#SedeModal">Crear Sede <i class="fa fa-plus-square-o" /></button>
+    </div>
+    <div class="col-sm-12">
+        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Correo</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Sedes" ng-include="getTemplate(item)">
+                    <script type="text/ng-template" id="display">
+                        <td>
+                            {{item.Nombre}}
+                        </td>
+                        <td>
+                            {{item.Correo}}
+                        </td>
+                        <td>
+                            <center>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                            </center>
+                        </td>
+                    </script>
+                    <script type="text/ng-template" id="edit">
+                        <td><input type="text" ng-model="select.Nombre" class="form-control input-sm" capitalize /></td>
+                        <td><input type="text" ng-model="select.Correo" class="form-control input-sm" /></td>
+                        <td>
+                            <center>
+                                <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                            </center>
+                        </td>
+                    </script>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="SedeModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="col-sm-11">
+                  <h2 class="modal-title">Crear Sede</h2>
+              </div>
+              <div class="col-sm-1">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-body">
+              <form role="form" name="c" novalidate>
+                  <div class="col-md-12">
+                      <div ng-class="{'has-success': c.Nombre.$valid, 'has-error': c.Nombre.$invalid}">
+                          <label for="Nombre">Nombre</label>
+                          <input type="text" capitalize class="form-control" id="Nombre" ng-model="Sede.Nombre" maxlength="280"  name="Nombre" required>
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div ng-class="{'has-success': c.Correo.$valid, 'has-error': c.Correo.$invalid}">
+                          <label for="Correo">Correo</label>
+                          <input type="email" class="form-control" id="Correo" ng-model="Sede.Correo" maxlength="280"  name="Correo" required>
+                      </div>
+                  </div>
+              </form>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-footer">
+              <div class="text-center col-sm-12" style="margin-top: 25px;">
+                  <button class="btn btn-success" ng-click="GuardarSede()" ng-disabled="c.$invalid">Guardar</button>
+                  <input type="reset" class="btn btn-danger" ng-click="ResetForm()" />
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

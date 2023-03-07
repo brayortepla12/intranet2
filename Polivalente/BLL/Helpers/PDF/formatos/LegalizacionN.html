@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEGALIZACIÓN N° {{ LegalizacionId }}</title>
+</head>
+
+<body>
+  <div class="col-sm-12" id="H1">
+    
+    <table class="table text-center">
+      <thead>
+          <tr>
+              <td style="width: 500px;">
+                  <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cield.png" id="logo-cield"
+                  alt="logo-cield-hd">
+              </td>
+              <td style="text-align: center;">
+                  <strong>REEMBOLSO DE VIATICOS</strong><br>
+                  GC-CI-F-18 Ver. 1 <br>
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pagina {PAGENO} de {nb}
+                  <br>Emisión: 24-06-2020 Vigencia: 01-07-2020
+              </td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td colspan="2" style="padding-top: 5pt;">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th class="titulo-th">DESCRIPCIÓN</th>
+                          <td colspan="2">
+                            {{ Descripcion }}
+                          </td>
+                          <th class="titulo-th">NOMBRE</th>
+                          <td>
+                            {{ ResNombres }}
+                          </td>
+                          <th class="titulo-th">CEDULA</th>
+                          <td>
+                            {{ ResCedula }}
+                          </td>
+                        </tr>
+                        </thead>
+                    </table>
+                  </div>
+                  <div class="col-sm-12" style="margin-top: 5pt;">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th class="titulo-th">FECHA</th>
+                          <th class="titulo-th">FACTURA</th>
+                          <th class="titulo-th" colspan="2">RESPONSABLE</th>
+                          <th class="titulo-th" colspan="4">CONCEPTO</th>
+                          <th class="titulo-th" style="width: 150px;">VALOR</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          {{ Conceptos }}
+                          <tr>
+                            <th class="titulo-th" style="width: 70px;">NC</th>
+                            <td>{{ NC }}</td>
+                            <th class="titulo-th" style="width: 70px;">RC</th>
+                            <td colspan="2">{{ RC }}</td>
+                            <th class="titulo-th" style="width: 70px;">DL</th>
+                            <td>{{ DL }}</td>
+                            <th class="titulo-th">TOTAl EGRESOS</th>
+                            <td>{{ TotalEgreso }}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col-sm-12">
+        <strong>NC: </strong>Nota contable. 
+        <strong>RC: </strong>Recibo de caja.
+        <strong>DL: </strong>Devolución.
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" style="margin-top: 10pt;">
+        <div class="row">
+          <div class="col-sm-4">
+            <h3>ELABORÓ</h3>
+          </div>
+          <div class="col-sm-4">
+            <h3>CONTROL INTERNO</h3>
+          </div>
+          <div class="col-sm-4">
+            <h3>CONTABILIDAD</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12" style="margin-top: 10pt;">
+        <div class="row">
+          <div class="col-sm-4">
+            <img src="{{ ResFirma }}"
+              style="width: 200px; height: 70px; border-bottom: 2.2px solid black; height: 80px;" alt="firma">
+            <p>
+              <strong>FIRMA</strong>
+              <br>
+              <strong>NOMBRE: {{ ResNombres }}</strong>
+              <br>
+              <strong>Cargo: {{ ResCargo }}</strong>
+              <br>
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <img src="{{ CIFirma }}" 
+              style="width: 200px; height: 70px; border-bottom: 2.2px solid black; height: 80px;"
+              alt="firma">
+            <p>
+              <strong>FIRMA</strong>
+              <br>
+              <strong>NOMBRE: {{ CINombres }}</strong>
+              <br>
+              <strong>Cargo: {{ CICargo }}</strong>
+              <br>
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <img src="{{ ContFirma }}" 
+              style="width: 200px; height: 70px; border-bottom: 2.2px solid black; height: 80px;"
+              alt="firma">
+            <p>
+              <strong>FIRMA</strong>
+              <br>
+              <strong>NOMBRE: {{ ContNombres }}</strong>
+              <br>
+              <strong>Cargo: {{ ContCargo }}</strong>
+              <br>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

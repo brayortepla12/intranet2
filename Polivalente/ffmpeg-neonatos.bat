@@ -1,0 +1,3 @@
+::ffmpeg -i "rtsp://cuna1:Clinica123@192.168.7.20:9387/ISAPI/Streaming/channels/101/" -hls_time 3 -hls_wrap 10 "C:\wamp2\www\rtsp-player\cuna1\streaming-cuna.m3u8"
+ffmpeg -v info -i "rtsp://cuna1:Clinica123@192.168.7.20:9387/ISAPI/Streaming/channels/101/" -c:v copy -c:a copy -bufsize 1835k -pix_fmt yuv420p -flags -global_header -hls_time 10 -hls_list_size 6 -hls_wrap 10 -start_number 1 ".\cunas\streaming-cuna.m3u8"
+pause

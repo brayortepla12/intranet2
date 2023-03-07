@@ -1,0 +1,379 @@
+<style>
+    label{
+        font-weight: bold;
+    }
+    #block{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px;
+        background: #fdf3b6;
+    }
+    #block2{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px;
+    }
+    #block_p, .block_g{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px;
+        background: #fdf3b6;
+    }
+    .renglon{
+        border-bottom: 1px dashed #b7c9c3;
+    }
+    .renglon:hover{
+        font-weight: bold;
+    }
+    .input-xs {
+        height: 22px;
+        padding: 2px 5px;
+        font-size: 12px;
+        line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
+        border-radius: 3px;
+    }
+    .Hseleccionada{
+        text-decoration: line-through;
+    }
+    #notas{
+        background: gray;
+    }
+    #notas p {
+        color:white;
+    }
+    #HTab li.active > a{
+        color: white !important;
+    }
+    hr{
+        border-top: 1px solid white;
+    }
+</style>
+<div ng-controller="MisHistoriasTHCCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Revizar y Traslador Historia Clinica<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5 col-md-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" ng-class="{'active': Tab === 1}">
+                                    <a role="tab" data-toggle="tab" ng-click="Tab = 1" aria-expanded="true">Pendientes Por Recibir</a>
+                                </li>
+                                <li role="presentation" ng-class="{'active': Tab === 2}">
+                                    <a role="tab" data-toggle="tab" ng-click="Tab = 2" aria-expanded="true">Recibidas</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div  role="tabpanel" class="col-sm-12" ng-if="HistoriasPendientes.length > 0 && Tab === 1">
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <h4>Historias pendientes por recibir</h4>  
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-xs" type="search" placeholder="Buscar" ng-model="txtpr" />
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <!--                                            <button class="btn btn-default"
+                                                                                                ng-click="ViewListHistoriasPendientes()" 
+                                                                                                ng-class="{'active': IsListHP}"
+                                                                                                data-toggle="tooltip" title="Ver lista">
+                                                                                            <i class="fas fa-list-ol"></i>
+                                                                                        </button>
+                                                                                        <button class="btn btn-default"
+                                                                                                ng-click="ViewNameHistoriasPendientes()" 
+                                                                                                ng-class="{'active': !IsListHP}"
+                                                                                                data-toggle="tooltip" title="Ver lista organizada por nombres">
+                                                                                            <i class="fas fa-stream" ></i>
+                                                                                        </button>-->
+                                            <button class="btn" ng-if="HistoriasPendientes.length > 0" 
+                                                    ng-class="{'btn-info': !RecibirH, 'btn-default': RecibirH}" 
+                                                    ng-click="SetbanderaRecibir()" 
+                                                    data-toggle="tooltip" title="Seleccionar Historias A Recibir">
+                                                <i class="fas" ng-class="{'fa-times':RecibirH, 'fa-check-square':!RecibirH}"></i>
+                                            </button>
+                                            <button class="btn btn-success" ng-if="HistoriasPP.length > 0" 
+                                                    ng-click="RecibirHistorias()" 
+                                                    data-toggle="tooltip" title="Recibir Historias">
+                                                <i class="fas fa-file-import"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12" ng-if="RecibirH">DEBES SELECCIONAR LA HISTORIA QUE DESEAS RECIBIR</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="block_p" ng-if="IsListHP">
+                                <div class="renglon" ng-repeat="o in HistoriasPendientes| filter : txtpr track by $index" ng-class="{'Hseleccionada': o.Selected}">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            {{o.Item}}. {{o.NOADMISION}} - {{o.PNOMBRE}} {{o.PAPELLIDO}} - {{o.EPS}}
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <input type="checkbox" ng-click="RecibirHistoria(o)" ng-if="RecibirH" ng-checked="o.Selected">
+                                            <a style="cursor: pointer" data-toggle="tooltip" title="Ver Historia" ng-click="VerHistoria(o.HistoriaId)"><i class="fa fa-eye"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  ng-if="!IsListHP" ng-repeat="(key, data) in HistoriasPendientesName">
+                                <h4>{{key}}</h4>
+                                <div class="block_g">
+                                    <div class="renglon" ng-repeat="o in data| filter : txtpr track by $index" ng-class="{'Hseleccionada': o.Selected}">
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                {{o.Item}}. {{o.NOADMISION}} - {{o.PNOMBRE}} {{o.PAPELLIDO}} - {{o.EPS}}
+                                            </div>
+                                            <div class="col-sm-4 text-right">
+                                                <input type="checkbox" ng-click="RecibirHistoria(o)" ng-if="RecibirH" ng-checked="o.Selected">
+                                                <a style="cursor: pointer" data-toggle="tooltip" title="Ver Historia" ng-click="VerHistoria(o.HistoriaId)"><i class="fa fa-eye"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="col-sm-12" ng-if="MisHistorias.length > 0 && Tab === 2">
+                            <div class="row mt-3">
+                                <div class="col-sm-12">
+                                    <h4>HISTORIAS RECIBIDAS</h4>  
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-xs" type="search" placeholder="Buscar" ng-model="txt" />
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <button class="btn" ng-if="MisHistorias.length > 0" 
+                                                    ng-class="{'btn-info': !TrasladarH, 'btn-default': TrasladarH}" 
+                                                    ng-click="SetbanderaTrasladar()" 
+                                                    data-toggle="tooltip" title="Trasladar Historia">
+                                                <i class="fas" ng-class="{'fa-times':TrasladarH, 'fa-share-square':!TrasladarH}"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12" ng-if="TrasladarH">DEBES SELECCIONAR LA HISTORIA QUE DESEAS TRASLADAR</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="block">
+                                <div class="renglon" ng-repeat="o in MisHistorias | filter : txt track by $index" ng-class="{'Hseleccionada': o.Selected}">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            {{o.Item}}. {{o.NOADMISION}} - {{o.PNOMBRE}} {{o.PAPELLIDO}} - {{o.EPS}}
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <input type="checkbox" ng-click="AddHistoria(o)" ng-if="TrasladarH" ng-checked="o.Selected">
+                                            <a style="cursor: pointer" data-toggle="tooltip" title="Ver Historia" ng-if="!TrasladarH" ng-click="VerHistoria(o.HistoriaId)"><i class="fa fa-eye"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4" ng-if="TrasladarH">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-xs" type="search" placeholder="Buscar" ng-model="txt2" />
+                                        </div>
+                                        <div class="col-sm-12">ESTE LISTADO CORRESPONDE A LAS HISTORIAS QUE DESEAS TRASLADAR</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="block2">
+                                <div class="renglon" ng-repeat="o in Historias| filter : txt2 track by $index">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{o.Item}}. {{o.NOADMISION}} - {{o.PNOMBRE}} {{o.PAPELLIDO}} - {{o.EPS}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3" ng-if="TrasladarH">
+                    <div class="row">
+                        <div class="col-sm-12">DATOS PARA HACER TRASLADO</div>
+                        <div class="col-sm-12">
+                            <div class="form-group" ng-class="{'has-success': Datos.GrupoId.$valid, 'has-error': Datos.GrupoId.$invalid}">
+                                <label for="Grupo">Grupo</label>
+                                <select class="form-control" ng-model="Traslado.GrupoId" name="GrupoId" ng-change="ChangeGrupo()" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="o in Grupos track by $index"  
+                                            ng-selected="o.GrupoId == Traslado.GrupoId" 
+                                            ng-value='{{o.GrupoId}}' value='{{o.GrupoId}}'>{{o.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group" ng-class="{'has-success': Datos.UsuarioRecibeId.$valid, 'has-error': Datos.UsuarioRecibeId.$invalid}">
+                                <label for="Usuario">Usuario</label>
+                                <select class="form-control" ng-model="Traslado.UsuarioRecibeId" name="UsuarioRecibeId" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="o in Usuarios track by $index" ng-if="UsuarioId != o.UsuarioId" 
+                                            ng-selected="o.UsuarioId == Traslado.UsuarioRecibeId" 
+                                            ng-value='{{o.UsuarioId}}' value='{{o.UsuarioId}}'>{{o.NombreCompleto}}</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-success" ng-click="TrasladarHistorias()">Trasladar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7" ng-if="(!TrasladarH && MisHistorias.length > 0) || HistoriasPendientes.length > 0">
+                    <div class="col-sm-12">INFORMACIÓN HISTORIA</div>
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    No Admisión
+                                </label>
+                                <p>{{Historia.NOADMISION}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Primer Nombre
+                                </label>
+                                <p>{{Historia.PNOMBRE}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Segundo Nombre
+                                </label>
+                                <p>{{Historia.SNOMBRE}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Primer Apellido
+                                </label>
+                                <p>{{Historia.PAPELLIDO}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Primer Apellido
+                                </label>
+                                <p>{{Historia.SAPELLIDO}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Tipo Documento
+                                </label>
+                                <p>{{Historia.TIPO_DOC}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Documento
+                                </label>
+                                <p>{{Historia.IDAFILIADO}}</p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Fecha Alta Medica
+                                </label>
+                                <p>
+                                    <span>{{Historia.FECHAALTAMED}}</span>
+                                </p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Fecha Alta Administrativa
+                                </label>
+                                <p>
+                                    <span>{{Historia.FECHAALTAADMINISTRATIVA}}</span> 
+                                </p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    Cerrada?
+                                </label>
+                                <p>
+                                    <span ng-show="Historia.Cerrada">Si</span>
+                                    <span ng-show="!Historia.Cerrada">No</span>
+                                </p>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                                <label>
+                                    SECTOR
+                                </label>
+                                <p>
+                                    {{Historia.SECTOR}}
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row pt-1 pb-1" id="notas" ng-if="Historia">
+                        <div class="col-sm-12">
+                            <ul id="HTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" ng-class="{'active': HTab === 1}">
+                                    <a role="tab" data-toggle="tab" ng-click="setHTab(1)" aria-expanded="true">Notas</a>
+                                </li>
+                                <li role="presentation" ng-class="{'active': HTab === 2}">
+                                    <a role="tab" data-toggle="tab" ng-click="setHTab(2); GetTrazabilidad()" aria-expanded="true">Trazabilidad</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12" ng-if="HTab === 1">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div ng-repeat="n in Notas">
+                                        <p>
+                                            <strong>Fecha: </strong>{{n.Fecha}} <br>
+                                            <strong>Usuario: </strong>{{n.NombreCompleto}} <br>
+                                            <strong>Grupo: </strong>{{n.Grupo}}<br>
+                                            <strong>Nota: </strong>{{n.Observacion}}
+                                        </p>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label style="color: white;" for="Observacion">Nota</label>
+                                            <textarea class="form-control" name="Observacion" ng-model="Nota.Observacion"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <button class="btn btn-success" ng-click="CrearNota()">Crear Nota</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" ng-if="HTab === 2">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-striped bg-white">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Grupo</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="t in TrazabilidadH">
+                                                <td>{{t.NombreUsuario}}</td>
+                                                <td>{{t.Grupo}}</td>
+                                                <td>{{t.Fecha}}</td>
+                                                <td>{{t.Estado}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

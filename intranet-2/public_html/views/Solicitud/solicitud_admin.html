@@ -1,0 +1,110 @@
+<div class="row" ng-controller="SolicitudAdminCtrl">
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading default-primary-color">
+        <h2 class="text-primary-color">Solicitudes de mantenimiento</h2>
+        <div class="ibox-tools" style="transform: translateX(-50px)">
+          <ul class="nav navbar-right" style="color: black">
+            <li>
+              <select
+                class="form-control"
+                ng-model="Mes"
+                style="height: 35.59px !important"
+                ng-change="ConsultarSolicitudes()"
+              >
+                <option ng-selected="Mes == 1" ng-value="'1'" value="1">
+                  Enero
+                </option>
+                <option ng-selected="Mes == 2" ng-value="'2'" value="2">
+                  Febrero
+                </option>
+                <option ng-selected="Mes == 3" ng-value="'3'" value="3">
+                  Marzo
+                </option>
+                <option ng-selected="Mes == 4" ng-value="'4'" value="4">
+                  Abril
+                </option>
+                <option ng-selected="Mes == 5" ng-value="'5'" value="5">
+                  Mayo
+                </option>
+                <option ng-selected="Mes == 6" ng-value="'6'" value="6">
+                  Junio
+                </option>
+                <option ng-selected="Mes == 7" ng-value="'7'" value="7">
+                  Julio
+                </option>
+                <option ng-selected="Mes == 8" ng-value="'8'" value="8">
+                  Agosto
+                </option>
+                <option ng-selected="Mes == 9" ng-value="'9'" value="9">
+                  Septiembre
+                </option>
+                <option ng-selected="Mes == 10" ng-value="'10'" value="10">
+                  Octubre
+                </option>
+                <option ng-selected="Mes == 11" ng-value="'11'" value="11">
+                  Noviembre
+                </option>
+                <option ng-selected="Mes == 12" ng-value="'12'" value="12">
+                  Diciembre
+                </option>
+              </select>
+            </li>
+            <li>
+              <input
+                type="text"
+                ng-model="Year"
+                ng-enter="ConsultarSolicitudes()"
+                class="form-control"
+              />
+            </li>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <video
+              src="/intranet-2/public_html/views/Solicitud/sol-admin.mp4"
+              controls
+            ></video>
+          </div>
+          <div class="col-sm-4">
+            <h5>EN ESTE VIDEO PODRAS VER UNA INDUCCIÓN PARA ESTE MODULO</h5>
+          </div>
+        </div>
+        <ng-include
+          ng-show="View"
+          src="'/intranet-2/public_html/views/Solicitud/VSOL.html?v=2.8.19'"
+        ></ng-include>
+        <div class="row" ng-if="!View">
+          <div class="col-sm-12" ng-if="cargado">
+            <table
+              id="Solicitudes"
+              ui-jq="dataTable"
+              ui-options="simpleTableOptions"
+              class="
+                table table-hover table-condensed table-striped table-bordered
+              "
+            >
+              <thead class="bordered-blueberry">
+                <tr>
+                  <th class="text-center" style="width: 2%">ID</th>
+                  <th class="text-center" style="width: 10%">Solicitante</th>
+                  <th class="text-center" style="width: 4%">Sede</th>
+                  <th class="text-center" style="width: 8%">Servicio</th>
+                  <th class="text-center" style="width: 15%">Descripción</th>
+                  <th class="text-center" style="width: 5%">Fecha Solicitud</th>
+                  <th class="text-center" style="width: 5%">Estado</th>
+                  <th class="text-center" style="width: 5%">Opciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

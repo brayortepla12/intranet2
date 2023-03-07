@@ -1,0 +1,18 @@
+<div class="row" ng-controller="ListadoRondaVerificacionCtrl">
+    <div class="row" ng-show="!ficha">
+        <div class="col-xs-12" ng-if="cargado">
+            <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                    <tr>
+                        <th class="text-center" style="width: 3%">ID</th>
+                        <th class="text-center" style="width: 10%">SECTOR</th>
+                        <th class="text-center" style="width: 10%">FECHA</th>
+                        <th class="text-center" style="width: 10%">FECHA REG. SISTEMA</th>
+                        <th class="text-center" style="width: 10%">OPCIONES</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>

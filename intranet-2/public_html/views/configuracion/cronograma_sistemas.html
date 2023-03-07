@@ -1,0 +1,305 @@
+<style>
+    .handsontable table{
+        width:100%;
+    }
+</style>
+<div ng-controller="CronogramaServicioSistemasCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2>Cronograma de mantenimiento - SISTEMAS<small></small></h2>
+                    <div class="ibox-tools" style="transform: translateX(-50px);">
+                        <ul class="nav navbar-right" style="color:black;">
+                            <!--                            <li>
+                                                            <select class="form-control" ng-model="Mes" style="height: 35.59px !important;">
+                                                                <option ng-selected="Mes == 1" ng-value='1' value='1'> Enero</option>
+                                                                <option ng-selected="Mes == 2" ng-value='2' value='2'> Febrero</option>
+                                                                <option ng-selected="Mes == 3" ng-value='3' value='3'> Marzo</option>
+                                                                <option ng-selected="Mes == 4" ng-value='4' value='4'> Abril</option>
+                                                                <option ng-selected="Mes == 5" ng-value='5' value='5'> Mayo</option>
+                                                                <option ng-selected="Mes == 6" ng-value='6' value='6'> Junio</option>
+                                                                <option ng-selected="Mes == 7" ng-value='7' value='7'> Julio</option>
+                                                                <option ng-selected="Mes == 8" ng-value='8' value='8'> Agosto</option>
+                                                                <option ng-selected="Mes == 9" ng-value='9' value='9'> Septiembre</option>
+                                                                <option ng-selected="Mes == 10" ng-value='10' value='10'> Octubre</option>
+                                                                <option ng-selected="Mes == 11" ng-value='11' value='11'> Noviembre</option>
+                                                                <option ng-selected="Mes == 12" ng-value='12' value='12'> Diciembre</option>
+                                                            </select>
+                                                        </li>-->
+                            <li>
+                                <input type="text" ng-model='Year' class="form-control" ng-enter="ChangeVigencia()"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="margin-bottom:25px">
+                        <a class="btn btn-default" 
+                           ng-href="/Polivalente/api/CronogramaServicioSistema.php?GenerateExcel_UserId={{UserId}}" target="_blank">
+                            Descargar Excel Cronograma
+                        </a>
+                        <button class="btn btn-primary" ng-click="openExcelModal()">
+                            Cargar Excel
+                        </button>
+                    </div>
+                    <div class="row" ng-hide="SubirExcelCronograma">
+                        <div class="col-sm-12">
+                            <hot-table  settings="{colHeaders: colHeaders, contextMenu: ['row_above', 'row_below', 'remove_row'], afterChange: afterChange}"
+                                        row-headers="false"
+                                        datarows="CronogramaServicios"
+                                        height="800">
+                                <hot-column data="Servicio" title="'Servicio'" width="100" read-only></hot-column>
+                                <hot-column data="ServicioId" title="'ServicioId'" width="50" read-only></hot-column>
+                                <hot-column data="1" title="'1'" width="35" read-only></hot-column>
+                                <hot-column data="2" title="'2'" width="35" read-only></hot-column>
+                                <hot-column data="3" title="'3'" width="35" read-only></hot-column>
+                                <hot-column data="4" title="'4'" width="35" read-only></hot-column>
+                                <hot-column data="5" title="'5'" width="35" read-only></hot-column>
+                                <hot-column data="6" title="'6'" width="35" read-only></hot-column>
+                                <hot-column data="7" title="'7'" width="35" read-only></hot-column>
+                                <hot-column data="8" title="'8'" width="35" read-only></hot-column>
+                                <hot-column data="9" title="'9'" width="35" read-only></hot-column>
+                                <hot-column data="10" title="'10'" width="35" read-only></hot-column>
+                                <hot-column data="11" title="'11'" width="35" read-only></hot-column>
+                                <hot-column data="12" title="'12'" width="35" read-only></hot-column>
+                            </hot-table>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="SubirExcelCronograma">
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <p>Seleccione el archivo que desea subir</p>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <input class="btn btn-default" type="file" ngf-select="SelectFile($file)" />
+                                <input class="btn btn-default" type="button" value="Preview" ng-click="Preview()" />
+                                <input class="btn btn-default" ng-show="Tabla.length > 0" type="button" value="Subir Archivo" ng-click="SubirArchivo()" />
+                            </div>
+                            <div class="col-sm-12" ng-show="IsVisible">
+                                <hot-table  settings="{colHeaders: colHeaders, contextMenu: ['row_above', 'row_below', 'remove_row'], afterChange: afterChange}"
+                                            row-headers="false"
+                                            min-spare-rows="minSpareRows"
+                                            datarows="Tabla"
+                                            height="300"
+                                            width="1200">
+                                    <hot-column data="Servicio" title="'Servicio'" width="100" read-only></hot-column>
+                                    <hot-column data="ServicioId" title="'ServicioId'" width="50" read-only></hot-column>
+                                    <hot-column data="1" title="'1'" width="35" read-only></hot-column>
+                                    <hot-column data="2" title="'2'" width="35" read-only></hot-column>
+                                    <hot-column data="3" title="'3'" width="35" read-only></hot-column>
+                                    <hot-column data="4" title="'4'" width="35" read-only></hot-column>
+                                    <hot-column data="5" title="'5'" width="35" read-only></hot-column>
+                                    <hot-column data="6" title="'6'" width="35" read-only></hot-column>
+                                    <hot-column data="7" title="'7'" width="35" read-only></hot-column>
+                                    <hot-column data="8" title="'8'" width="35" read-only></hot-column>
+                                    <hot-column data="9" title="'9'" width="35" read-only></hot-column>
+                                    <hot-column data="10" title="'10'" width="35" read-only></hot-column>
+                                    <hot-column data="11" title="'11'" width="35" read-only></hot-column>
+                                    <hot-column data="12" title="'12'" width="35" read-only></hot-column>
+                                </hot-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    <div class="col-sm-12">
+            <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Sede</th>
+                        <th class="text-center">Servicio</th>
+                        <th class="text-center">Frecuencia Mantenimiento</th>
+                        <th class="text-center">Mes Inicial</th>
+                        <th class="text-center">Vigencia</th>
+                        <th class="text-center">Observaciones</th>
+                        <th class="text-center">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in CronogramaServicios" ng-include="getTemplate(item)">
+                <script type="text/ng-template" id="display">
+                    <td>
+                    {{item.Sede}}
+                    </td>
+                    <td>
+                    {{item.Servicio}}
+                    </td>
+                    <td>
+                    {{item.FrecuenciaMantenimiento}}
+                    </td>
+                    <td>
+                    {{item.MesInicial}}
+                    </td>
+                    <td>
+                    {{item.Vigencia}}
+                    </td>
+                    <td>
+                    {{item.Observaciones}}
+                    </td>
+                    <td>
+                    <center>
+                    <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                    <a class="btn btn-primary btn-xs icon-only white" ng-click="ListadoEquipos(item.CronogramaServicioId)" tooltip-placement="bottom" tooltip="Listado Equipos"><i class="fa fa-list"></i></a>
+                    </center>
+                    </td>
+                </script>
+                <script type="text/ng-template" id="edit">
+                    <td>
+                    <select class="form-control" ng-model="select.SedeId" name="SedeId"  ng-change="ChangeSede()"
+                    required>
+                    <option value="">--</option>
+                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == select.SedeId" ng-value='{{s.SedeId}}' 
+                    value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                    </select>
+                    </td>
+                    <td>
+                    <select class="form-control" ng-model="select.ServicioId" name="ServicioId"
+                    required>
+                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId == select.ServicioId" ng-value='{{s.ServicioId}}' 
+                    value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                    </select>
+                    </td>
+                    <td>
+                    <select class="form-control" ng-model="select.FrecuenciaMantenimientoId" name="FrecuenciaMantenimientoId"
+                    required>
+                    <option ng-repeat="s in Frecuencias track by $index" ng-selected="s.FrecuenciaMantenimientoId == select.FrecuenciaMantenimientoId" ng-value='{{s.FrecuenciaMantenimientoId}}' 
+                    value='{{s.FrecuenciaMantenimientoId}}'> {{s.Nombre}}</option>
+                    </select>
+                    </td>
+                    <td>
+                    <select class="form-control" ng-model="select.MesInicial" name="MesInicial">
+                    <option ng-selected="select.MesInicial == 1">1</option>
+                    <option ng-selected="select.MesInicial == 2">2</option>
+                    <option ng-selected="select.MesInicial == 3">3</option>
+                    <option ng-selected="select.MesInicial == 4">4</option>
+                    <option ng-selected="select.MesInicial == 5">5</option>
+                    <option ng-selected="select.MesInicial == 6">6</option>
+                    <option ng-selected="select.MesInicial == 7">7</option>
+                    <option ng-selected="select.MesInicial == 8">8</option>
+                    <option ng-selected="select.MesInicial == 9">9</option>
+                    <option ng-selected="select.MesInicial == 10">10</option>
+                    <option ng-selected="select.MesInicial == 11">11</option>
+                    <option ng-selected="select.MesInicial == 12">12</option>
+                    </select>
+                    </td>
+                    <td>
+                    <input type="number" min="{{AnnoActual}}" class="form-control" ng-model="select.Vigencia" name="Vigencia"/>
+                    </td>
+                    <td>
+                    <textarea ng-model="select.Observaciones"></textarea>
+                    </td>
+                    <td>
+                    <center>
+                    <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                    <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                    </center>
+                    </td>
+                </script>
+                </tr>
+                </tbody>
+            </table>
+        </div>-->
+    <!-- Modal -->
+    <div class="modal fade" id="CronogramaServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Cronograma por servicio</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.SedeId.$valid, 'has-error': c.SedeId.$invalid}">
+                                    <label for="SedeId">Sede</label>
+                                    <select class="form-control" ng-model="CronogramaServicio.SedeId" name="SedeId"  ng-change="ChangeSede()"
+                                            required>
+                                        <option value="">--</option>
+                                        <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == CronogramaServicio.SedeId" ng-value='{{s.SedeId}}' 
+                                                value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.ServicioId.$valid, 'has-error': c.ServicioId.$invalid}">
+                                    <label for="ServicioId">Servicio</label>
+                                    <select class="form-control" ng-model="CronogramaServicio.ServicioId" name="ServicioId"
+                                            required>
+                                        <option value="">--</option>
+                                        <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId == CronogramaServicio.ServicioId" ng-value='{{s.ServicioId}}' 
+                                                value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.FrecuenciaMantenimientoId.$valid, 'has-error': c.FrecuenciaMantenimientoId.$invalid}">
+                                    <label for="FrecuenciaMantenimientoId">Frecuencia Mantenimiento</label>
+                                    <select class="form-control" ng-model="CronogramaServicio.FrecuenciaMantenimientoId" name="FrecuenciaMantenimientoId"
+                                            required>
+                                        <option value="">--</option>
+                                        <option ng-repeat="s in Frecuencias track by $index" ng-selected="s.FrecuenciaMantenimientoId == CronogramaServicio.FrecuenciaMantenimientoId" ng-value='{{s.FrecuenciaMantenimientoId}}' 
+                                                value='{{s.FrecuenciaMantenimientoId}}'> {{s.Nombre}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.MesInicial.$valid, 'has-error': c.MesInicial.$invalid}">
+                                    <label for="MesInicial">Mes Inicial</label>
+                                    <select class="form-control" ng-model="CronogramaServicio.MesInicial" name="MesInicial"
+                                            required>
+                                        <option value="">--</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                        <option>11</option>
+                                        <option>12</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div ng-class="{'has-success': c.Vigencia.$valid, 'has-error': c.Vigencia.$invalid}">
+                                    <label for="Vigencia">Vigencia</label>
+                                    <input type="number" min="{{AnnoActual}}" required class="form-control" id="Observaciones" ng-model="CronogramaServicio.Vigencia"  name="Vigencia"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div ng-class="{'has-success': c.Observaciones.$valid, 'has-error': c.Observaciones.$invalid}">
+                                    <label for="Observaciones">Observaciones</label>
+                                    <textarea class="form-control" id="Observaciones" ng-model="CronogramaServicio.Observaciones" rows="5"  name="Observaciones"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarCronogramaServicio()" ng-disabled="c.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="CronogramaServicio = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

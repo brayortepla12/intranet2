@@ -1,0 +1,84 @@
+<style>
+    @media print {
+        @Page{
+            margin: 12pt 0pt 0pt 0pt;
+        }
+        .Page { 
+            position: relative;
+            display: block;
+            page-break-after: always;
+            z-index: 0;
+        }
+        .break-after {
+            display: block;
+            page-break-after: always;
+            position: relative;
+            top: 0pt;
+            bottom: 0pt;
+        }
+        .Derecha{
+            float: right;
+            width: 47%;
+        }
+        .Izquierda{
+            float: left;
+            width: 47%;
+        }
+
+    }
+    .Derecha{
+        float: right;
+        width: 47%;
+    }
+    .Izquierda{
+        float: left;
+        width: 47%;
+    }
+
+</style>
+
+<div class="row" ng-controller="GenerarQRSST">
+    <div class="row" style="margin-bottom: 30px">
+        <div class="col-xs-7 pull-left">
+            <div class="col-xs-5" ng-show="Sedes.length > 1">
+                <label>
+                    Sede
+                </label>
+                <select class="form-control" ng-model="SedeId" ng-change="ChangeServicios()" name="Servicio" required>
+                    <option>--</option>
+                    <option ng-repeat="s in Sedes| orderBy : 'Nombre' track by $index"  ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <label>
+                    Servicio
+                </label>
+                <select class="form-control" ng-model="ServicioId" name="Servicio" ng-change="BuscarHojaVidas()" required>
+                    <option>--</option>
+                    <option ng-repeat="s in Servicios| orderBy : 'Nombre' track by $index"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>
+            <div class="col-xs-2 pull-left" style="text-align: right;margin-top: 25px">
+                <button class="btn btn-primary" ng-click="Imprimir()">Imprimir <i class="fa fa-print "/></button>
+            </div>
+        </div>
+    </div>
+    <div id="QrCode">
+        <div ng-class="{'break-after': ($index + 1) % 2 === 0}" ng-repeat="h in HojasVida">
+            <div class="col-sm-12" ng-class="{'Derecha': ($index + 1) % 2 === 0, 'Izquierda': ($index + 1) % 2 !== 0}">
+                <div style="float: left">
+                    <qr correction-level="'M'" size="80" text="'Sst_' + h.HojaVidaId.toString()" image="true"></qr>
+                    <div style="text-align: center"><strong>{{"Sst_" + h.HojaVidaId}}</strong></div>
+                </div>
+                <div style="writing-mode: tb-rl; margin-left: -30px;float: left;width: 50px;">
+                    <strong>CIELD</strong>
+                </div>
+                <div style="float: left">
+                    <img src="/intranet-2/public_html/image/logo_circular.png" width="75" alt=""/>
+                    <div style="text-align: center"><strong>{{h.NSerial.slice(-10)}}</strong></div>
+                </div>
+            </div>
+            <div ng-if="($index + 1) % 2 === 0" style="clear: both"></div>
+        </div>
+    </div>
+</div>

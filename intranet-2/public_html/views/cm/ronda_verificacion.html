@@ -1,0 +1,78 @@
+<style>
+    md-event-calendar-month{
+        height: auto !important;
+    }
+</style>
+<div class="row" ng-controller="RondaVerificacionCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Calendario de rondas de verificación<small></small></h2>
+<!--            <div class="filter">
+                <div class="inner-addon left-addon" style="width: 200px;float: right">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <input type="text" ng-model="txt" class="form-control">
+                </div>
+            </div>-->
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <h1 style="text-align: center">{{calendarTitle}}</h1>
+            <md-event-calendar
+                ng-model="selected"
+                md-events="events"
+                md-event-click="eventClicked($selectedEvent)"
+                md-label="title"
+                md-show-create-link="true"
+                md-create-event-click="eventCreate($date)"
+                auto-height=""
+                class="md-primary">
+                <md-event-calendar-header class="md-center">
+                    <md-event-calendar-prev></md-event-calendar-prev>
+                    <md-event-calendar-title></md-event-calendar-title>
+                    <md-event-calendar-next></md-event-calendar-next>
+                </md-event-calendar-header>
+            </md-event-calendar>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="RondasModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Rondas por medicamentos</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Ronda</th>
+                            <th>Opciones</th>
+                        </tr>
+                        <tr ng-repeat="r in RondasSeleccionadas">
+                            <td>{{r.TipoRonda}} N° {{r.RondaVerificacionId}}</td>
+                            <td>
+                                <button class="btn btn-primary" ng-repeat="tm in TipoMedicamentos" ng-click="PreviewRondaVerificacionId(tm.TipoMedicamentoId, r.RondaVerificacionId, r.TipoRonda)">Previsualizar Excel {{tm.Nombre}}</button>
+                                <button class="btn btn-default" ng-repeat="tm in TipoMedicamentos" ng-show="r.Editable" ng-click="UpdateRondaVerificacionId(tm.TipoMedicamentoId, r.RondaVerificacionId, r.TipoRonda)">Actualizar {{tm.Nombre}}</button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer" ng-show="RondasSeleccionadas[0].Editable || !RondasSeleccionadas[0]">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GotoCreate()">Crear Ronda</button>
+                        <button class="btn btn-primary" ng-click="GotoCreateLoteado()">Crear Loteados</button>
+                        <button class="btn btn-info" ng-click="GotoRotular()">Reenvasados</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

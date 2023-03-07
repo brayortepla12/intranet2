@@ -1,0 +1,343 @@
+<style>
+    @media print{
+        @page {size: landscape}
+        th{
+            z-index: -1;
+            font-size: 0.93em;
+        }
+        td{
+            padding: 3px !important;
+            font-size: 0.93em;
+        }
+        thead{
+            font-size: 0.93em !important;
+        }
+        @media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 80%; } }
+
+    }
+    .Derecha{
+        float: right;
+        width: 440px;
+    }
+    .Izquierda{
+        float: left;
+        width: 440px;
+    }
+
+</style>
+<div class="row" ng-controller="RotularMedicamentoCtrl">
+    <div class="col-xs-12" style="margin-bottom: 25px;">
+        <div class="col-xs-1">
+            <label>
+                Tipo de Medicamento:
+            </label>
+        </div>
+        <div class="col-xs-3">
+            <select class="form-control" ng-model="OrdenRR.TipoMedicamento" ng-change="ChangeTipoMedicamento()" name="TipoMedicamento" required>
+                <option ng-selected="">--</option>
+                <option ng-selected="OrdenRR.TipoMedicamento === 'Liquidos'" value="Liquidos">Liquidos</option>
+                <option ng-selected="OrdenRR.TipoMedicamento === 'Solidos'" value="Solidos">Solidos</option>
+            </select>
+        </div>
+    </div>
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <!--<button ng-show="!HojaVidaId" class="btn btn-default" ng-click="GuardarBorrador()">Guardar Borrador</button>-->
+        <button ng-hide="OrdenRRId" class="btn btn-success" ng-click="GuardarPreOrdenRR()">Guardar</button>
+        <button ng-show="OrdenRR.OrdenRRId" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+        <button ng-show="OrdenRR.OrdenRRId" class="btn btn-warning" ng-click="GenerarEtiquetas()">Generar Etiquetas</button>
+    </div>
+    <div id="TablaPreviewExcel">
+        <div class="row">
+            <div class="col-sm-4 text-center">
+                <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cld.png" width="200"/>
+            </div>
+            <div class="col-sm-4 text-center">
+                <h5>
+                    <strong>ORDEN DE PRODUCCIÓN DE REEMPAQUE Y REENVASE DE MEDICAMENTOS NO ESTERILES</strong>
+                </h5>
+                <p>
+                    GC-SF-GB-F-15 Ver. 01 Pagina 1 de 1 <br/>
+                    Emision: 08-07-2014 Vigencia:15-05-2017
+                </p>
+            </div>
+        </div>
+
+        <form role="form" name="Datos" novalidate>
+            <table class="table table-bordered table-striped table-hover table-responsive"   id="TablaCalibracion" style="font-size: 0.93em;">
+                <thead>
+                    <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                        <th colspan="2" style="font-size: 0.9em;">ORDEN DE PRODUCCIÓN</th>
+                        <th colspan="2" style="font-size: 0.9em;">REM {{OrdenRR.Fecha| date : 'ddMMyy'}}-{{OrdenRR.NumeroEnMes}}</th>
+                        <th style="font-size: 0.9em;">FECHA</th>
+                        <th colspan="4" style="font-size: 0.9em;">{{OrdenRR.Fecha}}</th>
+                        <th style="font-size: 0.9em;">TIPO DE MEDICAMENTO</th>
+                        <th colspan="4" style="font-size: 0.9em;">{{OrdenRR.TipoMedicamento}}</th>
+                    </tr>
+                    <tr style="text-align: center !important;background-color: rgba(0,0,0,0.2) !important;">
+                        <th rowspan="2" style="font-size: 0.9em;">N°</th>
+                        <th rowspan="2" style="font-size: 0.9em;">Medicamento (DCI)</th>
+                        <th rowspan="2" style="font-size: 0.9em;">Forma Farmacéutica</th>
+                        <th rowspan="2" style="font-size: 0.9em;">Dosis o Concentración Inicial</th>
+                        <th rowspan="2" style="font-size: 0.9em;">Laboratorio</th>
+                        <th rowspan="2" style="font-size: 0.9em;">Reg. Invima</th>
+                        <th colspan="2" style="font-size: 0.9em;">Lote</th>
+                        <th colspan="2" style="font-size: 0.9em;">Fecha de Vencimiento</th>
+                        <th rowspan="2" style="font-size: 0.9em;">Dosis o Concentracion final</th>
+                        <th rowspan="2" colspan="2" style="font-size: 0.9em;">Cantidad a reempacar o reenvasar</th>
+                        <th rowspan="2" class="no-print" style="font-size: 0.9em;">Dispositivo Medico</th>
+                    </tr>
+                    <tr style="text-align: center !important;;background-color: rgba(0,0,0,0.2) !important;">
+                        <th style="font-size: 0.9em;">Fabricante</th>
+                        <th style="font-size: 0.9em;">Producto terminado</th>
+                        <th style="font-size: 0.9em;">Fabricante</th>
+                        <th style="font-size: 0.9em;">Producto terminado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in OrdenRR.DetalleOrdenRR track by $index" style="text-align: center;">
+                        <td>{{d.Item}}</td>
+                        <td>{{d.Medicamento}}</td>
+                        <td>{{d.FormaFarmaceutica}}</td>
+                        <td>{{d.Concentracion}}</td>
+                        <td>{{d.Laboratorio}}</td>
+                        <td>{{d.RegInvima}}</td>
+                        <td>{{d.LoteFabricante}}</td>
+                        <td>{{d.LotePTerminado}}</td>
+                        <td>{{d.FechaVencimientoFabricante}}</td>
+                        <td>{{d.FechaVencimiento}}</td>
+                        <td>{{d.Concentracion}}</td>
+                        <td colspan="2">{{d.Cantidad}}</td>
+                        <td colspan="2" class="no-print">{{d.DispositivoMedico}}</td>
+                    </tr>
+                    <tr ng-repeat="d in PreOrdenRR track by $index" style="text-align: center;">
+                        <td>{{d.Item}}</td>
+                        <td>{{d.Medicamento}}</td>
+                        <td>{{d.FormaFarmaceutica}}</td>
+                        <td>{{d.Concentracion}}</td>
+                        <td>{{d.Laboratorio}}</td>
+                        <td>{{d.RegInvima}}</td>
+                        <td>{{d.LoteFabricante}}</td>
+                        <td>{{d.LotePTerminado}}</td>
+                        <td>{{d.FechaVencimientoFabricante}}</td>
+                        <td>{{d.FechaVencimiento}}</td>
+                        <td>{{d.Concentracion}}</td>
+                        <td colspan="2">{{d.Cantidad}}</td>
+                        <td colspan="2">{{d.DispositivoMedico}}</td>
+                    </tr>
+                    <tr class="no-print" ng-hide='OrdenRR.AFarmacia == true && OrdenRR.AProduccion == true && OrdenRR.DireccionTecnica == true'>
+                        <td>{{Item}}</td>
+                        <td ng-class="{'has-success': Datos.MedicamentoId.$valid, 'has-error': Datos.MedicamentoId.$invalid}">
+                            <select ng-options="m.MedicamentoId as m.Nombre for m in Medicamentos" ng-change="ChangeMedicamento()" class="form-control" ng-model="DetalleOrdenRR.MedicamentoId" name="MedicamentoId" required>
+                                <option value="">--</option>
+                            </select>
+                        </td>
+                        <td>
+                            {{DetalleOrdenRR.FormaFarmaceutica}}
+                        </td>
+                        <td>
+                            {{DetalleOrdenRR.Concentracion}}
+                        </td>
+                        <td>
+                            {{DetalleOrdenRR.Laboratorio}}
+                        </td>
+                        <td>
+                            {{DetalleOrdenRR.RegInvima}}
+                        </td>
+                        <td ng-class="{'has-success': Datos.LoteFabricante.$valid, 'has-error': Datos.LoteFabricante.$invalid}">
+                            <input type="text" ng-model="DetalleOrdenRR.LoteFabricante" name="LoteFabricante" 
+                                   class="form-control" ng-enter="CreateDetalleOrdenRRMedicamento()" required>
+                        </td>
+                        <td ng-class="{'has-success': Datos.LotePTerminado.$valid, 'has-error': Datos.LotePTerminado.$invalid}">
+                            <input type="text" ng-model="DetalleOrdenRR.LotePTerminado" name="LotePTerminado" 
+                                   class="form-control" ng-enter="CreateDetalleOrdenRRMedicamento()" required>
+                        </td>
+                        <td ng-class="{'has-success': Datos.FechaVencimientoFabricante.$valid, 'has-error': Datos.FechaVencimientoFabricante.$invalid}">
+                            <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')"  ng-model="DetalleOrdenRR.FechaVencimientoFabricante" 
+                                   name="FechaVencimientoFabricante" 
+                                   class="form-control" ng-enter="CreateDetalleOrdenRRMedicamento()" required>
+                        </td>
+                        <td ng-class="{'has-success': Datos.FechaVencimiento.$valid, 'has-error': Datos.FechaVencimiento.$invalid}">
+                            <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')"  ng-model="DetalleOrdenRR.FechaVencimiento" 
+                                   name="FechaVencimiento" 
+                                   class="form-control" ng-enter="CreateDetalleOrdenRRMedicamento()" required>
+                        </td>
+                        <td ng-class="{'has-success': Datos.Concentracion.$valid, 'has-error': Datos.Concentracion.$invalid}">
+                            <input type="number" ng-model="DetalleOrdenRR.Concentracion" step=".01"
+                                   name="Concentracion" 
+                                   class="form-control" ng-enter="CreateDetalleOrdenRRMedicamento()" required>
+                        </td>
+                        <td ng-class="{'has-success': Datos.Cantidad.$valid, 'has-error': Datos.Cantidad.$invalid}" colspan="2">
+                            <input type="number" ng-model="DetalleOrdenRR.Cantidad" 
+                                   name="Cantidad" 
+                                   class="form-control" ng-enter="CreateDetalleOrdenRRMedicamento()" required>
+                        </td>
+                        <td>
+                            <div angucomplete-alt id="ex10"
+                                 placeholder="Dispositivo Medico"
+                                 maxlength="200"
+                                 pause="200"
+                                 selected-object="DetalleOrdenRR.Vehiculo"
+                                 local-data="Dispositivos"
+                                 search-fields="Nombre"
+                                 title-field="Nombre"
+                                 minlength="1"
+                                 input-class="form-control form-control-small"
+                                 match-class="highlight"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">DIRECCIÓN TÉCNICA:</th>
+                        <th colspan="2">{{OrdenRR.NombreDireccionTecnica}} <img ng-src="{{OrdenRR.FirmaDT}}" width="50" alt=""></th>
+                        <th colspan="4">APROBACIÓN DE LA PRODUCCIÓN:</th>
+                        <th colspan="3" ng-show="OrdenRR.AProduccion == true">{{OrdenRR.NombreAProduccion}} <img ng-src="{{OrdenRR.FirmaAP}}" width="50" alt=""></th>
+                        <th> 
+                            <input type="checkbox" class="form-check-input" ng-disabled='UsuarioId != OrdenRR.AProduccionId || OrdenRR.AProduccion == true' ng-change="AprobarProduccion()" ng-model='OrdenRR.AProduccion' 
+                                   ng-checked="OrdenRR.AProduccion == true" id="Si">
+                            <label class="form-check-label" for="Si">SI</label>
+                        </th>
+                        <th colspan="2"> 
+                            <input type="checkbox" class="form-check-input" ng-checked="!OrdenRR.AProduccion == true" ng-disabled='UsuarioId != OrdenRR.AProduccionId || OrdenRR.AProduccion == true' id="No">
+                            <label class="form-check-label" for="No">NO</label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">AUXILIAR DE FARMACIA:</th>
+                        <th colspan="14" ng-show="OrdenRR.AFarmacia == true">{{OrdenRR.NombreAFarmacia}} <img ng-src="{{OrdenRR.FirmaAF}}" width="50" alt=""></th>
+                        <th colspan="15" ng-hide="OrdenRR.AFarmacia == true">
+                            <button class="btn btn-primary" ng-click='AprobarAFarmacia()'>Firmar</button>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="row text-center" id="Footer" style="font-size: 0.93em">
+            <div class="col-xs-3">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaElaboro_rv}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">ELABORÓ</strong><br>
+                    {{Encabezado.Elaboro_rv}}<br>
+                    {{Encabezado.CargoElaboro_rv}}
+                </p>
+            </div>
+            <div class="col-xs-3">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaReviso_rv}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                    {{Encabezado.Reviso_rv}}<br>
+                    {{Encabezado.CargoReviso_rv}}
+                </p>
+            </div>
+            <div class="col-xs-3">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaRevisoEstructural_rv}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                    {{Encabezado.RevisoEstructural_rv}}<br>
+                    {{Encabezado.CargoRevisoEstructural_rv}}
+                </p>
+            </div>
+            <div class="col-xs-3">
+                <p>
+                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                    <strong style="font-size: 1em">APROBÓ</strong><br>
+                    {{Encabezado.Aprobo}}<br>
+                    {{Encabezado.CargoAprobo}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="EtiquetasModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Generar Etiquetas</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center col-sm-12" style="margin-bottom: 5px;">
+                        <button class="btn btn-primary" ng-click="ImprimirEtiquetas()">Imprimir</button>
+                    </div>
+                    <div id="Etiquetas">
+                        <div ng-repeat="listado in Etiquetas">
+                            <div class="break-after">
+                                <div class="row" style="width: 1000px;">
+                                    <div ng-class="{'Derecha': ($index + 1) % 2 === 0, 'Izquierda': ($index + 1) % 2 !== 0}" 
+                                         ng-repeat="d in listado track by $index">
+                                        <div>
+                                            <table class="table table-bordered" style="text-align: center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cld.png" width="100"/>
+                                                        </th>
+                                                        <td style="font-size: 1.8em">
+                                                            {{d.Medicamento}}
+                                                        </td>
+                                                        <td colspan="2" style="font-size: 1.8em">
+                                                            {{d.Concentracion}} mg/mL
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="font-size: 1.2em">Lote:</td>
+                                                        <td style="font-size: 1.3em">{{d.LotePTerminado}}</td>
+                                                        <td style="font-size: 1em">Forma Farmacéutica:</td>
+                                                        <td style="font-size: 1.1em">{{d.FormaFarmaceutica}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" style="font-size: 1.2em">Reg. INVIMA:</td>
+                                                        <td colspan="2" style="font-size: 1.3em">{{d.RegInvima}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" style="font-size: 1.3em">Fecha Lte de uso a 25°C:</td>
+                                                        <td colspan="2" style="font-size: 1.3em">{{d.FechaLimiteUso20_25}} HORAS</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size: 1em">Aux. Producción:</td>
+                                                        <td style="font-size: 0.85em">{{OrdenRR.NombreAFarmacia}}</td>
+                                                        <td style="font-size: 1em">Liberó:</td>
+                                                        <td style="font-size: 0.85em">{{OrdenRR.NombreAProduccion}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size: 1em">Via de Administración:</td>
+                                                        <td style="font-size: 1em">{{d.ViaAdministracion}}</td>
+                                                        <td style="font-size: 1em">Laboratorio:</td>
+                                                        <td style="font-size: 1.1em">{{d.Laboratorio}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size: 1em">Rótulo Elaborado:</td>
+                                                        <td style="font-size: 0.85em">{{OrdenRR.NombreDireccionTecnica}}</td>
+                                                        <td style="font-size: 1.2em" colspan="2">{{OrdenRR.Fecha}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td  style="font-size: 1.8em" colspan="4">{{d.DispositivoMedico}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-primary" ng-click="ImprimirEtiquetas()">Imprimir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="col-sm-12 mb-3">
+  <button class="btn btn-primary" ng-if="!NHD && !UHD" ng-click="NewHD()">Nueva HD</button>
+  <button class="btn btn-default" ng-if="NHD || UHD && !NP && !MP && !NC && !BP" ng-click="Atras()">Atras</button>
+  <button class="btn btn-secondary" ng-if="UHD && !PRINT && (!NP && !MP && !BP && !NC)" ng-click="Imprimir()">Imprimir
+    HD</button>
+  <button class="btn btn-default" ng-if="UHD && (NP || MP || NC || BP)" ng-click="AtrasUHD()">Atras</button>
+  <button class="btn btn-success" ng-if="NHD" ng-click="CrearHD()">
+    <span ng-hide="IsLoading">Crear HD</span>
+    <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+  </button>
+  <button class="btn btn-success" ng-if="NP && !UHD.CDesayuno" ng-click="AddPaciente()">
+    <span ng-hide="IsLoading">Agregar Pacientes</span>
+    <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+  </button>
+  <button class="btn btn-success" ng-if="BP && !UHD.CDesayuno" ng-click="AddPaciente_BP()">
+    <span ng-hide="IsLoading">Agregar Pacientes</span>
+    <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+  </button>
+  <button class="btn btn-success" ng-if="MP && !UHD.CDesayuno" ng-click="UpdatePaciente()">
+    <span ng-hide="IsLoading">Actualizar Pacientes</span>
+    <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+  </button>
+  <button class="btn btn-success" ng-if="NC" ng-click="SolicitarComida()">
+    <span ng-hide="IsLoading">Solicitar comida</span>
+    <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+  </button>
+  <button class="btn btn-warning" ng-if="UHD && !NP && !MP && !NC && !PRINT && !BP" ng-click="NuevaComida()">
+    Nueva Comida
+  </button>
+  <button class="btn btn-info" ng-if="UHD && !NP && !MP && !UHD.CDesayuno && !PRINT && !BP && !NC" ng-click="NuevoPaciente()">
+    Nuevo Paciente
+  </button>
+  <button class="btn btn-warning" ng-if="UHD && !NP && !MP && !UHD.CDesayuno && !PRINT && !BP && !NC"
+    ng-click="BuscarPaciente()">
+    Buscar Paciente
+  </button>
+  <button class="btn btn-secondary" ng-if="UHD && !NP && !MP && !UHD.CDesayuno && !PRINT && !BP && !NC"
+    ng-click="ModificarPaciente()">
+    Modificar Paciente
+  </button>
+</div>

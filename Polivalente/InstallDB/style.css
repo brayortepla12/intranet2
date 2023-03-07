@@ -1,0 +1,508 @@
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:900);
+	html {
+	  background: #b9cad2;
+	}
+
+	body {
+	  padding-top: 50px;
+	}
+
+	a {
+	  text-decoration: none;
+	  color: #333;
+	}
+
+	img {
+	  max-width: 100%;
+	  height: auto;
+	  vertical-align: sub;
+	}
+
+	.box {
+	  margin: 0 auto;
+	  max-width: 600px;
+	  background: #fff;
+	  border-radius: 20px;
+	  padding: 30px;
+	  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+	  text-align: center;
+	}
+
+	.icon {
+	  width: 80px;
+	  height: 80px;
+	  display: inline-block;
+	  border-radius: 50%;
+	  margin: 20px;
+	}
+
+	.Intranet{
+	  background: url("http://192.168.8.125:8080/Polivalente/public_html/image/logo.png");
+	  background-position: center center;
+	  opacity: 0.7;
+	  background-size: 80px 80px;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	  margin-bottom: 10px;
+	}
+
+	.Polivalente {
+	  background: url("http://192.168.8.125:8080/Polivalente/public_html/image/logo2.png");
+	  background-position: center center;
+	  opacity: 0.7;
+	  background-size: 80px 80px;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	  margin-bottom: 10px;
+	}
+	/*.Polivalente:before {
+	  content: "";
+	  position: absolute;
+	  bottom: 6px;
+	  left: 17px;
+	  width: 0;
+	  height: 0;
+	  border: 6px solid transparent;
+	  border-top: 15px solid rgba(0, 0, 0, 0.2);
+	  transform: rotate(15deg);
+	}*/
+	.Polivalente:hover, .Intranet:hover {
+	  /*background: #37c75c;*/
+	  opacity: 1;
+	}
+	.bubble {
+	  transform: translate(0px,80px) !important;
+	}
+
+	.calender {
+	  background: #53c0ff;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	}
+	.calender:hover {
+	  background: #3ab7ff;
+	}
+	.calender .day {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  margin: -20px 0 0 -25px;
+	  width: 50px;
+	  height: 30px;
+	  background: #fff;
+	  display: block;
+	  border-radius: 5px;
+	  border-top: 10px solid #eb4d4d;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+	  text-align: center;
+	  line-height: 30px;
+	  font-family: "Titillium Web", sans-serif;
+	  font-weight: 900;
+	  font-size: 20px;
+	}
+	.calender .day:before {
+	  content: attr(data-prev);
+	  position: absolute;
+	  left: 0;
+	  color: #ddd;
+	}
+	.calender .day:after {
+	  content: attr(data-next);
+	  position: absolute;
+	  right: 0;
+	  color: #ddd;
+	}
+
+	.photos {
+	  background: url("http://192.168.8.125:8080/Biomedico/public_html/image/logo.png");
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	  opacity: 0.7;
+	  background-size: 80px 80px;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	  margin-bottom: 10px;
+	}
+	.photos:hover {
+	  opacity:1;
+	}
+	/*.photos:hover {
+	  background: #fe56ad;
+	}
+	.photos:before {
+	  content: "";
+	  position: absolute;
+	  z-index: 2;
+	  top: 50%;
+	  left: 50%;
+	  margin: -20px 0 0 -25px;
+	  width: 40px;
+	  height: 30px;
+	  background: #fff;
+	  display: block;
+	  border-radius: 5px;
+	  border: 5px solid #fff;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+	  transform: rotate(15deg);
+	  opacity: 0.6;
+	}
+	.photos:after {
+	  content: "";
+	  position: absolute;
+	  z-index: 1;
+	  top: 50%;
+	  left: 50%;
+	  margin: -20px 0 0 -25px;
+	  width: 40px;
+	  height: 30px;
+	  background: #fff;
+	  display: block;
+	  border-radius: 5px;
+	  border: 5px solid #fff;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+	  transform: rotate(35deg);
+	  opacity: 0.2;
+	}
+	.photos .photo {
+	  position: absolute;
+	  z-index: 3;
+	  top: 50%;
+	  left: 50%;
+	  margin: -20px 0 0 -25px;
+	  width: 40px;
+	  background: #fff;
+	  display: block;
+	  border-radius: 5px;
+	  border: 5px solid #fff;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+	}*/
+
+	.camera {
+	  background: #f9c330;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	}
+	.camera:hover {
+	  background: #f8bc17;
+	}
+	.camera .cutaway {
+	  position: absolute;
+	  z-index: 3;
+	  top: 0;
+	  right: 0;
+	  width: 25px;
+	  height: 25px;
+	  background: #fff;
+	  display: block;
+	  border-radius: 50%;
+	  box-shadow: -2px 2px 0 rgba(0, 0, 0, 0.1), -2px 2px 15px rgba(255, 255, 255, 0.9), -4px 4px 25px rgba(255, 255, 255, 0.9);
+	}
+	.camera .lens {
+	  position: absolute;
+	  z-index: 3;
+	  top: 50%;
+	  left: 50%;
+	  margin: -19px 0 0 -19px;
+	  width: 26px;
+	  height: 26px;
+	  display: block;
+	  background: #fff;
+	  border-radius: 50%;
+	  border: 6px solid #fff;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+	}
+	.camera .lens .inner {
+	  width: 26px;
+	  height: 26px;
+	  display: block;
+	  background: #606060;
+	  border-radius: 50%;
+	  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.8);
+	}
+	.camera .lens .center {
+	  position: relative;
+	  width: 16px;
+	  height: 16px;
+	  display: block;
+	  background: #333;
+	  border-radius: 50%;
+	  top: 5px;
+	  left: 5px;
+	  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.8);
+	}
+	.camera .lens .center:before {
+	  content: "";
+	  position: absolute;
+	  left: -5px;
+	  top: -4px;
+	  transform: rotate(45deg);
+	  border: 12px solid transparent;
+	  border-left: 12px solid rgba(255, 255, 255, 0.2);
+	}
+	.camera .lens .center:after {
+	  content: "";
+	  display: block;
+	  width: 7px;
+	  height: 7px;
+	  border-radius: 50%;
+	  background: #333;
+	  position: absolute;
+	  right: 5px;
+	  top: 5px;
+	}
+
+	.video {
+	  background: #495e6d;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	  overflow: hidden;
+	}
+	.video:hover {
+	  background: #3f515e;
+	  overflow: hidden;
+	}
+	.video .film {
+	  width: 38px;
+	  height: 80px;
+	  padding: 0 2px;
+	  position: relative;
+	  left: 16px;
+	  background: #d6e4ee;
+	  border-right: 4px solid #2c3831;
+	  border-left: 4px solid #2c3831;
+	  display: block;
+	}
+	.video .border {
+	  width: 0;
+	  height: 80px;
+	  border-left: 2px dashed #4f687a;
+	  display: block;
+	  float: left;
+	}
+	.video .strip {
+	  width: 29px;
+	  height: 45px;
+	  margin: -22px 2px 0;
+	  background: #8193a0;
+	  display: block;
+	  float: left;
+	  position: relative;
+	  top: 50%;
+	  border-radius: 5px;
+	  box-shadow: inset 0 -3px 0 #4f687a;
+	}
+	.video .strip:before {
+	  content: "";
+	  width: 29px;
+	  height: 45px;
+	  background: #8193a0;
+	  display: block;
+	  float: left;
+	  position: absolute;
+	  top: -50px;
+	  right: 0;
+	  border-radius: 5px;
+	  box-shadow: inset 0 -3px 0 #4f687a;
+	}
+	.video .strip:after {
+	  content: "";
+	  width: 29px;
+	  height: 45px;
+	  background: #8193a0;
+	  display: block;
+	  float: left;
+	  position: absolute;
+	  bottom: -50px;
+	  right: 0;
+	  border-radius: 5px;
+	  box-shadow: inset 0 -3px 0 #4f687a;
+	}
+
+	.map {
+	  background: #ff8048;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	}
+	.map:hover {
+	  background: #ff6e2f;
+	}
+	.map:before {
+	  content: "";
+	  width: 0;
+	  height: 0;
+	  border: 25px solid transparent;
+	  border-left: 15px solid #ffe7d8;
+	  position: absolute;
+	  bottom: 12px;
+	  left: 50%;
+	  margin: 0 0 0;
+	  z-index: 1;
+	  /* -webkit-filter: drop-shadow(1px 2px 0 rgba(0,0,0,0.2)); */
+	}
+	.map:after {
+	  content: "";
+	  width: 0;
+	  height: 0;
+	  border: 25px solid transparent;
+	  border-right: 15px solid #fff;
+	  position: absolute;
+	  bottom: 12px;
+	  left: 50%;
+	  margin: 0 0 0 -40px;
+	  z-index: 1;
+	  /* -webkit-filter: drop-shadow(-1px 2px 0 rgba(0,0,0,0.2)); */
+	}
+	.map .pointer {
+	  content: "";
+	  position: absolute;
+	  width: 40px;
+	  height: 40px;
+	  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuMCIgeTE9IjAuNSIgeDI9IjEuMCIgeTI9IjAuNSI+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmZTdkOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	  background-size: 100%;
+	  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(50%, #ffffff), color-stop(50%, #ffe7d8));
+	  background-image: -moz-linear-gradient(left, #ffffff 50%, #ffe7d8 50%);
+	  background-image: -webkit-linear-gradient(left, #ffffff 50%, #ffe7d8 50%);
+	  background-image: linear-gradient(to right, #ffffff 50%, #ffe7d8 50%);
+	  top: 10px;
+	  left: 50%;
+	  margin: 0 0 0 -20px;
+	  border-radius: 50%;
+	  /* box-shadow: 0 1px 0 1px rgba(0,0,0,0.2); */
+	}
+	.map .pointer:before {
+	  content: "";
+	  position: relative;
+	  width: 20px;
+	  height: 20px;
+	  display: block;
+	  background: #ff8048;
+	  border-radius: 50%;
+	  z-index: 3;
+	  top: 10px;
+	  left: 50%;
+	  margin: 0 0 0 -10px;
+	  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.2);
+	}
+
+	.weather {
+	  background: #269df1;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	}
+	.weather:hover {
+	  background: #0f92ee;
+	}
+	.weather .sun {
+	  content: "";
+	  position: absolute;
+	  width: 30px;
+	  height: 30px;
+	  /* background: #fff; */
+	  top: 50%;
+	  left: 50%;
+	  margin: -25px 0 0 -25px;
+	  border-radius: 50%;
+	  -webkit-filter: drop-shadow(0 3px 0 #0f62e9);
+	  border: 9px dotted #fff;
+	}
+	.weather .sun:before {
+	  content: "";
+	  position: relative;
+	  border-radius: 50%;
+	  width: 23px;
+	  height: 23px;
+	  display: block;
+	  background: #fff;
+	  top: 3px;
+	  left: 3px;
+	}
+	.weather .cloud {
+	  display: block;
+	  width: 35px;
+	  height: 15px;
+	  background: #c6e1f0;
+	  border-radius: 10px;
+	  -webkit-filter: drop-shadow(0 3px 0 #0f62e9);
+	  position: absolute;
+	  bottom: 23px;
+	  right: 10px;
+	}
+	.weather .cloud:before {
+	  content: "";
+	  display: block;
+	  width: 15px;
+	  height: 15px;
+	  position: absolute;
+	  background: #c6e1f0;
+	  border-radius: 50%;
+	  left: 5px;
+	  top: -10px;
+	}
+	.weather .cloud:after {
+	  content: "";
+	  display: block;
+	  width: 15px;
+	  height: 15px;
+	  position: absolute;
+	  background: #c6e1f0;
+	  border-radius: 50%;
+	  left: 15px;
+	  top: -5px;
+	}
+
+	.clock {
+	  background: #eb4d4d;
+	  position: relative;
+	  transition: background-color 0.3s ease;
+	}
+	.clock:hover {
+	  background: #e83636;
+	}
+	.clock .rim {
+	  border: 5px solid #fff;
+	  width: 60px;
+	  height: 60px;
+	  display: block;
+	  border-radius: 50%;
+	  position: relative;
+	  top: 5px;
+	  left: 5px;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15), inset 0 3px 0 rgba(0, 0, 0, 0.15);
+	}
+	.clock .center {
+	  position: absolute;
+	  z-index: 3;
+	  top: 50%;
+	  left: 50%;
+	  margin: -4px 0 0 -4px;
+	  width: 8px;
+	  height: 8px;
+	  background: #fff;
+	  display: block;
+	  border-radius: 50%;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+	}
+	.clock .center:before {
+	  content: "";
+	  position: relative;
+	  width: 5px;
+	  height: 18px;
+	  background: #fff;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+	  display: block;
+	  transform: rotate(45deg);
+	  top: -17px;
+	  left: 12px;
+	}
+	.clock .center:after {
+	  content: "";
+	  position: relative;
+	  width: 5px;
+	  height: 10px;
+	  background: #fff;
+	  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+	  display: block;
+	  transform: rotate(-45deg);
+	  top: -10px;
+	  left: 9px;
+	}

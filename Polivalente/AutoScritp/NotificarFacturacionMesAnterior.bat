@@ -1,0 +1,2 @@
+php NotificarFacturacionMesAnterior.php
+pause

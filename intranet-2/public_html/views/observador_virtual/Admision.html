@@ -1,0 +1,57 @@
+<!-- Email del desarrollador: ospi89@hotmail.com-->
+<style type="text/css">
+    body{
+        background: black url(/intranet-2/public_html/image/neonato.jpg);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 80% 80%;
+    }
+    #avatar1{
+        width:24%;
+        margin: 0px auto 10px;
+        display: block;
+    }
+</style>
+<link href="/intranet-2/public_html/styles/login.css" rel="stylesheet" type="text/css"/>
+
+<div class="container" ng-controller="LoginCtrl">
+    <div>
+        <div class="jumbotron" style="background: none;">
+            <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cld.png" class="img-responsive" id="avatar1">
+        </div>
+        <div class="login_wrapper" style="transform: translate(0px,-70px)">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form>
+                        <h1>Ingrese el número de Admisión</h1>
+                        <div>
+                            <input type="text" ng-enter="VerCama()" ng-model="Admision" class="form-control" placeholder="N° Admisión" required="">
+                        </div>
+                        <div>
+                            <a class="btn btn-default submit" ng-click="VerCama()">Ingresar</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+
+                            <div class="clearfix"></div>
+                            <br>
+
+                            <div>
+                                <h1>
+                                    <img src="http://190.131.221.26:8080/intranet-2/public_html/image/logo_CLD.png" width="50" alt=""/> <span>Visita Virtual</span> <br>
+                                    <p style="font-size: 0.5em;font-family: Arial">
+                                        Ver. 0.1.0<br>
+<!--                                        Desarrollado por Franklin Ospino-->
+                                    </p> 
+                                </h1>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+</div>

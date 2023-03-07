@@ -1,0 +1,81 @@
+<div ng-controller="EstadisticasDetalladasHDCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h2>Hojas De Dietas<small></small></h2>
+          <div class="ibox-tools" style="transform: translateX(-50px);">
+            <ul class="nav navbar-right" style="color:black;">
+              <li>
+                <select id="emp-select" class="form-control" ng-model="Empresa"
+                  ng-change="GetEstadisticas()" style="height: 35.59px !important;">
+                  <option value="TODOEMPRESA">TODAS LAS EMPRESAS</option>
+                  <option ng-repeat="e in Empresas" value='{{e.EmpresaId}}'>{{ e.NombreEmpresa }}</option>
+                </select>
+              </li>
+              <li>
+                <select id="dia-select" class="form-control" ng-disabled="Mes == 'TODOS'" ng-model="Dia"
+                  ng-change="GetEstadisticas()" style="height: 35.59px !important;">
+                  <option>TODOS</option>
+                  <option ng-repeat="i in []| ranges : UltimoDiaMes" ng-value="'{{i}}'" value='{{i}}'>{{i}}</option>
+                </select>
+              </li>
+              <li>
+                <select class="form-control" ng-model="Mes" ng-change="GetEstadisticas()"
+                  style="height: 35.59px !important;">
+                  <option ng-selected="Mes == 1" ng-value="'1'" value='1'> Enero</option>
+                  <option ng-selected="Mes == 2" ng-value="'2'" value='2'> Febrero</option>
+                  <option ng-selected="Mes == 3" ng-value="'3'" value='3'> Marzo</option>
+                  <option ng-selected="Mes == 4" ng-value="'4'" value='4'> Abril</option>
+                  <option ng-selected="Mes == 5" ng-value="'5'" value='5'> Mayo</option>
+                  <option ng-selected="Mes == 6" ng-value="'6'" value='6'> Junio</option>
+                  <option ng-selected="Mes == 7" ng-value="'7'" value='7'> Julio</option>
+                  <option ng-selected="Mes == 8" ng-value="'8'" value='8'> Agosto</option>
+                  <option ng-selected="Mes == 9" ng-value="'9'" value='9'> Septiembre</option>
+                  <option ng-selected="Mes == 10" ng-value="'10'" value='10'> Octubre</option>
+                  <option ng-selected="Mes == 11" ng-value="'11'" value='11'> Noviembre</option>
+                  <option ng-selected="Mes == 12" ng-value="'12'" value='12'> Diciembre</option>
+                </select>
+              </li>
+              <li>
+                <input type="text" ng-model='Year' ng-enter="GetEstadisticas()" class="form-control"
+                  onfocus="(this.type = 'number')" onblur="(this.type = 'text')" />
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+            </div>
+            <div class="col-sm-12 mt-3" id="HED">
+              <div class="row" ng-show="ToPrint">
+                <img src="/intranet-2/public_html/image/Prado.jpg" ng-if="PREFIJO == 'PRADO'" id="logo-prado"
+                style="width: 300px" alt="logo-prado-hd"><br>
+                <strong>Empresa: </strong><span ng-if="Empresa !== 'TODOEMPRESA'">
+                  <span ng-repeat="e in Empresas" ng-show="e.EmpresaId == Empresa">{{ e.NombreEmpresa }}</span>
+                </span><span ng-if="Empresa === 'TODOEMPRESA'">TODAS</span>
+                <strong>Fecha: </strong><span ng-if="Dia !== 'TODOS'">{{ Dia }}/</span>{{ Mes }}/{{ Year }}
+              </div>
+              <table class="table table-bordered table-hover" ng-if="Estadisticas.length > 0">
+                <thead>
+                  <tr>
+                    <th ng-repeat="(k,v) in Estadisticas[0]">{{ k }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="e in Estadisticas">
+                    <td ng-repeat="(k,v) in e">{{ e[k] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

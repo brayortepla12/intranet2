@@ -1,0 +1,95 @@
+<div class="row" ng-controller="EntregasTelExtCtrl" style="background: white;">
+  <div class="col-lg-8 col-sm-12 mx-auto" style="margin-top: 25px;">
+    <button class="btn btn-default" ng-if="VEN" ng-click="Atras()">Atras</button>
+    <button class="btn btn-primary" ng-if="VEN" ng-click="FirmarEntrega()">Firmar Entrega</button>
+    <span style="font-size: 1.8em; font-weight: bold;" ng-if="VEN && !Entrega.FirmaSolicita">Estado: SIN FIRMAR</span>
+    <!-- <button class="btn btn-default" ng-if="VEN" ng-click="Imprimir('H1')">Imprimir Entrega</button>
+    <button class="btn btn-default" ng-if="VEN" ng-click="Imprimir('H2')">Imprimir Politicas</button> -->
+  </div>
+  <div class="col-lg-8 col-sm-12 mx-auto">
+    <div class="row" ng-if="LSOL">
+        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+            <table id="LHD" ui-jq="dataTable" ui-options="SolDATA" class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 3%">ID</th>
+                        <th scope="col" class="text-center" style="width: 5%">Fecha Solicitud</th>
+                        <th scope="col" class="text-center" style="width: 7%">Solicita</th>
+                        <th scope="col" class="text-center" style="width: 7%">Telefono</th>
+                        <th scope="col" class="text-center" style="width: 5%">Estado</th>
+                        <th scope="col" class="text-center" style="width: 15%">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div ng-if="VEN">
+      <div class="row mt-3">
+        <div class="col-sm-12" id="H1">
+          <div class="row">
+            <div class="col-sm-4">
+              <img src="/intranet-2/public_html/image/cield.png" id="logo-cield" style="width: 200px !important;" alt="logo-cield-hd">
+            </div>
+            <div class="col-sm-8">
+              <p>{{ Entrega.Ciudad }}, {{ DIA }} {{ MES }} del {{ YEAR }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p>Señor</p>
+              <p class="font-weight-bold">{{ Entrega.Solicita | uppercase}}</p>
+              <p>{{ Entrega.CargoSolicita }}</p>
+              <p class="font-weight-bold">{{ Entrega.Institucion | uppercase}}</p>
+              <p>{{ Entrega.Ciudad }}</p>
+            </div>
+            <div class="col-sm-12 mt-5">
+              <p>Cordial Saludo</p>
+            </div>
+            <div class="col-sm-12 mt-2">
+              <p>En busca de mejorar los procesos de la institución se le hace entrega de un celular {{ Entrega.Marca | uppercase}} {{ Entrega.Modelo | uppercase}}
+                {{ Entrega.Tipo }}, posee las siguientes especificaciones: 
+              </p>
+            </div>
+            <div class="col-lg-12 col-sm-12 mt-1 text-center" style="text-align: center !important;">
+              <table class="table table-bordered" style="text-align: center !important;">
+                <thead>
+                  <tr>
+                    <th>IMEI</th>
+                    <th>COLOR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {{ Entrega.IMEI1 }} <br>
+                      {{ Entrega.IMEI2 }}
+                    </td>
+                    <td>{{ Entrega.Color }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-sm-12" style="margin-top: 30pt;">
+              <p>{{ Entrega.Descripcion }}</p>
+            </div>
+            <div class="col-sm-12" style="margin-top: 40pt;">
+              <p>Atentamente,</p>
+            </div>
+            <div class="col-sm-6" style="margin-top: 40pt;">
+              <img ng-src="{{ Entrega.FirmaEntrega }}" width="150">
+              <p><strong>{{ Entrega.Entrega }}</strong><br>
+                {{ Entrega.CargoEntrega }}</p>
+            </div>
+            <div class="col-sm-6" style="margin-top: 40pt;">
+              <img ng-if="Entrega.FirmaSolicita" ng-src="{{ Entrega.FirmaSolicita }}" width="150">
+              <img ng-if="!Entrega.FirmaSolicita" src="/intranet-2/public_html/image/uncheck.png" width="150">
+              <p><strong>{{ Entrega.Solicita }}</strong><br>
+                {{ Entrega.CargoSolicita }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

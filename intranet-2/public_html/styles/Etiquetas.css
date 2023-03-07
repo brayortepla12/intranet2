@@ -1,0 +1,39 @@
+@media print {
+    @page { margin: 0pt !important}
+    body  
+    { 
+        /* this affects the margin on the content before sending to printer */ 
+        margin: 0px !important;  
+    } 
+    .Page { 
+        position: relative !important;
+        display: block !important;
+        page-break-after: always !important;
+        z-index: 0 !important;
+    }
+    .break-after {
+        display: block !important;
+        page-break-after: always !important;
+        position: relative !important;
+        top: 0pt !important;
+        bottom: 0pt !important;
+    }
+    .float-right{
+        width: 400px !important;
+        transform: translate(-10px,0px);
+        padding-top: 2px;
+    }
+    .float-left{
+        width: 400px !important;
+        transform: translate(-5px,0px);
+        padding-top: 2px;
+    }
+
+    .table thead tr td,.table tbody tr td, .table thead tr th,.table tbody tr th, .table tfoot tr th,.table tfoot tr td{
+        border: 0pt dotted black !important;
+        padding:0px !important;
+        -webkit-print-color-adjust:exact  !important;
+    }
+}
+@media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 41% !important; } }
+

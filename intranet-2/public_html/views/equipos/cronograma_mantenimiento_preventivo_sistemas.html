@@ -1,0 +1,234 @@
+<style>
+    @media print{
+        @page {size: landscape}
+        body{
+            font-size: 1em;
+        }
+        th{
+            z-index: -1;
+        }
+        td{
+            padding: 3px !important;
+        }
+        #MantenimientoPreventivo{
+            font-size: 0.9em;
+        }
+        @media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 90%; } }
+    }
+</style>
+<div class="row" ng-controller="MantenimientoPreventivoSistemasCtrl">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="form-check">
+                            <label>
+                                Año
+                            </label>
+                            <input type="number" class="form-control" min="2017" max="2100" step="1" ng-model="Year" /> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label class="col-sm-12">
+                    Sede
+                </label>
+                <select class="form-control" ng-model="SedeId" ng-change='ChangeSedes()' name="Sede" required>
+                    <option>--</option>
+                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == SedeId"  ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label class="col-sm-12">
+                    Servicio
+                </label>
+                <select class="form-control" ng-model="ServicioId" ng-change='BuscarCronograma()' name="ServicioId" required>
+                    <!--<option value="Todos">Todos</option>-->
+                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId == ServicioId"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label class="col-sm-12">
+                    Meses
+                </label>
+                <select class="form-control" ng-model="FiltrarMes" ng-change='BuscarCronograma()' name="Sede" required>
+                    <option value="Todos">Todos</option>
+                    <option value="0">Enero</option>
+                    <option value="1">Febrero</option>
+                    <option value="2">Marzo</option>
+                    <option value="3">Abril</option>
+                    <option value="4">Mayo</option>
+                    <option value="5">Junio</option>
+                    <option value="6">Julio</option>
+                    <option value="7">Agosto</option>
+                    <option value="8">Septiembre</option>
+                    <option value="9">Octubre</option>
+                    <option value="10">Noviembre</option>
+                    <option value="11">Diciembre</option>
+                </select>
+            </div>
+            <div class="col-sm-1 text-center">
+                <br>
+                <button ng-show="Listados" class="btn btn-default" ng-click="Imprimir()">Imprimir <i class="fa fa-print"/></button>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="col-sm-12" id="MantenimientoPreventivo">
+        <div ng-repeat="cc in Listados.pack">
+            <div class="break-after">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-4">
+                        <img ng-src="{{Empresa.Logo}}" width="180" alt="">
+                    </div>
+                    <div class="col-sm-4 col-xs-4 float-left text-center">
+                        <p style="font-size: 0.7em !important">
+                            <strong style="font-size: 1.2em !important">CRONOGRAMA DE MANTENIMIENTOS PREVENTIVO DE EQUIPOS DE COMPUTO</strong>
+                            <span class="text-center" bind-html-compile="Encabezado.EncabezadoCronograma_sistemas"></span>
+                        </p>
+                    </div>
+                    <div class="clear-fix"></div>
+                    <div class="offset-4 col-sm-4">
+                        <p style="font-size: 0.5em !important">
+                            <strong style="font-size: 1.2em !important">SEDE: <u>{{cc[0].Sede}}</u></strong>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p style="font-size: 0.5em !important">
+                            <strong style="font-size: 1.2em !important">SERVICIO: <u>{{cc[0].Servicio}}</u></strong>
+                        </p>
+                    </div>
+                </div>
+                <div class="row" style="transform: translate(0px,-8px)">
+                    <div class="col-md-10 offset-md-1 col-sm-12 col-xs-12"  id="myElementId">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="TablaCalibracion" class="table1 table table-bordered">
+                                    <tbody>
+                                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                            <th>ITEM</th>
+                                            <th>SERVICIO</th>
+                                            <th>EQUIPO</th>
+                                            <th>UBICACIÓN</th>
+                                            <th>PERIODICIDAD</th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '0'">
+                                                <span>ENERO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '1'">
+                                                <span>FEBRERO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '2'">
+                                                <span>MARZO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '3'">
+                                                <span>ABRIL</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '4'">
+                                                <span>MAYO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '5'">
+                                                <span>JUNIO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '6'">
+                                                <span>JULIO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '7'">
+                                                <span>AGOSTO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '8'">
+                                                <span>SEPTIEMBRE</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '9'">
+                                                <span>OCTUBRE</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '10'">
+                                                <span>NOVIEMBRE</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em" ng-if="FiltrarMes == 'Todos' || FiltrarMes == '11'">
+                                                <span>DICIEMBRE</span>
+                                            </th>
+                                            <th>RESPONSABLE</th>
+                                        </tr>
+                                        <tr ng-repeat="c in cc" style="font-size: 0.7em">
+                                            <td style="text-align: center"><a style="cursor: pointer" ng-click="Goto2(c.HojaVidaId)"> {{c.HojaVidaId}}</a></td>
+                                            <td>{{c.Servicio}}</td>                                    
+                                            <td>{{c.Equipo}}</td>
+                                            <td>{{c.Ubicacion}}</td>
+                                            <td>{{c.Frecuencia}}</td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['1'] < MesActual && c['r1'] == null && c['1'] != null, 'oscuro': c['1'] > 0
+                                        , 'hecho': c['r1'] > 0}" ng-click="Goto(c['r1'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['2'] < MesActual && c['r2'] == null && c['2'] != null, 'oscuro': c['2'] > 0
+                                        , 'hecho': c['r2'] > 0}" ng-click="Goto(c['r2'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['3'] < MesActual && c['r3'] == null && c['3'] != null, 'oscuro': c['3'] > 0
+                                        , 'hecho': c['r3'] > 0}" ng-click="Goto(c['r3'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['4'] < MesActual && c['r4'] == null && c['4'] != null, 'oscuro': c['4'] > 0
+                                        , 'hecho': c['r4'] > 0}" ng-click="Goto(c['r4'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['5'] < MesActual && c['r5'] == null && c['5'] != null, 'oscuro': c['5'] > 0
+                                        , 'hecho': c['r5'] > 0}" ng-click="Goto(c['r5'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['6'] < MesActual && c['r6'] == null && c['6'] != null, 'oscuro': c['6'] > 0
+                                        , 'hecho': c['r6'] > 0}" ng-click="Goto(c['r6'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['7'] < MesActual && c['r7'] == null && c['7'] != null, 'oscuro': c['7'] > 0
+                                        , 'hecho': c['r7'] > 0}" ng-click="Goto(c['r7'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['8'] < MesActual && c['r8'] == null && c['8'] != null, 'oscuro': c['8'] > 0
+                                        , 'hecho': c['r8'] > 0}" ng-click="Goto(c['r8'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['9'] < MesActual && c['r9'] == null && c['9'] != null, 'oscuro': c['9'] > 0
+                                        , 'hecho': c['r9'] > 0}" ng-click="Goto(c['r9'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['10'] < MesActual && c['r10'] == null && c['10'] != null, 'oscuro': c['10'] > 0
+                                        , 'hecho': c['r10'] > 0}" ng-click="Goto(c['r10'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['11'] < MesActual && c['r11'] == null && c['11'] != null, 'oscuro': c['11'] > 0
+                                        , 'hecho': c['r11'] > 0}" ng-click="Goto(c['r11'])">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro2': c['12'] < MesActual && c['r12'] == null && c['12'] != null, 'oscuro': c['12'] > 0
+                                        , 'hecho': c['r12'] > 0}" ng-click="Goto(c['r12'])">
+                                            </td>
+                                            <td>{{c.Responsable}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <p>
+                            <img ng-src="{{Encabezado.FirmaElaboroSis}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                            <strong style="font-size: 1em">ELABORACIÓN</strong><br>
+                            {{Encabezado.ElaboroSis}}<br>
+                            {{Encabezado.CargoElaboroSis}}
+                        </p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <p>
+                            <img ng-src="{{Encabezado.FirmaRevisoSis}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                            <strong style="font-size: 1em">REVISIÓN ESTRUCTURAL</strong><br>
+                            {{Encabezado.RevisoSis}}<br>
+                            {{Encabezado.CargoRevisoSis}}
+                        </p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <p>
+                            <img ng-src="{{Encabezado.FirmaAproboSis}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                            <strong style="font-size: 1em">APROBACIÓN</strong><br>
+                            {{Encabezado.AproboSis}}<br>
+                            {{Encabezado.CargoAproboSis}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

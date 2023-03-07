@@ -1,0 +1,114 @@
+<div class="row" ng-controller="TokenCunaCtrl">
+    <div class="col-sm-2 pull-right" style="padding: 5px;">
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#TokenCunaModal">Crear TokenCuna <i class="fa fa-plus-square-o" /></button>
+    </div>
+    <div class="col-sm-12">
+        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Nombres</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Cuna</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in TokenCunas" ng-include="getTemplate(item)">
+            <script type="text/ng-template" id="display">
+                <td>
+                    {{item.Nombres}}
+                </td>
+                <td>
+                    {{item.Email}}
+                </td>
+                <td ng-repeat="s in Cunas track by $index" ng-show="s.CunaId === item.CunaId">
+                    {{s.Nombre}}
+                </td>
+                <td>
+                <center>
+                    <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                    <a class="btn btn-info btn-xs icon-only white" ng-click="VerCuna(item)" tooltip-placement="bottom" tooltip="Ver Camara"><i class="fa fa-eye"></i></a>
+                </center>
+                </td>
+            </script>
+            <script type="text/ng-template" id="edit">
+                <td><input type="text" ng-model="select.Nombres" class="form-control input-sm" capitalize /></td>
+                <td><input type="text" ng-model="select.Email" class="form-control input-sm" /></td>
+                <td>
+                    <select class="form-control" ng-model="select.CunaId" name="CunaId" required>
+                        <option ng-repeat="s in Cunas track by $index" ng-selected="s.CunaId === select.CunaId" 
+                        ng-value='{{s.CunaId}}' value='{{s.CunaId}}'> 
+                            {{s.Nombre}}
+                        </option>
+                    </select>
+                </td>
+                <td>
+                <center>
+                    <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                    <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                </center>
+                </td>
+            </script>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="TokenCunaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="col-sm-11">
+                  <h2 class="modal-title">Crear TokenCuna</h2>
+              </div>
+              <div class="col-sm-1">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-body">
+              <form role="form" name="c" novalidate>
+                <div class="col-md-12">
+                    <div ng-class="{'has-success': c.Nombres.$valid, 'has-error': c.Nombres.$invalid}">
+                        <label for="Nombres">Nombres</label>
+                        <input type="text" capitalize class="form-control" id="Nombres" ng-model="TokenCuna.Nombres" maxlength="280"  name="Nombres" required>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div ng-class="{'has-success': c.Email.$valid, 'has-error': c.Email.$invalid}">
+                        <label for="Email">Email</label>
+                        <input type="email" class="form-control" id="Email" ng-model="TokenCuna.Email" maxlength="280"  name="Email" required>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div ng-class="{'has-success': c.Dias.$valid, 'has-error': c.Dias.$invalid}">
+                        <label for="Dias">Dias</label>
+                        <input type="number" class="form-control" id="Dias" ng-model="TokenCuna.Dias" maxlength="280" min="1" max="90" name="Dias" required>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" ng-class="{'has-success': c.CunaId.$valid, 'has-error': c.CunaId.$invalid}">
+                        <label>
+                            Cuna
+                        </label>
+                        <select class="form-control" ng-model="TokenCuna.CunaId" name="CunaId"  required>
+                            <option value="">--</option>
+                            <option ng-repeat="s in Cunas track by $index" ng-selected="s.CunaId === TokenCuna.CunaId" ng-value='{{s.CunaId}}' value='{{s.CunaId}}'> {{s.Nombre}}</option>
+                        </select>
+                    </div>
+                </div>
+              </form>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-footer">
+              <div class="text-center col-sm-12" style="margin-top: 25px;">
+                  <button class="btn btn-success" ng-click="GuardarTokenCuna()" ng-disabled="c.$invalid">Guardar</button>
+                  <input type="reset" class="btn btn-danger" ng-click="ResetForm()" />
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

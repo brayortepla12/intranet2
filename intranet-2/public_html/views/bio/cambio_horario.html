@@ -1,0 +1,83 @@
+<div ng-controller="CambioHorarioCtrl">
+    <div class="col-sm-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Listado de cambio de horario<small></small></h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <select class="form-control" ng-model="SedeId" ng-change="getCambios()" style="height: 35.59px !important;">
+                                <option ng-repeat="s in Sedes track by $index" ng-selected="SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" style="height: 35.59px !important;" ng-change="getCambios()">
+                                <option ng-selected="Mes == 1" ng-value="'1'" value='1'> Enero</option>
+                                <option ng-selected="Mes == 2" ng-value="'2'" value='2'> Febrero</option>
+                                <option ng-selected="Mes == 3" ng-value="'3'" value='3'> Marzo</option>
+                                <option ng-selected="Mes == 4" ng-value="'4'" value='4'> Abril</option>
+                                <option ng-selected="Mes == 5" ng-value="'5'" value='5'> Mayo</option>
+                                <option ng-selected="Mes == 6" ng-value="'6'" value='6'> Junio</option>
+                                <option ng-selected="Mes == 7" ng-value="'7'" value='7'> Julio</option>
+                                <option ng-selected="Mes == 8" ng-value="'8'" value='8'> Agosto</option>
+                                <option ng-selected="Mes == 9" ng-value="'9'" value='9'> Septiembre</option>
+                                <option ng-selected="Mes == 10" ng-value="'10'" value='10'> Octubre</option>
+                                <option ng-selected="Mes == 11" ng-value="'11'" value='11'> Noviembre</option>
+                                <option ng-selected="Mes == 12" ng-value="'12'" value='12'> Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' class="form-control" ng-enter="getCambios()"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-hide="BanderaVerHorario">
+                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+                        <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 3%">ID</th>
+                                    <th class="text-center" style="width: 10%">Jefe</th>
+                                    <th class="text-center" style="width: 10%">Fecha</th>
+                                    <th class="text-center" style="width: 10%">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" ng-show="BanderaVerHorario">
+                    <div class="col-sm-12 text-center" style="margin-bottom: 25px;">
+                        <input class="btn btn-default" type="button" value="Atras" ng-click="BanderaVerHorario = false" />
+                        <button class="btn btn-success" ng-show="Tabla.length > 0" ng-click="AutorizarHorario()">
+                            <span ng-hide="BanderaCambiarHorario">Autorizar Horario</span>
+                            <i class="fa fa-spinner fa-spin" ng-show="BanderaCambiarHorario"></i>
+                        </button>
+                        <input class="btn btn-danger" ng-show="Tabla.length > 0" type="button" value="Rechazar Horario" ng-click="RechazarHorario()" />
+                        <input class="btn btn-default" ng-show="Tabla.length > 0" type="button" value="Exportar A" ng-click="ExportarHorario()" />
+                    </div>
+                    <div class="col-sm-12">
+                        <table id="TablaHorario" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <th ng-repeat="d in [] | range:UltimoDiaMes">{{$index + 1}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="t in Tabla">
+                                    <td>{{t.Nombres}}</td>
+                                    <td ng-repeat="d in [] | range:UltimoDiaMes">{{t[$index + 1]}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

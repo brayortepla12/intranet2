@@ -1,0 +1,110 @@
+2021-02-24 11:24:04: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 2  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.' at line 2 query: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 2  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc;
+
+2021-02-24 11:24:11: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 1  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.' at line 2 query: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 1  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc;
+
+2021-02-24 11:24:14: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 2  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.' at line 2 query: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 2  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc;
+
+2021-02-24 11:24:16: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 1  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.' at line 2 query: SELECT pp.ProcesoId, se.Nombre as Sede, pp.SedeId, pp.ServicioId 
+    ser.Nombre as Servicio, pp.ProtocoloId, pp.SolicitanteId,pp.OrdenEnCurso, 
+    pp.Nombre, pp.CreatedAt, pp.Estado, p.Nombre as Protocolo 
+    FROM pc_proceso as pp FORCE INDEX (ProtocoloId) 
+    STRAIGHT_JOIN pc_protocolo as p on pp.ProtocoloId = p.ProtocoloId
+    INNER JOIN pc_flujotrabajo as fp on pp.ProtocoloId = fp.ProtocoloId AND fp.Estado = 'Activo'
+    STRAIGHT_JOIN pc_verificador as v on fp.FlujoTrabajoId = v.FlujoTrabajoId AND v.Estado = 'Activo'
+    STRAIGHT_JOIN Sede as se on pp.SedeId = se.SedeId
+    STRAIGHT_JOIN Servicio as ser on pp.ServicioId = ser.ServicioId
+    where v.UsuarioId = 294 and YEAR(pp.CreatedAt) = 2021 and MONTH(pp.CreatedAt) = 1  and pp.Estado <> 'Finalizado' 
+    group by pp.ProcesoId
+    order by pp.ProcesoId desc;
+
+2021-02-25 17:02:35: SELECT ConsecutivoId, Consecutivo FROM pc_oc_consecutivo LIMIT 1; 
+ Unknown column 'Consecutivo' in 'field list' query: SELECT ConsecutivoId, Consecutivo FROM pc_oc_consecutivo LIMIT 1;
+
+2021-02-25 17:02:47: SELECT ConsecutivoId, Nombre FROM pc_oc_consecutivo LIMIT 1; 
+ Unknown column 'Nombre' in 'field list' query: SELECT ConsecutivoId, Nombre FROM pc_oc_consecutivo LIMIT 1;
+

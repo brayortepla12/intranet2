@@ -1,0 +1,139 @@
+<div class="row" id="HD">
+    <div class="col-sm-12">
+        <table class="table table-bordered" style="border: none !important;">
+            <thead>
+                <tr>
+                    <td style="
+                    background: none !important;
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;">
+                        <img src="/intranet-2/public_html/image/cield.png" ng-if="PREFIJO == 'CIELD'" id="logo-cield" style="width: 300px" alt="logo-cield-hd">
+                        <img src="/intranet-2/public_html/image/Prado.jpg" ng-if="PREFIJO == 'PRADO'" id="logo-prado" style="width: 300px" alt="logo-prado-hd">
+                    </td>
+                    <td style="
+                    background: none !important;
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;" class="text-center">
+                        <h4>HOJA DE DIETAS</h4>
+                        <p ng-if="PREFIJO == 'CIELD'">
+                            GC-ND-F-24 Ver. 1 Pagina 1 de 1<br>
+                            Emisión:21-12-2017 Vigencia: 15-01-2018
+                        </p>
+                        <p ng-if="PREFIJO == 'PRADO'">
+                            GC-ND-F-01 Ver. 02 Pagina 1 de 1<br>
+                            Emisión:08-11-2018 Vigencia: 27-03-2019
+                        </p>
+                    </td>
+                </tr>
+                <tr class="no-print">
+                    <th>
+                        TIPO SOLICITUD
+                    </th>
+                    <th>{{HD.Estado}}</th>
+                </tr>
+                <tr>
+                    <th>FECHA</th>
+                    <th>{{HD.Fecha}}</th>
+                    <th>SERVICIO</th>
+                    <th>
+                        {{HD.DESCRIPCION}}
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Cama<br>
+                        No. admisión
+                    </th>
+                    <th>
+                        Documento <br>
+                        Nombre del paciente (EDAD)
+                    </th>
+                    <th class="no-print">
+                        Fecha<br>
+                        EPS
+                    </th>
+                    <th ng-class="{'solicitado': HD.Desayuno && !HD.FCDesayuno, 'no-print': ImpDis !== 'Desayuno'}">Desayuno</th>
+                    <th ng-class="{'solicitado': HD.MM && !HD.FCMM, 'no-print': ImpDis !== 'MM'}">MM</th>
+                    <th ng-class="{'solicitado': HD.Almuerzo && !HD.FCAlmuerzo, 'no-print': ImpDis !== 'Almuerzo'}">Almuerzo</th>
+                    <th ng-class="{'solicitado': HD.MT && !HD.FCMT, 'no-print': ImpDis !== 'MT'}">MT</th>
+                    <th ng-class="{'solicitado': HD.Cena && !HD.FCCena, 'no-print': ImpDis !== 'Cena'}">Cena</th>
+                    <th ng-class="{'solicitado': HD.MN && !HD.FCMN, 'no-print': ImpDis !== 'MN'}">Cena</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="p in HD.Detalles track by $index" ng-if="p.Estado !== 'Suspendido'">
+                    <td>
+                        {{p.habcama|| p.HABCAMA}}<br>
+                        <span>
+                            {{p.NOADMISION}}
+                        </span>
+                    </td>
+                    <td>
+                        {{p.IDAFILIADO}}<br>
+                        {{p.NOMBREAFI}} ({{ p.EDAD }})
+                    </td>
+                    <td class="no-print">
+                        {{p.FECHA.date}}<br>
+                        {{p.RAZONSOCIAL}}
+                    </td>
+                    <td ng-class="{'solicitado': p.EDesayuno == 'No tiene' && p.Desayuno, 'no-print': ImpDis !== 'Desayuno' || p.CancelarDesayuno === 1}">
+                        {{p.Desayuno}}
+                    </td>
+                    <td ng-class="{'solicitado': p.EMM == 'No tiene' && p.MM , 'no-print': ImpDis !== 'MM' || p.CancelarMM === 1}">
+                        {{p.MM}}
+                    </td>
+                    <td ng-class="{'solicitado': p.EAlmuerzo == 'No tiene' && p.Almuerzo, 'no-print': ImpDis !== 'Almuerzo' || p.CancelarAlmuerzo === 1}">
+                        {{p.Almuerzo}}
+                    </td>
+                    <td ng-class="{'solicitado': p.EMT == 'No tiene' && p.MT, 'no-print': ImpDis !== 'MT' || p.CancelarMT === 1}">
+                        {{p.MT}}
+                    </td>
+                    <td ng-class="{'solicitado': p.ECena == 'No tiene' && p.Cena, 'no-print': ImpDis !== 'Cena' || p.CancelarCena === 1}">
+                        {{p.Cena}}
+                    </td>
+                    <td ng-class="{'solicitado': p.EMN == 'No tiene' && p.MN, 'no-print': ImpDis !== 'MN' || p.CancelarMN === 1}">
+                        {{p.MN}}
+                    </td>
+                    <td>
+                        <div ng-class="{'no-print': ImpDis !== 'Desayuno'}">D: {{p.ODesayuno}}</div>
+                        <div ng-class="{'no-print': ImpDis !== 'MM'}">MM: {{p.OMM}}</div>
+                        <div ng-class="{'no-print': ImpDis !== 'Almuerzo'}">A: {{p.OAlmuerzo}}</div>
+                        <div ng-class="{'no-print': ImpDis !== 'MT'}">MT: {{p.OMT}}</div>
+                        <div ng-class="{'no-print': ImpDis !== 'Cena'}">C: {{p.OCena}}</div>
+                        <div ng-class="{'no-print': ImpDis !== 'MN'}">MN: {{p.OMN}}</div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Cantidad</th>
+                </tr>
+                <tr ng-repeat="o in Variables">
+                    <td colspan="2">{{o.Descripcion}} ({{o.Abrv}})</td>
+                    <td class="no-print"></td>
+                    <td ng-class="{'no-print': ImpDis !== 'Desayuno'}">{{o.TD}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'MM'}">{{o.TMM}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'Almuerzo'}">{{o.TA}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'MT'}">{{o.TMT}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'Cena'}">{{o.TC}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'MN'}">{{o.TMN}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">TOTAL</td>
+                    <td class="no-print"></td>
+                    <td ng-class="{'no-print': ImpDis !== 'Desayuno'}">{{TVD}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'MM'}">{{TVMM}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'Almuerzo'}">{{TVA}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'MT'}">{{TVMT}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'Cena'}">{{TVC}}</td>
+                    <td ng-class="{'no-print': ImpDis !== 'MN'}">{{TVMN}}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

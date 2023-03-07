@@ -1,0 +1,244 @@
+<style>
+    .rojo, .Rojo{
+        color:red;
+    }
+
+
+    td a{
+        color: black !important;
+    }
+
+    .HasPermiso a{
+        font-weight: bold;
+        color:blue !important;
+        text-decoration: blue underline;
+    }
+
+    .HasCambioSede a{
+        font-weight: bold;
+        color:purple !important;
+        text-decoration: blue underline;
+    }
+
+    .Tarde a{
+        font-weight: bold;
+        color:red !important;
+    }
+    @media print {
+        .Tarde{
+            background: #ddd !important;
+        }
+    }
+</style>
+<div ng-controller="ActividadMesTmCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2>Listado del personal<small></small></h2>
+                    <div class="ibox-tools" style="transform: translateX(-50px);">
+                        <ul class="nav navbar-right" style="color:black;">
+                            <!--                            <li>
+                                                            <select class="form-control" ng-options="d.DepartamentoId as d.Departamento for d in Departamentos" ng-change="ChangeDepartamento()" ng-model="DepartamentoId" style="height: 35.59px !important;">
+                                                            </select>
+                                                        </li>-->
+                            <li>
+                                <select class="form-control" ng-options="d.CiudadId as d.Ciudad for d in Municipios" ng-model="MunicipioId" ng-change="ConsultarPorFechas()" style="height: 35.59px !important;">
+                                </select>
+                            </li>
+                            <li>
+                                <select class="form-control" ng-model="Mes" style="height: 35.59px !important;" ng-change="ConsultarPorFechas()">
+                                    <option ng-selected="Mes == 1" ng-value="'1'" value='1'> Enero</option>
+                                    <option ng-selected="Mes == 2" ng-value="'2'" value='2'> Febrero</option>
+                                    <option ng-selected="Mes == 3" ng-value="'3'" value='3'> Marzo</option>
+                                    <option ng-selected="Mes == 4" ng-value="'4'" value='4'> Abril</option>
+                                    <option ng-selected="Mes == 5" ng-value="'5'" value='5'> Mayo</option>
+                                    <option ng-selected="Mes == 6" ng-value="'6'" value='6'> Junio</option>
+                                    <option ng-selected="Mes == 7" ng-value="'7'" value='7'> Julio</option>
+                                    <option ng-selected="Mes == 8" ng-value="'8'" value='8'> Agosto</option>
+                                    <option ng-selected="Mes == 9" ng-value="'9'" value='9'> Septiembre</option>
+                                    <option ng-selected="Mes == 10" ng-value="'10'" value='10'> Octubre</option>
+                                    <option ng-selected="Mes == 11" ng-value="'11'" value='11'> Noviembre</option>
+                                    <option ng-selected="Mes == 12" ng-value="'12'" value='12'> Diciembre</option>
+                                </select>
+                            </li>
+                            <li>
+                                <input type="text" ng-model='Year' ng-enter="ConsultarPorFechas()" class="form-control"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <button class="btn btn-info" ng-click="Imprimir()">Imprimir</button>
+                    <div class="row" ng-show="!Imprimir_flag">
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+                            <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                                <thead class="bordered-blueberry">
+                                    <tr>
+                                        <th class="text-center" style="width: 3%">ID</th>
+                                        <th class="text-center" style="width: 7%">Dinero entregado</th>
+                                        <th class="text-center" style="width: 10%">Fecha Evento</th>
+                                        <th class="text-center" style="width: 10%">Fecha Registro</th>
+                                        <th class="text-center" style="width: 10%">Nombres</th>
+                                        <th class="text-center" style="width: 10%">Municipio</th>
+                                        <th class="text-center" style="width: 8%">F.P.P.</th>
+                                        <th class="text-center" style="width: 5%">Teléfono Materna</th>
+                                        <th class="text-center" style="width: 10%">Lider</th>
+                                        <th class="text-center" style="width: 5%">Teléfono Lider</th>
+                                        <th class="text-center" style="width: 5%">Estado</th>
+                                        <th class="text-center" style="width: 10%">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado_reg">
+                            <h3>Maternas registradas en el mes</h3>
+                            <table id="Equipos2" ui-jq="dataTable" ui-options="simpleTableOptions2" class="table table-hover table-condensed table-striped table-bordered">
+                                <thead class="bordered-blueberry">
+                                    <tr>
+                                        <th class="text-center" style="width: 3%">ID</th>
+                                        <th class="text-center" style="width: 10%">Fecha Registro</th>
+                                        <th class="text-center" style="width: 10%">Nombres</th>
+                                        <th class="text-center" style="width: 10%">Municipio</th>
+                                        <th class="text-center" style="width: 8%">F.P.P.</th>
+                                        <th class="text-center" style="width: 5%">Teléfono Materna</th>
+                                        <th class="text-center" style="width: 10%">Lider</th>
+                                        <th class="text-center" style="width: 5%">Teléfono Lider</th>
+                                        <th class="text-center" style="width: 5%">Estado</th>
+                                        <th class="text-center" style="width: 10%">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-show="Imprimir_flag">
+                        <div class="col-sm-12" id="impresion_actividad">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img src="/intranet-2/public_html/image/cld.png" width="200" alt="cld">
+                                </div>
+                                <div class="col-sm-9 text-center">
+                                    <h3>Reporte Maternas</h3>
+                                </div>
+                            </div>
+                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                                <h4>Eventos registrados en el mes {{Mes}}/{{Year}} ({{NombreCiudad}})</h4>
+                                <table class="table table-bordered">
+                                    <thead class="bordered-blueberry">
+                                        <tr>
+                                            <th class="text-center" style="width: 3%">ID</th>
+                                            <th class="text-center" style="width: 7%">Dinero entregado</th>
+                                            <th class="text-center" style="width: 10%">Fecha Evento</th>
+                                            <th class="text-center" style="width: 10%">Fecha Registro</th>
+                                            <th class="text-center" style="width: 10%">Nombres</th>
+                                            <th class="text-center" style="width: 10%">Municipio</th>
+                                            <th class="text-center" style="width: 8%">F.P.P.</th>
+                                            <th class="text-center" style="width: 5%">Teléfono Materna</th>
+                                            <th class="text-center" style="width: 10%">Lider</th>
+                                            <th class="text-center" style="width: 5%">Teléfono Lider</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="m in Maternas">
+                                            <td>{{m.MaternaId}}</td>
+                                            <td>{{m.TotalEntregado}}</td>
+                                            <td>{{m.FechaEvento}}</td>
+                                            <td>{{m.CreatedAt}}</td>
+                                            <td>{{m.Nombres}}</td>
+                                            <td>{{m.Ciudad}}</td>
+                                            <td>{{m.FechaProbableParto}}</td>
+                                            <td>{{m.Telefono}}</td>
+                                            <td>{{m.Lider}}</td>
+                                            <td>{{m.TelefonoLider}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                                <h4>Maternas registradas en el mes {{Mes}}/{{Year}} ({{NombreCiudad}})</h4>
+                                <table class="table table-bordered">
+                                    <thead class="bordered-blueberry">
+                                        <tr>
+                                            <th class="text-center" style="width: 3%">ID</th>
+                                            <th class="text-center" style="width: 10%">Fecha Registro</th>
+                                            <th class="text-center" style="width: 10%">Nombres</th>
+                                            <th class="text-center" style="width: 10%">Municipio</th>
+                                            <th class="text-center" style="width: 8%">F.P.P.</th>
+                                            <th class="text-center" style="width: 5%">Teléfono Materna</th>
+                                            <th class="text-center" style="width: 10%">Lider</th>
+                                            <th class="text-center" style="width: 5%">Teléfono Lider</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="m in MaternasMes">
+                                            <td>{{m.MaternaId}}</td>
+                                            <td>{{m.CreatedAt}}</td>
+                                            <td>{{m.Nombres}}</td>
+                                            <td>{{m.Ciudad}}</td>
+                                            <td>{{m.FechaProbableParto}}</td>
+                                            <td>{{m.Telefono}}</td>
+                                            <td>{{m.Lider}}</td>
+                                            <td>{{m.TelefonoLider}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="EventosModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Listado de eventos</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blue">
+                            <tr>
+                                <th class="text-center" style="width: 3%">ID</th>
+                                <th class="text-center" style="width: 10%">Fecha</th>
+                                <th class="text-center" style="width: 10%">Nombres</th>
+                                <th class="text-center" style="width: 10%">Tipo Evento</th>
+                                <th class="text-center" style="width: 10%">Tipo Transporte</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="e in Eventos">
+                                <td>{{e.EventoId}}</td>
+                                <td>{{e.CreatedAt}}</td>
+                                <td>{{e.Nombres}}</td>
+                                <td>{{e.TipoEvento}}</td>
+                                <td>{{e.TipoTransporte}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <!--                <div class="modal-footer">
+                                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                                        <button class="btn btn-success" ng-click="GuardarMaterna()">Guardar</button>
+                                        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                                    </div>
+                                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

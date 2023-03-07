@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<!-- Desarrollador Franklin Ospino-->
+<html lang="es" ng-app="IntranetCIELD">
+  <head>
+    <meta charset="utf-8" />
+    <title page-title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache, must-revalidate" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="expires" content="Thu, 28 March 2019 15:15:00 GMT" />  -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/intranet-2/public_html/image/logo.png?v=2.8.19"
+    />
+    <!--<meta http-equiv="origin-trial" content="AgQb7/p6HfUoFOZbwusXg/v75Y2d2o+h9D1CENYpx48qJIFT8G7XC36ouBzFkgQsYJRECBamPpoOfh1fwgUj+gIAAABXeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjgwODEiLCJmZWF0dXJlIjoiUlRDSW5zZXJ0YWJsZVN0cmVhbXMiLCJleHBpcnkiOjE1OTE0NTQ3ODR9">-->
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css?v=2.8.19 -->
+    <!-- bower:css -->
+    <!-- Bootstrap -->
+    <link
+      href="/intranet-2/build/css/bootstrap/dist/css/bootstrap.css?v=2.8.19"
+      rel="stylesheet"
+    />
+    <link
+      href="/intranet-2/build/css/bootstrap/dist/css/animate.css?v=2.8.19"
+      rel="stylesheet"
+    />
+    <link
+      href="/intranet-2/public_html/styles/tema/css/tema_2_0.css?v=2.8.19"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/intranet-2/build/css/font-awesome/css/all.css?v=2.8.19"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      href="/intranet-2/build/css/font-awesome/css/font-awesome.min.css?v=2.8.19"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/angular-loading-bar/build/loading-bar.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      href="/intranet-2/build/css/angucomplete-alt/angucomplete-alt.css?v=2.8.19"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/bootstrap-sweetalert/dist/sweetalert.css?v=2.8.19"
+      rel="stylesheet"
+      media="screen"
+    />
+    <!--<link href="/intranet-2/build/css/WOW/css/libs/animate.css?v=2.8.19" rel="stylesheet" type="text/css" media="screen"/>-->
+    <link
+      href="/intranet-2/build/css/handsontable/dist/handsontable.full.min.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/text-angular/dist/textAngular.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/angular-calendar/dist/css/calendar.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/angular-moment-picker/dist/angular-moment-picker.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/intranet-2/build/css/angular-moment-picker/dist/material-ui.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/intranet-2/build/css/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/intranet-2/build/css/angular-bootstrap-calendar/angular-material-event-calendar.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/intranet-2/build/css/Material-Angular/angular-material.min.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--<link href="/intranet-2/vendors/bootstrap-daterangepicker/daterangepicker.css?v=2.8.19" rel="stylesheet" type="text/css"/>-->
+    <link
+      href="/intranet-2/build/vendor/ng-bs-daterangepicker/daterangepicker-bs3.min.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/intranet-2/build/css/toast/build/toastr.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/ekko-lightbox/ekko-lightbox.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <!--Vxgplayer-->
+    <link
+      href="/intranet-2/build/css/vxgplayer/vxgplayer.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      src="/intranet-2/build/vendor/vxgplayer/vxgplayer.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Builder Form-->
+    <link
+      href="/intranet-2/build/css/angularform-builder/angular-form-builder.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--Ng - sortable-->
+    <link
+      href="/intranet-2/build/css/ng-sortable/ng-sortable.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/intranet-2/build/css/ng-sortable/ng-sortable.style.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- NProgress -->
+    <link
+      href="/intranet-2/vendors/nprogress/nprogress.css?v=2.8.19"
+      rel="stylesheet"
+      media="screen"
+    />
+    <!-- bootstrap-progressbar -->
+    <link
+      href="/intranet-2/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css?v=2.8.19"
+      rel="stylesheet"
+      media="screen"
+    />
+    <link
+      href="/intranet-2/build/css/titatoogle/titatoggle-dist.min.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--MUlti-select-->
+    <!--        <link href="/intranet-2/build/css/multi-select/isteven-multi-select.css?v=2.8.19" rel="stylesheet" type="text/css"/>-->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css?v=2.8.19 -->
+    <!--<link rel="stylesheet" href="/intranet-2/public_html/styles/tema/css/custom.css?v=2.8.19">-->
+    <!--<link href="/intranet-2/public_html/styles/especial.css?v=2.8.19" rel="stylesheet" type="text/css"/>-->
+    <link
+      rel="stylesheet"
+      href="/intranet-2/public_html/styles/styles.css?v=2.8.19"
+    />
+    <link
+      rel="stylesheet"
+      href="/intranet-2/public_html/styles/palette.css?v=2.8.19"
+    />
+    <link
+      href="/intranet-2/public_html/styles/FloatButton.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="print"
+      href="/intranet-2/public_html/styles/print.css?v=2.8.19"
+    />
+    <link
+      href="/Polivalente/count/css/media.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lte IE 8]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
+        your experience.
+      </p>
+    <![endif]-->
+
+    <!--Aqui visualizare el Layout-->
+    <div ui-view autoscroll="false"></div>
+
+    <script>
+      function ChangeClass(id) {
+        $(id).removeClass('activar2')
+        $(id).toggleClass('activar')
+        $(id).removeAttr('onclick')
+        $(id).on('click', function (e) {
+          //console.log($(e.target.parentNode));
+          Reversa(e)
+        })
+      }
+      function Reversa(e) {
+        $(e.target.parentNode).on('click', function (e) {
+          ChangeClass($(e))
+        })
+        $(e.target.parentNode).toggleClass('active')
+      }
+      function RemoveClassCurrent(d) {
+        $('.nav.nav-second-level.collapse.in .active').removeClass('active')
+        $(d).addClass('active')
+      }
+      function RemoveClassActivo() {
+        $('.Activo').removeClass('Activo')
+      }
+    </script>
+    <!-- build:js(.) scripts/vendor.js?v=2.8.19 -->
+    <!-- bower:js -->
+    <!-- jQuery -->
+    <script src="/intranet-2/build/vendor/jquery/dist/jquery.min.js?v=2.8.19"></script>
+    <script src="/intranet-2/build/vendor/bootstrap/dist/js/popper.min.js?v=2.8.19"></script>
+    <!-- Bootstrap -->
+    <script src="/intranet-2/build/vendor/bootstrap/dist/js/bootstrap.min.js?v=2.8.19"></script>
+    <script
+      src="/intranet-2/build/vendor/jQuery.print/jQuery.print.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/toast/build/toastr.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <link
+      href="/intranet-2/build/css/video-js/video-js.css?v=2.8.19"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--        <script src="/intranet-2/build/vendor/WOW/dist/wow.min.js?v=2.8.19" type="text/javascript"></script>
+                <script src="/Polivalente/count/js/jquery.countdown.min.js?v=2.8.19" type="text/javascript"></script>-->
+    <!--Scrtipt del tema-->
+
+    <script type="text/javascript">
+      $.ajaxPrefilter(function (options, original_Options, jqXHR) {
+        options.async = true
+      })
+      $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+        event.preventDefault()
+        $(this).ekkoLightbox()
+      })
+
+      $(function () {
+        // Initialize tooltip component
+        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="popover"]').popover()
+      })
+    </script>
+    <script
+      src="/intranet-2/build/vendor/pusher/pusher.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/html2canvas/html2canvas.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/bootstrap-sweetalert/dist/sweetalert.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/utf8.js/utf8.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/moment/moment-with-locales.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/vendors/bootstrap-daterangepicker/daterangepicker.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular/angular.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/lodash/lodash.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--XLSX-->
+    <script
+      src="/intranet-2/build/vendor/xlsx/ng-file-upload.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/xlsx/xlsx.full.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/xlsx/jszip.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js"></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>-->
+    <!--<script src="/intranet-2/build/vendor/xlsx/xlsx-reader.min.js?v=2.8.19" type="text/javascript"></script>-->
+    <script
+      src="/intranet-2/build/vendor/angular-ui-router/release/angular-ui-router.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/artyom/artyom.window.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--INDEXED-DB-->
+    <script
+      src="/intranet-2/build/vendor/indexedDB/angular-indexed-db.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Text Angular JS-->
+    <script
+      src="/intranet-2/build/vendor/text-angular/dist/textAngular-sanitize.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/text-angular/dist/textAngular-rangy.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/text-angular/dist/textAngular.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Calendar-->
+    <script
+      src="/intranet-2/build/vendor/angular-bind-html-compile/angular-bind-html-compile.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-bootstrap-calendar/angular-material-event-calendar.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-calendar/dist/js/calendar-tpls.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-calendar/dist/js/angular-locale_es-co.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Material-->
+    <script
+      src="/intranet-2/build/vendor/Material-Angular/angular-aria.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/Material-Angular/angular-material.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+
+    <script
+      src="/intranet-2/build/vendor/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--DateTimePicker-->
+    <script
+      src="/intranet-2/build/vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/datetimepicker/angular-bootstrap-datetimepicker-directive.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-moment-picker/dist/angular-moment-picker.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--handsometable-->
+    <script
+      src="/intranet-2/build/vendor/handsontable/dist/handsontable.full.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/handsontable/dist/ngHandsontable.min.js"
+      type="text/javascript"
+    ></script>
+    <!--DATA TABLE-->
+    <script
+      src="/intranet-2/build/vendor/oclazyload/dist/oclazyload.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/datatable/ZeroClipboard.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/datatable/jquery.dataTables.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/datatable/dataTables.tableTools.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/datatable/dataTables.bootstrap.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/datatable/dataTables.bootstrap4.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-ui-utils/angular-ui-utils.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+
+    <script
+      src="/intranet-2/build/vendor/angular-animate/angular-animate.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-cookies/angular-cookies.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-resource/angular-resource.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-storage/dist/angular-storage.min.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-cryptography/aes.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-cryptography/mdo-angular-cryptography.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-route/angular-route.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-touch/angular-touch.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/ngAutocomplete/src/ngAutocomplete.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angucomplete-alt/angucomplete-alt.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/ekko-lightbox/ekko-lightbox.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Builder form-->
+    <script
+      src="/intranet-2/build/vendor/angularform-builder/angular-form-builder.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angularform-builder/angular-form-builder-components.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-validator/angular-validator.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-validator/angular-validator-rules.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Ng-sortable-->
+    <script
+      src="/intranet-2/build/vendor/ng-sortable/ng-sortable.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js?v=2.8.19 -->
+    <script
+      src="/intranet-2/build/vendor/angular-loading-bar/build/loading-bar.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/Base64/angular-base64.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/Base64/ng-file-model.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/Base64/angular-image-compress.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/Base64/jspdf.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-bind-html-compile/angular-bind-html-compile.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-chart/Chart.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/angular-chart/angular-chart.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/ng-bs-daterangepicker/ng-bs-daterangepicker.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--MultiSelect-->
+    <script
+      src="/intranet-2/build/vendor/multi-select/angular-bootstrap-multiselect.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!-- jQuery + Flot + Angular -->
+    <script src="/intranet-2/build/vendor/angular-flot/jquery.flot.min.js?v=2.8.19"></script>
+    <!-- FILE-SAVER -->
+    <script src="/intranet-2/build/vendor/file-saver/file-saver.min.js?v=2.8.19"></script>
+    <script src="/intranet-2/build/vendor/file-saver/tableexport.min.js?v=2.8.19"></script>
+    <!-- Flot Plugins -->
+    <script src="/intranet-2/build/vendor/angular-flot/jquery.flot.categories.min.js?v=2.8.19"></script>
+    <script src="/intranet-2/build/vendor/angular-flot/jquery.flot.pie.min.js?v=2.8.19"></script>
+    <script src="/intranet-2/build/vendor/angular-flot/jquery.flot.resize.min.js?v=2.8.19"></script>
+    <script
+      src="/intranet-2/build/vendor/angular-flot/jquery.flot.time.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!-- Angular Flot + Example -->
+    <script
+      src="/intranet-2/build/vendor/angular-flot/angular-flot.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!--Platform js-->
+    <script
+      src="/intranet-2/build/vendor/platformjs/platform.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/codeqr/qrcode.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/codeqr/angular-qr.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+
+    <script
+      src="/intranet-2/build/vendor/bootstrap/dist/js/jquery.metisMenu.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/bootstrap/dist/js/jquery.slimscroll.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/video-js/videojs-contrib-hls.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/video-js/video.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/wacom-firma/base64.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/wacom-firma/wgssSigCaptX.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/wacom-firma/SigCapt.min.js"
+      type="text/javascript"
+    ></script>
+    <!--Firma Manual-->
+    <script
+      src="/intranet-2/build/vendor/signature-pad/signature_pad.min.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/intranet-2/build/vendor/signature-pad/signature.min.js"
+      type="text/javascript"
+    ></script>
+    <!--ANGULAR FILTER-->
+    <!--<script src="/intranet-2/build/vendor/angular/angular-filter.min.js?v=2.8.19" type="text/javascript"></script>-->
+    <!--        <script src="/intranet-2/vendors/flot.orderbars/js/jquery.flot.orderBars.js?v=2.8.19" type="text/javascript"></script>
+                <script src="/intranet-2/vendors/flot-spline/js/jquery.flot.spline.min.js?v=2.8.19" type="text/javascript"></script>
+                <script src="/intranet-2/vendors/flot.curvedlines/curvedLines.js?v=2.8.19" type="text/javascript"></script>-->
+    <!--CONTROLADORES-->
+    <script
+      src="/intranet-2/build/scripts/main.min.js?v=2.8.19"
+      type="text/javascript"
+    ></script>
+    <!-- endbuild -->
+  </body>
+</html>

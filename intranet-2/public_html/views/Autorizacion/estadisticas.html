@@ -1,0 +1,61 @@
+<div class="row" ng-controller="EstadisticasMenaSoftCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">Estadisticas MenaSoft</h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <select id="dia-select" class="form-control" ng-model="Dia" ng-change="ConsultarAutorizaciones()" style="height: 35.59px !important;">
+                                <option>TODOS</option>
+                                <option ng-repeat="i in []| ranges : UltimoDiaMes" ng-value="'{{i}}'" value='{{i}}'>{{i}}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" style="height: 35.59px !important;" ng-change="ConsultarAutorizaciones()">
+                                <option ng-value="'Enero'" value='Enero'>Enero</option>
+                                <option ng-value="'Febrero'" value='Febrero'>Febrero</option>
+                                <option ng-value="'Marzo'" value='Marzo'>Marzo</option>
+                                <option ng-value="'Abril'" value='Abril'>Abril</option>
+                                <option ng-value="'Mayo'" value='Mayo'>Mayo</option>
+                                <option ng-value="'Junio'" value='Junio'>Junio</option>
+                                <option ng-value="'Julio'" value='Julio'>Julio</option>
+                                <option ng-value="'Agosto'" value='Agosto'>Agosto</option>
+                                <option ng-value="'Septiembre'" value='Septiembre'>Septiembre</option>
+                                <option ng-value="'Octubre'" value='Octubre'>Octubre</option>
+                                <option ng-value="'Noviembre'" value='Noviembre'>Noviembre</option>
+                                <option ng-value="'Diciembre'" value='Diciembre'>Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' ng-enter="ConsultarAutorizaciones()" class="form-control"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row mt-2 mb-2">
+                    <div class="col-sm-12" ng-if="cargarEstadisticas">
+                        <table id="Eventos" ui-jq="dataTable" ui-options="AutorizacionData" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 2%">ID</th>
+                                    <th class="text-center" style="width: 4%">Fecha</th>
+                                    <th class="text-center" style="width: 10%">Nombre Autorizador</th>
+                                    <th class="text-center" style="width: 8%">Entidad</th>
+                                    <th class="text-center" style="width: 8%">Paciente</th>
+                                    <th class="text-center" style="width: 8%">Documento</th>
+                                    <th class="text-center" style="width: 8%">Servicio</th>
+                                    <th class="text-center" style="width: 8%">Cama</th>
+                                    <th class="text-center" style="width: 8%">Diagnostico</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

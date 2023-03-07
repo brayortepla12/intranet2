@@ -1,0 +1,40 @@
+<div class="row" ng-controller="PreSolicitudViaticosCrtl">
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading default-primary-color">
+        <h2 class="text-primary-color">Solicitudes de viaticos</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <div class="row" style="margin-bottom: 25px;">
+          <div class="col-sm-4 mb-5">
+            <a class="cajaBoton" ng-click="NuevaSolicitud()">
+              <button type="button" class="btn btn-primary">
+                Nueva Solicitud
+              </button>
+            </a>
+          </div>
+          <div class="col-sm-12" ng-if="cargado">
+            <table ui-jq="dataTable" ui-options="ViaticosDATA"
+              class="table table-hover table-condensed table-striped table-bordered">
+              <thead class="bordered-blueberry">
+                <tr>
+                  <th class="text-center" style="width: 3%">ID</th>
+                  <th class="text-center" style="width: 7%">Fecha</th>
+                  <th class="text-center" style="width: 4%">Sede</th>
+                  <th class="text-center" style="width: 10%">A nombre de</th>
+                  <th class="text-center" style="width: 8%">Origen</th>
+                  <th class="text-center" style="width: 8%">Destino</th>
+                  <th class="text-center" style="width: 15%">Descripcion</th>
+                  <th class="text-center" style="width: 5%">Estado</th>
+                  <th class="text-center" style="width: 10%">Opciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

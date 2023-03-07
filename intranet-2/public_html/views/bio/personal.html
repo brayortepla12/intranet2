@@ -1,0 +1,726 @@
+<style>
+  .rojo,
+  .Rojo {
+    color: red;
+  }
+
+
+  td a {
+    color: black !important;
+  }
+
+  .HasPermiso a {
+    font-weight: bold;
+    color: blue !important;
+    text-decoration: blue underline;
+  }
+
+  .HasCambioSede a {
+    font-weight: bold;
+    color: purple !important;
+    text-decoration: blue underline;
+  }
+
+  .Tarde a {
+    font-weight: bold;
+    color: red !important;
+  }
+
+  @media print {
+    .Tarde {
+      background: #ddd !important;
+    }
+  }
+
+  md-event-calendar {
+    width: 800px !important;
+  }
+
+  md-event-calendar-month {
+    height: 600px !important;
+  }
+</style>
+<div ng-controller="PersonalCtrl">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h2>Listado del personal<small></small></h2>
+          <div class="ibox-tools" style="transform: translateX(-50px);">
+            <ul class="nav navbar-right" style="color:black;">
+              <li>
+                <select class="form-control" ng-model="Mes" ng-change="GetTableHorarios()"
+                  style="height: 35.59px !important;">
+                  <option ng-selected="Mes == 1" ng-value="'1'" value='1'>Enero</option>
+                  <option ng-selected="Mes == 2" ng-value="'2'" value='2'>Febrero</option>
+                  <option ng-selected="Mes == 3" ng-value="'3'" value='3'>Marzo</option>
+                  <option ng-selected="Mes == 4" ng-value="'4'" value='4'>Abril</option>
+                  <option ng-selected="Mes == 5" ng-value="'5'" value='5'>Mayo</option>
+                  <option ng-selected="Mes == 6" ng-value="'6'" value='6'>Junio</option>
+                  <option ng-selected="Mes == 7" ng-value="'7'" value='7'>Julio</option>
+                  <option ng-selected="Mes == 8" ng-value="'8'" value='8'>Agosto</option>
+                  <option ng-selected="Mes == 9" ng-value="'9'" value='9'>Septiembre</option>
+                  <option ng-selected="Mes == 10" ng-value="'10'" value='10'>Octubre</option>
+                  <option ng-selected="Mes == 11" ng-value="'11'" value='11'>Noviembre</option>
+                  <option ng-selected="Mes == 12" ng-value="'12'" value='12'>Diciembre</option>
+                </select>
+              </li>
+              <li>
+                <input type="text" ng-model='Year' ng-enter="GetTableHorarios()" class="form-control" />
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="col-sm-12" ng-hide="BanderaHorario">
+            <button class="btn btn-primary" ng-click="OpenCrearModal()">Crear Persona</button>
+            <a ng-repeat="d in Dispositivos track by $index" class="btn btn-info"
+              ui-sref="controlturno_pantalla({Dispositivo: '{{d.Dispositivo}}'})" target="_blank">Biometrico
+              {{d.Dispositivo}}</a>
+          </div>
+          <div class="row" ng-show="!ficha && !BanderaHorario">
+            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+              <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions"
+                class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                  <tr>
+                    <th class="text-center" style="width: 3%">ID</th>
+                    <th class="text-center" style="width: 5%">Cedula</th>
+                    <th class="text-center" style="width: 5%">Codigo Tarjeta</th>
+                    <th class="text-center" style="width: 10%">P. Nombre</th>
+                    <th class="text-center" style="width: 10%">S. Nombre</th>
+                    <th class="text-center" style="width: 10%">P. Apellido</th>
+                    <th class="text-center" style="width: 10%">S. Apellido</th>
+                    <th class="text-center" style="width: 7%">Tipo Persona</th>
+                    <th class="text-center" style="width: 15%">Opciones</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row" ng-show="BanderaHorario">
+            <div class="col-sm-12">
+              <button class="btn btn-default" ng-click="BanderaHorario = false"
+                style="margin-bottom: 25px;">Atras</button>
+              <button class="btn btn-primary" ng-click="ImprimirHorario()"
+                style="margin-bottom: 25px;">Imprimir</button>
+              <input class="btn btn-default" style="margin-bottom: 25px;" type="button" value="Exportar A"
+                ng-click="ExportarHorario()" />
+              <table class="table table-bordered" id="TablaHorario">
+                <thead>
+                  <tr>
+                    <th colspan="16">Funcionario: {{Nombres}}</th>
+                    <th colspan="16">Periodo: {{Mes}}/{{Year}}</th>
+                  </tr>
+                  <tr>
+                    <th>Nombres</th>
+                    <th ng-repeat="d in []| range: UltimoDiaMes">{{$index + 1}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="p in Horarios">
+                    <td>{{p.Nombres}}</td>
+                    <th ng-if="p.HasHorarioFijo == 0" ng-repeat="d in []| range: UltimoDiaMes">
+                      <span ng-repeat="h in p.Horario" ng-if="(d + 1) == h.Dia">
+                        {{h.Abreviatura}}
+                      </span>
+                    </th>
+                    <th ng-if="p.HasHorarioFijo == 1" colspan="{{UltimoDiaMes}}">{{p.Turno}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="HorarioModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="col-sm-11">
+            <h2 class="modal-title">Horario para el mes {{Mes}}/{{Year}}</h2>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4>Funcionario: {{Nombres}}</h4>
+            </div>
+            <div class="col-sm-12">
+              <h1 style="text-align: center">{{calendarTitle}}</h1>
+              <md-event-calendar ng-model="selected" md-events="events" md-label="title" auto-height=""
+                class="md-primary">
+                <md-event-calendar-header class="md-center">
+                  <md-event-calendar-title></md-event-calendar-title>
+                </md-event-calendar-header>
+              </md-event-calendar>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="ListadoESModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="col-sm-11">
+            <h2 class="modal-title">Entradas/Salidas por mes {{Mes}}/{{Year}}</h2>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-body">
+          <button class="btn btn-default" ng-click="BuscarPermiso = false; Permiso = {}">Atras</button>
+          <button class="btn btn-primary" ng-click="ImprimirEstadisticas()">Imprimir</button>
+          <table class="table table-borderless table-striped" id="TablaEstadisticas" ng-hide="BuscarPermiso">
+            <thead>
+              <tr>
+                <th colspan="5">Funcionario: {{Nombres}}</th>
+                <th colspan="5">Periodo: {{Mes}}/{{Year}}</th>
+              </tr>
+              <tr>
+                <th>Dia Semana</th>
+                <th>Fecha</th>
+                <th>E1</th>
+                <th>S2</th>
+                <th>E3</th>
+                <th>S4</th>
+                <th>E5</th>
+                <th>S6</th>
+                <th>E7</th>
+                <th>S8</th>
+                <th>TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="l in ListadosES">
+                <td ng-class="{'Rojo': l.DIA_SEMANA == 'Dom'}">{{l.DIA_SEMANA}}</td>
+                <td>{{l.fecha| date : 'dd'}}</td>
+                <td ng-class="{'HasPermiso': l.E1_P && l.E1_P > 0,'Tarde': l.E1_E == 'Tarde' && !(l.E1_P && l.E1_P > 0) && !l.E1_PS,
+                                            'HasCambioSede': l.E1_PS}">
+                  <a ng-click="VerPermiso(l.E1_P)" data-toggle="tooltip" title="{{l.E1_C}}">{{l.E1}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.S2_P && l.S2_P > 0, 'Tarde': l.S2_E == 'Tarde' && !(l.S2_P && l.S2_P > 0) && !l.S2_PS,
+                                            'HasCambioSede': l.S2_PS}">
+                  <a ng-click="VerPermiso(l.S2_P)" data-toggle="tooltip" title="{{l.S2_C}}">{{l.S2}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.E3_P && l.E3_P > 0, 'Tarde': l.E3_E == 'Tarde' && !(l.E3_P && l.E3_P > 0) && !l.E3_PS,
+                                            'HasCambioSede': l.E3_PS}">
+                  <a ng-click="VerPermiso(l.E3_P)" data-toggle="tooltip" title="{{l.E3_C}}">{{l.E3}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.S4_P && l.S4_P > 0, 'Tarde': l.S4_E == 'Tarde' && !(l.S4_P && l.S4_P > 0) && !l.S4_PS,
+                                            'HasCambioSede': l.S4_PS}">
+                  <a ng-click="VerPermiso(l.S4_P)" data-toggle="tooltip" title="{{l.S4_C}}">{{l.S4}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.E5_P && l.E5_P > 0, 'Tarde': l.E5_E == 'Tarde' && !(l.E5_P && l.E5_P > 0) && !l.E5_PS,
+                                            'HasCambioSede': l.E5_PS}">
+                  <a ng-click="VerPermiso(l.E5_P)" data-toggle="tooltip" title="{{l.E5_C}}">{{l.E5}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.S6_P && l.S6_P > 0, 'Tarde': l.S6_E == 'Tarde' && !(l.S6_P && l.S6_P > 0) && !l.S6_PS,
+                                            'HasCambioSede': l.S6_PS}">
+                  <a ng-click="VerPermiso(l.S6_P)" data-toggle="tooltip" title="{{l.S6_C}}">{{l.S6}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.E7_P && l.E7_P > 0, 'Tarde': l.E7_E == 'Tarde' && !(l.E7_P && l.E7_P > 0) && !l.E7_PS,
+                                            'HasCambioSede': l.E7_PS}">
+                  <a ng-click="VerPermiso(l.E7_P)" data-toggle="tooltip" title="{{l.E7_C}}">{{l.E7}}</a>
+                </td>
+                <td ng-class="{'HasPermiso': l.S8_P && l.S8_P > 0, 'Tarde': l.S8_E == 'Tarde' && !(l.S8_P && l.S8_P > 0) && !l.S8_PS,
+                                            'HasCambioSede': l.S8_PS}">
+                  <a ng-click="VerPermiso(l.S8_P)" data-toggle="tooltip" title="{{l.S8_C}}">{{l.S8}}</a>
+                </td>
+                <th>
+                  {{l.Total}}
+                </th>
+              </tr>
+              <tr>
+                <th>--</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>{{ListadosES| autoSumaTime: 'Total'}}</th>
+              </tr>
+            </tbody>
+          </table>
+          <div ng-show="BuscarPermiso">
+            <div class="col-sm-12" style="margin-top: 20px;" ng-show="Permiso.Nombres">
+              <div class="col-sm-4">
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <img ng-src="{{Empresa.Logo}}" width="100" alt="">
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-center">
+                    <h5><strong>AUTORIZACIÓN DE PERMISO</strong></h5>
+                    GH-F-05 Ver. 01<br>
+                    Emisión: 03-12-2013 Vigencia:16-12-2013
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <strong>Identificación:</strong> {{Permiso.Cedula}}
+                      </div>
+                      <div class="col-sm-6">
+                        <strong>Fecha:</strong> {{Permiso.CreatedAt}}
+                      </div>
+                      <div class="col-sm-12">
+                        <strong>Funcionario</strong> {{Permiso.Nombres}}
+                      </div>
+                      <div class="col-sm-12">
+                        <label style="font-weight: bold;">
+                          Motivo
+                        </label>
+                        <div class="row">
+                          <!--                                        <div class="form-group col-lg-4 col-sm-4">
+                                                                                                <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Cita Médica</label>
+                                                                                                <div class="form-check float-right">
+                                                                                                    <input class="form-check-input" ng-checked="Permiso.Motivo == 'Cita Médica'" disabled 
+                                                                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                                                                </div>
+                                                                                            </div>-->
+                          <div class="form-group col-lg-4 col-sm-4">
+                            <label class="text-uppercase"
+                              style="font-size: 0.8em; transform: translate(0px,10px)">Laboral</label>
+                            <div class="form-check float-right">
+                              <input class="form-check-input" ng-checked="Permiso.Motivo == 'Laboral'"
+                                style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox"
+                                disabled>
+                            </div>
+                          </div>
+                          <div class="form-group col-lg-4 col-sm-4">
+                            <label class="text-uppercase"
+                              style="font-size: 0.8em; transform: translate(0px,10px)">Personal</label>
+                            <div class="form-check float-right">
+                              <input class="form-check-input" ng-checked="Permiso.Motivo == 'Personal'"
+                                style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox"
+                                disabled>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <strong>¿Cual?</strong>
+                            {{Permiso.Cual}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <strong>Fecha Inicio</strong>
+                            {{Permiso.FechaInicio}}
+                          </div>
+                          <div class="col-sm-6">
+                            <strong>Fecha Final</strong>
+                            {{Permiso.FechaFin}}
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <img ng-src="{{Permiso.VBJefe}}" width="100"><br>
+                            <strong>Vo. Bo. Jefe de Área</strong>
+                          </div>
+                          <div class="col-sm-6">
+                            <img ng-src="{{Permiso.VBGestionHumana}}" width="100"><br>
+                            <strong>Gestión Humana</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="PersonaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="col-sm-11">
+            <h2 class="modal-title" ng-hide="ActualizarBool">Crear Persona</h2>
+            <h2 class="modal-title" ng-show="ActualizarBool">Actualizar Persona</h2>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-body">
+          <form role="form" name="Datos" novalidate>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="row col-sm-12">
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+                    <label>
+                      Sede
+                    </label>
+                    <select class="form-control" ng-model="Persona.SedeId" name="SedeId" required
+                      ng-change="ChangeSede()">
+                      <option ng-repeat="s in Sedes track by $index" ng-selected="Persona.SedeId === s.SedeId"
+                        ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+                    <label>
+                      Servicio
+                    </label>
+                    <select class="form-control" ng-model="Persona.ServicioId" name="ServicioId" required>
+                      <option ng-repeat="s in Servicios track by $index"
+                        ng-selected="Persona.ServicioId === s.ServicioId" ng-value='{{s.ServicioId}}'
+                        value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.Cedula.$valid, 'has-error': Datos.Cedula.$invalid}">
+                    <label>
+                      Cedula
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.Cedula" name="Cedula"
+                      onfocus="(this.type = 'number')" onblur="(this.type = 'text')" required>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.CodigoTarjeta.$valid, 'has-error': Datos.CodigoTarjeta.$invalid}">
+                    <label>
+                      Codigo Tarjeta
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.CodigoTarjeta" name="CodigoTarjeta"
+                      required>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.PrimerNombre.$valid, 'has-error': Datos.PrimerNombre.$invalid}">
+                    <label>
+                      Primer Nombre
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.PrimerNombre" name="PrimerNombre"
+                      capitalize required>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.SegundoNombre.$valid, 'has-error': Datos.SegundoNombre.$invalid}">
+                    <label>
+                      Segundo Nombre
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.SegundoNombre" name="SegundoNombre"
+                      capitalize>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.PrimerApellido.$valid, 'has-error': Datos.PrimerApellido.$invalid}">
+                    <label>
+                      Primer Apellido
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.PrimerApellido" name="PrimerApellido"
+                      capitalize required>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.SegundoApellido.$valid, 'has-error': Datos.SegundoApellido.$invalid}">
+                    <label>
+                      Segundo Apellido
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.SegundoApellido" name="SegundoApellido"
+                      capitalize>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.Genero.$valid, 'has-error': Datos.Genero.$invalid}">
+                    <label>
+                      Genero
+                    </label>
+                    <select class="form-control" ng-model="Persona.Genero" name="Genero" required>
+                      <option value='F'>F</option>
+                      <option selected value='M'>M</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.FechaNacimiento.$valid, 'has-error': Datos.FechaNacimiento.$invalid}">
+                    <label>
+                      Fecha de Nacimiento
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.FechaNacimiento" name="FechaNacimiento"
+                      onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                  </div>
+                  <div class="col-sm-4" ng-class="{'has-success': Datos.Rh.$valid, 'has-error': Datos.Rh.$invalid}">
+                    <label>
+                      RH
+                    </label>
+                    <select class="form-control" ng-model="Persona.Rh" name="Rh" required>
+                      <option value='AB+'>AB+</option>
+                      <option value='AB-'>AB-</option>
+                      <option value='A+'>A+</option>
+                      <option value='A-'>A-</option>
+                      <option value='B+'>B+</option>
+                      <option value='B-'>B-</option>
+                      <option value='O+'>O+</option>
+                      <option value='O-'>O-</option>
+                      <option selected value='Desconocido'>Desconocido</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.TipoPersona.$valid, 'has-error': Datos.TipoPersona.$invalid}">
+                    <label>
+                      Tipo Persona
+                    </label>
+                    <select class="form-control" ng-model="Persona.TipoPersona" name="TipoPersona" required>
+                      <option value='Lider'>Lider</option>
+                      <option selected value='Colaborador'>Colaborador</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.IsAdOrAsist.$valid, 'has-error': Datos.IsAdOrAsist.$invalid}">
+                    <label>
+                      Esta persona es:
+                    </label>
+                    <select class="form-control" ng-model="Persona.IsAdOrAsist" name="IsAdOrAsist" required>
+                      <option value='Administrativo' ng-selected="Persona.IsAdOrAsist == 'Administrativo'">
+                        Administrativo</option>
+                      <option value='Asistencial' ng-selected="Persona.IsAdOrAsist == 'Asistencial'">Asistencial
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.HasHorarioFijo.$valid, 'has-error': Datos.HasHorarioFijo.$invalid}">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input"
+                        ng-click="Persona.HasHorarioFijo = Persona.HasHorarioFijo == 1 ? 0 : 1"
+                        style="width: 20px; height: 20px;" ng-checked="Persona.HasHorarioFijo == 1" id="HasHorarioFijo">
+                      <label class="form-check-label" for="HasHorarioFijo">Tiene horario fijo?</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4" ng-show="IsAdminSistemas"
+                    ng-class="{'has-success': Datos.UsuarioP.$valid, 'has-error': Datos.UsuarioP.$invalid}">
+                    <label>
+                      Usuario
+                    </label>
+                    <!--<input type="text" class="form-control" ng-model="Persona.Usuario" name="Correo" maxlength="70" >-->
+                    <angucomplete-alt id="persona-create" placeholder="Buscar usuario" pause="100"
+                      selected-object="UsuarioP" local-data="Usuarios" search-fields="NombreUsuario"
+                      title-field="NombreUsuario" minlength="1" input-class="form-control" />
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.Correo.$valid, 'has-error': Datos.Correo.$invalid}">
+                    <label>
+                      Correo (obligario)
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.Correo" name="Correo" required>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.Celular.$valid, 'has-error': Datos.Celular.$invalid}">
+                    <label>
+                      Celular
+                    </label>
+                    <input type="text" class="form-control" ng-model="Persona.Celular" name="Celular" maxlength="44"
+                      required>
+                  </div>
+                  <div class="col-sm-4">
+                    <label>
+                      Cargo <strong ng-show="ActualizarBool">{{Persona.NombreCargo}}</strong>
+                    </label>
+                    <multiselect ng-model="Persona.Cargo" show-search="true" selection-limit="1" labels="labels"
+                      id-prop="CargoId" display-prop="Cargo" options="Cargos" search-limit="10"
+                      classes-btn="'btn-default'">
+                    </multiselect>
+                  </div>
+                  <div class="col-sm-4">
+                    <label>
+                      Jefe Inmediato <strong ng-show="ActualizarBool">{{Persona.NombreJefe}}</strong>
+                    </label>
+                    <multiselect ng-model="Persona.Jefe" show-search="true" selection-limit="1" labels="labels"
+                      id-prop="PersonaId" display-prop="Nombres" options="Lideres" search-limit="10"
+                      classes-btn="'btn-default'">
+                    </multiselect>
+                  </div>
+                  <div class="col-sm-4"
+                    ng-class="{'has-success': Datos.TurnoId.$valid, 'has-error': Datos.TurnoId.$invalid}">
+                    <label>
+                      Turno
+                    </label>
+                    <select class="form-control" ng-options="t.TurnoId as t.Nombre for t in Turnos"
+                      ng-change="ChangeTurno()" ng-model="Persona.TurnoId" name="TurnoId" required>
+                    </select>
+                  </div>
+                  <div class="col-sm-12 mt-3" ng-show="IsSistemas">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="form-group col-sm-12">
+                            <label for="firma">Firma</label>
+                            <input type="file" name="firma" id="firma-persona" class="form-control" my-upload2
+                              accept="image/*" image="DataImg2" resize-max-height="800" resize-max-width="800"
+                              resize-quality="0.7" resize-type="image/jpg" ng-image-compress />
+                          </div>
+                          <div class="col-sm-12">
+                            <button class="btn btn-primary" ng-click="FirmarWacom()">Firmar con WACOM</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <img ng-if="image2" ng-src="{{image2}}" style="height: 200px; max-height: 200px; width: 200px"
+                          alt="">
+                        <img ng-if="!image2 && Persona.Firma" ng-src="{{Persona.Firma}}"
+                          style="height: 200px; max-height: 200px; width: 200px" alt="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>
+                      Modificado por
+                    </label><br>
+                    <strong>{{Persona.ModifiedBy}}</strong>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>
+                      Fecha de modificación
+                    </label><br>
+                    <strong>{{Persona.ModifiedAt}}</strong>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="file-1">
+                    <span>Subir foto</span></label>
+                  <input type="file" name="file-1[]" id="foto-persona" class="inputfile inputfile-1" my-upload
+                    accept="image/*" image="DataImg" resize-max-height="800" resize-max-width="800" resize-quality="0.7"
+                    resize-type="image/jpg" ng-image-compress />
+
+                  <img ng-if="image" ng-src="{{image}}" style="height: 200px; max-height: 200px; width: 200px"
+                    class="rounded-circle" alt="">
+                  <!--                    <input ng-show="!HojaVida" type="file" my-upload accept="image/*" image="DataImg" resize-max-height="800" resize-max-width="800" 
+                                                               resize-quality="0.7" resize-type="image/jpg" ng-image-compress>-->
+                </div>
+                <div>
+                  <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="h in Horarios">
+                      <strong>{{h.DiaSemana}}:</strong> {{h.HoraInicio}} - {{h.HoraFin}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </form>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+          <div class="text-center col-sm-12" style="margin-top: 25px;">
+            <button class="btn btn-success" ng-click="CrearPersona()" ng-hide="ActualizarBool">Crear Persona</button>
+            <button class="btn btn-success" ng-click="ActualizarPersona()" ng-show="ActualizarBool">Actualizar
+              Persona</button>
+            <button class="btn btn-default"
+              ng-click="DiceNombres(Persona.PrimerNombre, Persona.PrimerApellido)">Escuchar Nombre</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="ReporteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="col-sm-11">
+            <h2 class="modal-title">Consultar biometrico para {{Persona.PrimerNombre}} {{Persona.SegundoNombre}}
+              {{Persona.PrimerApellido}} {{Persona.SegundoApellido}}</h2>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-body">
+          <form role="form" name="Consultar_data" novalidate>
+            <div class="row">
+              <div class="col-md-6"
+                ng-class="{'has-success': Consultar_data.Desde.$valid, 'has-error': Consultar_data.Desde.$invalid}">
+                <label>
+                  Desde
+                </label>
+                <input type="text" class="form-control" ng-model="Desde" name="Desde" onfocus="(this.type = 'date')"
+                  onblur="(this.type = 'text')">
+              </div>
+              <div class="col-md-6"
+                ng-class="{'has-success': Consultar_data.Hasta.$valid, 'has-error': Consultar_data.Hasta.$invalid}">
+                <label>
+                  Hasta
+                </label>
+                <input type="text" class="form-control" ng-model="Hasta" name="Hasta" onfocus="(this.type = 'date')"
+                  onblur="(this.type = 'text')">
+              </div>
+              <div class="col-sm-12">
+                <table class="table table-borderless table-striped">
+                  <thead>
+                    <tr>
+                      <th>Tiempo</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Evento</th>
+                      <th>Dispositivo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="b in Biometrico">
+                      <td>{{b.Fecha}}</td>
+                      <td>{{b.PrimerNombre}} {{b.SegundoNombre}}</td>
+                      <td>{{b.PrimerApellido}} {{b.SegundoApellido}}</td>
+                      <td>{{b.Tipo}}</td>
+                      <td>{{b.Dispositivo}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+          </form>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+          <div class="text-center col-sm-12" style="margin-top: 25px;">
+            <button class="btn btn-primary" ng-click="Consultar()">Consultar</button>
+            <a class="btn btn-success"
+              ng-href="/Polivalente/api/Control.php?PersonaId_xlsx={{Persona.PersonaId}}&Desde_xlsx={{Desde}}&Hasta_xlsx={{Hasta}}"
+              target="_blank">Exportar a excel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

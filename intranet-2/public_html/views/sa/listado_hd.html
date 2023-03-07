@@ -1,0 +1,177 @@
+<style type="text/css">
+    select[disabled=disabled]{
+        background: #e9ecef !important;
+    }
+    .No-existe{
+        background: red;
+        color: white;
+    }
+    .Suspendido{
+        background: gray;
+        color: white;
+    }
+    .Nuevo{
+        background: yellow;
+        color: black;
+    }
+    .solicitado{
+        background: yellowgreen;
+    }
+</style>
+<div ng-controller="HDCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2>Hojas De Dietas<small></small></h2>
+                    <div class="ibox-tools" style="transform: translateX(-50px);">
+                        <ul class="nav navbar-right" style="color:black;">
+                            <li>
+                                <select id="estado-select" class="form-control" ng-model="Estado" ng-change="GetHDietas()" style="height: 35.59px !important;">
+                                    <option value="TODOS">TODOS</option>
+                                    <option value="Desayuno">Desayuno</option>
+                                    <option value="MM">MM</option>
+                                    <option value="Almuerzo">Almuerzo</option>
+                                    <option value="MT">MT</option>
+                                    <option value="Cena">Cena</option>
+                                    <option value="MN">MN</option>
+                                </select>
+                            </li>
+                            <li>
+                                <select id="dia-select" class="form-control" ng-disabled="Mes == 'TODOS'" ng-model="Dia" ng-change="GetHDietas()" style="height: 35.59px !important;">
+                                    <option>TODOS</option>
+                                    <option ng-repeat="i in []| ranges : UltimoDiaMes" ng-value="'{{i}}'" value='{{i}}'>{{i}}</option>
+                                </select>
+                            </li>
+                            <li>
+                                <select class="form-control" ng-model="Mes" ng-change="GetHDietas()" style="height: 35.59px !important;">
+                                    <option>TODOS</option>
+                                    <option ng-selected="Mes == 1" ng-value="'1'" value='1'>Enero</option>
+                                    <option ng-selected="Mes == 2" ng-value="'2'" value='2'>Febrero</option>
+                                    <option ng-selected="Mes == 3" ng-value="'3'" value='3'>Marzo</option>
+                                    <option ng-selected="Mes == 4" ng-value="'4'" value='4'>Abril</option>
+                                    <option ng-selected="Mes == 5" ng-value="'5'" value='5'>Mayo</option>
+                                    <option ng-selected="Mes == 6" ng-value="'6'" value='6'>Junio</option>
+                                    <option ng-selected="Mes == 7" ng-value="'7'" value='7'>Julio</option>
+                                    <option ng-selected="Mes == 8" ng-value="'8'" value='8'>Agosto</option>
+                                    <option ng-selected="Mes == 9" ng-value="'9'" value='9'>Septiembre</option>
+                                    <option ng-selected="Mes == 10" ng-value="'10'" value='10'>Octubre</option>
+                                    <option ng-selected="Mes == 11" ng-value="'11'" value='11'>Noviembre</option>
+                                    <option ng-selected="Mes == 12" ng-value="'12'" value='12'>Diciembre</option>
+                                </select>
+                            </li>
+                            <li>
+                                <input type="text" ng-model='Year' ng-enter="GetHDietas()" class="form-control" onfocus="(this.type = 'number')" onblur="(this.type = 'text')"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12 mb-3">
+                        <button class="btn btn-default" ng-if="OHD || PHD" ng-click="Atras()">Atras</button>
+                        <button class="btn btn-secondary" ng-if="OHD && (HD.CDesayuno || HD.CMM || HD.CAlmuerzo || HD.CMT || HD.CCena || HD.CMM)" ng-click="ImprimirModal()">Imprimir HD</button>
+                        <button class="btn btn-success" ng-if="NHD" ng-click="CrearHD()">Crear HD</button>
+                        <div class="row mt-2" ng-show="IMPHD">
+                            <div class="col-sm-4">
+                                <select id="distribucion-select" class="form-control" ng-model="ImpDis" style="height: 35.59px !important;">
+                                    <option value="Desayuno" ng-if="HD.Desayuno && HD.FCDesayuno">Desayuno</option>
+                                    <option value="MM" ng-if="HD.MM && HD.FCMM">MM</option>
+                                    <option value="Almuerzo" ng-if="HD.Almuerzo && HD.FCAlmuerzo">Almuerzo</option>
+                                    <option value="MT" ng-if="HD.MT && HD.FCMT">MT</option>
+                                    <option value="Cena" ng-if="HD.Cena && HD.FCCena">Cena</option>
+                                    <option value="MN" ng-if="HD.MN && HD.FCMN">MN</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" ng-click="ImprimirHD()">
+                                    <span>Imprimir</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-2" ng-show="OHD || PHD">
+                            <div class="col-sm-4">
+                                <select id="distribucion-select" class="form-control" ng-model="Distribucion" style="height: 35.59px !important;">
+                                    <option value="Desayuno" ng-if="HD.Desayuno && !HD.FCDesayuno">Desayuno</option>
+                                    <option value="MM" ng-if="HD.MM && !HD.FCMM">MM</option>
+                                    <option value="Almuerzo" ng-if="HD.Almuerzo && !HD.FCAlmuerzo">Almuerzo</option>
+                                    <option value="MT" ng-if="HD.MT && !HD.FCMT">MT</option>
+                                    <option value="Cena" ng-if="HD.Cena && !HD.FCCena">Cena</option>
+                                    <option value="MN" ng-if="HD.MN && !HD.FCMN">MN</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-warning" ng-if="OHD && HD.Estado !== 'Finalizado'" ng-click="PrepararComida()">
+                                    <span ng-hide="IsLoading">Preparar</span>
+                                    <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="PHD">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-4 mb-3">
+                                    <label>
+                                        Cantidad a preparar para {{Dia2}}/{{Mes2}}/{{Year2}}
+                                    </label>
+                                    <select class="form-control" ng-model="EstadoConsultar" name="EstadoConsultar">
+                                        <option value="Desayuno Preparado">Desayuno</option>
+                                        <option value="Almuerzo Preparado">Almuerzo</option>
+                                        <option value="Cena Preparada">Cena</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Descripcion</th>
+                                                <th>Abrv</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="c in CantidadAP">
+                                                <td>{{c.Descripcion}}</td>
+                                                <td>{{c.Abrv}}</td>
+                                                <td>{{d.Total}}</td>
+                                                <td colspan="3" ng-show="IsLoading">
+                                                    <i class="fa fa-spinner fa-spin"></i>
+                                                </td>
+                                                <td colspan="3" ng-show="CantidadAP.length">0 alimentos por preparar</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="!OHD && LHD && !PHD">
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                            <table id="LHD" ui-jq="dataTable" ui-options="HDs" class="table table-hover table-condensed table-striped table-bordered">
+                                <thead class="bordered-blueberry">
+                                    <tr>
+                                        <th scope="col" class="text-center" style="width: 3%">ID</th>
+                                        <th scope="col" class="text-center" style="width: 5%">Fecha</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Sector</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Descripción</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Solicitud</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Fecha P. Desayuno</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Fecha P. MM</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Fecha P. Almuerzo</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Fecha P. MT</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Fecha P. Cena</th>
+                                        <th scope="col" class="text-center" style="width: 7%">Fecha P. MN</th>
+                                        <th scope="col" class="text-center" style="width: 15%">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <ng-include ng-if="OHD && !LHD && !PHD" src="'/intranet-2/public_html/views/sa/OHD.html'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

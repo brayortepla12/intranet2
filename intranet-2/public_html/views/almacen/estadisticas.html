@@ -1,0 +1,132 @@
+<div class="panel panel-primary" ng-controller="EstadisticasAlmacenCtrl">
+    <div class="panel-heading default-primary-color">
+        <h2 class="text-primary-color">Generar Reporte</h2>
+        <!--<div class="col-xs-2 pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" ng-model="HistoriaId" ng-pattern="onlyNumbers" ng-change="Reset()" ng-enter="GetHistoriaById()" class="form-control" placeholder="Busqueda rapida">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="GetHistoriaById()" type="button"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>-->
+        <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <p>Seleccione un rango de fechas.</p>
+                <form role="form" name="Datos" novalidate>
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <label for="desde" class="col-xs-12 col-form-label">Desde</label>
+                            <div>
+                                <input class="form-control" type="text" onfocus="(this.type = 'date')"
+                                    onblur="(this.type = 'text')" ng-model="desde"
+                                    ng-class="{ 'has-error': Datos.desde.$invalid && !Datos.desde.$pristine }"
+                                    id="desde" required>
+                            </div>
+                        </div>
+                        <div class="form-group  col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <label for="hasta" class="col-xs-12  col-form-label">Hasta</label>
+                            <div>
+                                <input class="form-control" type="text" onfocus="(this.type = 'date')"
+                                    onblur="(this.type = 'text')" ng-model="hasta"
+                                    ng-class="{ 'has-error': Datos.hasta.$invalid && !Datos.hasta.$pristine }"
+                                    id="hasta" required>
+                            </div>
+                        </div>
+                        <div class="form-group  col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <label for="TipoFormato" class="col-xs-12 col-form-label">Consultar Por:</label>
+                            <div>
+                                <select class="form-control" ng-model="TipoFormato" name="TipoFormato" required>
+
+                                    <option value="Almacen">Almacen</option>
+                                    <option value="Central">Central</option>
+                                    <option value="Polivalente">Polivalente</option>
+                                    <option value="Sistemas">Sistemas</option>
+                                    <option value='Biomedico'>Biomedico</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            
+                        </div>
+                        <div class="col-xs-6" ng-show="!Datos.$invalid" style="margin-right: 20px; margin-left: 18px;">
+                            <label>
+                                Sede
+                            </label>
+                            <select class="form-control" ng-model="SedeId" ng-change="ChangeSede()" name="Servicio"
+                                required>
+                                <option>--</option>
+                                <option value="TODO" ng-selected="SedeId == 'TODO'">TODO</option>
+                                <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === SedeId"
+                                    ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6" ng-show="!Datos.$invalid" style="margin-right: 20px;">
+                            <label>
+                                Servicio
+                            </label>
+                            <select class="form-control" ng-model="ServicioId" ng-change="ChangeEstadisticas()"
+                                name="Servicio" required>
+                                <option value="">--</option>
+                                <option value="TODO" ng-selected="ServicioId == 'TODO'">TODO</option>
+                                <option ng-repeat="s in Servicios track by $index"
+                                    ng-selected="s.ServicioId === ServicioId" ng-value='{{s.ServicioId}}'
+                                    value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6" ng-show="!Datos.$invalid" style="margin-right: 20px;">
+                            <label>
+                                Tipo de solicitud
+                            </label>
+                            <select class="form-control" ng-model="tipoSolicitud" name="Servicio" required>
+                                <option>--</option>
+                                <option value="pedidio">Solicitud De Pedidos</option>
+                                <option value="repuesto">Solicitud De Repuestos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <br>
+                        <button type="button" class="btn btn-primary" style="margin-top: 3px"
+                            ng-disabled="Datos.$invalid" ng-click="GenerarExcel()">Generar Excel</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <br>
+                        <button type="button" class="btn btn-success" style="margin-top: 3px"
+                            ng-disabled="Datos.$invalid" ng-click="Consultar()">Consultar</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xs-12" style="margin-top:20px" ng-show="!Datos.$invalid">
+
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-sm-12" ng-if="cargado">
+                <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions"
+                    class="table table-hover table-condensed table-striped table-bordered">
+                    <thead class="bordered-blueberry">
+                        <tr>
+                            <th class="text-center" style="width: 5%">Codigo Krystalos</th>
+                            <th class="text-center" style="width: 10%">Nombre</th>
+                            <th class="text-center" style="width: 8%">Nombre Solicitante</th>
+                            <th class="text-center" style="width: 5%">Sede</th>
+                            <th class="text-center" style="width: 10%">Servicio</th>
+                            <th ng-show="dirigidoA" class="text-center" style="width: 10%">Dirigido A</th>
+                            <th class="text-center" style="width: 5%">Fecha Entrega</th>
+                            <th class="text-center" style="width: 5%">Total Entregado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

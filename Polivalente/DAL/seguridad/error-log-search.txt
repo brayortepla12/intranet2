@@ -1,0 +1,18 @@
+2021-01-29 09:56:56: SELECT rr.RolId, rr.Nombre FROM (SELECT r.RolId, r.Nombre
+        FROM rol as r 
+        INNER JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 112 Order BY r.Nombre) as rr
+        LEFT JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 295 Order BY r.Nombre 
+ Unknown column 'r.RolId' in 'on clause' query: SELECT rr.RolId, rr.Nombre FROM (SELECT r.RolId, r.Nombre
+        FROM rol as r 
+        INNER JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 112 Order BY r.Nombre) as rr
+        LEFT JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 295 Order BY r.Nombre
+
+2021-01-29 09:57:03: SELECT rr.RolId, rr.Nombre FROM (SELECT r.RolId, r.Nombre
+        FROM rol as r 
+        INNER JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 112 Order BY r.Nombre) as rr
+        LEFT JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 295 Order BY r.Nombre 
+ Unknown column 'r.RolId' in 'on clause' query: SELECT rr.RolId, rr.Nombre FROM (SELECT r.RolId, r.Nombre
+        FROM rol as r 
+        INNER JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 112 Order BY r.Nombre) as rr
+        LEFT JOIN rolusuario as ru on r.RolId = ru.RolId AND ru.UsuarioId = 295 Order BY r.Nombre
+

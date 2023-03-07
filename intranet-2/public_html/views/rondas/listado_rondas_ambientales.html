@@ -1,0 +1,262 @@
+<style>
+    @media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 100%; } }
+</style>
+<div class="row" ng-controller="AmbientalCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Rondas Ambientales<small></small></h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <input type="text" class="form-control" ng-model="txt" placeholder="Buscar">
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row"  ng-show="!ficha">
+                    <div class="col-sm-4" ng-show="Sedes.length > 1">
+                        <label>
+                            Sede
+                        </label>
+                        <select class="form-control" ng-model="SedeId" ng-change="ChangeSede()" name="Servicio" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                            <option>--</option>
+                            <option ng-repeat="s in Sedes| orderBy : 'Nombre' track by $index" ng-selected="s.SedeId === SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>
+                            Servicio
+                        </label>
+                        <select class="form-control" ng-model="ServicioId" name="Servicio" ng-change="ChangeServicio()" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                            <option>--</option>
+                            <option ng-repeat="s in Servicios| orderBy : 'Nombre' track by $index" ng-selected="s.ServicioId === ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>
+                            <strong>Mañana</strong><br>
+                            Se comienza el recorrido a las 8:00Am por cirujia CEMIC, cirujia Central pasa por Urgencias Laura, luego urgencias pediatrica, oncologia, hemodinamia, luego suben al 4 piso hacia abajo hasta llegar al 2 piso para terminar a las 9:30AM. Se comiemnza por el rojo, despues el verde y luego el gris.
+                            <br>
+                            <strong>Tarde</strong><br>
+                            Comienzan a las 4:00PM hasta las 5:30PM
+                            <br>
+                            <strong>Noche</strong><br>
+                            Comienzan a las 6:30PM hasta las 7:30PM
+                            <br><br><br>
+                            <strong>ENTREGA DE INTERASEO</strong><br>
+                            7:30 - 9:30PM. Todos los dias. Lavado de cuarto central.
+                        </p>
+                    </div>
+                </div>
+                <div class="row" ng-show="ServicioId != '--'">
+                    <h1 style="text-align: center">{{calendarTitle}}</h1>
+                    <md-event-calendar
+                        ng-model="selected"
+                        md-events="events"
+                        md-event-click="eventClicked($selectedEvent)"
+                        md-label="title"
+                        md-show-create-link="true"
+                        md-create-event-click="eventCreate($date)"
+                        auto-height=""
+                        class="md-primary">
+                        <md-event-calendar-header class="md-center">
+                            <md-event-calendar-prev></md-event-calendar-prev>
+                            <md-event-calendar-title></md-event-calendar-title>
+                            <md-event-calendar-next></md-event-calendar-next>
+                        </md-event-calendar-header>
+                    </md-event-calendar>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateRondaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Actualizar ronda ambiental</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div id="TablasRonda">
+                        <div class="row break-after" ng-repeat="Formato in UpdateFormatos">
+                            <div class="col-sm-12" ng-show="ImprimirNow">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                    </div>
+                                    <div class="col-sm-8 text-center">
+                                        <p style="font-size: 0.8em">
+                                            <strong style="font-size: 1.1em">SEGUIMIENTO Y GESTIÓN INTEGRAL DE LOS RESIDUOS HOSPITALARIO</strong><br>
+                                            GP-GA-F-15 ver.1 Págína {{$index + 1}} de {{UpdateFormatos.length}}<br>
+                                            Emision: 04-05-2016 vigencia:04-06-2016
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top: 40px;">
+                                <form role="form" name="c" novalidate>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center">ITEM</th>
+                                                <th style="text-align: center">AREA: <span ng-repeat="s in Servicios" ng-show="s.ServicioId === Formato.ServicioId">{{s.Nombre}}</span></th>
+                                                <th style="text-align: center">FECHA: DIAS <ins>{{Formato.startsAt.getDate()}}</ins> - <ins>{{Formato.endsAt.getDate()}}</ins> MES <ins>{{Formato.startsAt.getMonth() + 1}}</ins> AÑO <ins>{{Formato.startsAt.getFullYear()}}</ins></th>
+                                                <th colspan="3" style="text-align: center">SITUACIÓN</th>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align: center">{{Formato.Identificador}}</th>
+                                                <th colspan="2" style="text-align: center">{{Formato.Titulo}}</th>
+                                                <th style="text-align: center">PE</th>
+                                                <th style="text-align: center">PO</th>
+                                                <th style="text-align: center">OBSERVACIONES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="o in Formato.Items">
+                                                <td>{{o.Identificador}}</td>
+                                                <td colspan="2">{{o.Descripcion}}</td>
+                                                <td>{{o.Pe}}</td>
+                                                <td>
+                                                    <input type="number"  ng-hide="ImprimirNow" min="0" max="{{o.Pe}}" ng-model="o.Po" style="width: 70px" class="form-control"/>
+                                                    <span ng-show="ImprimirNow">{{o.Pe}}</span>
+                                                </td>
+                                                <td>
+                                                    <textarea rows="1" class="form-control" ng-hide="ImprimirNow" ng-model="o.Observacion"></textarea>
+                                                    <span ng-show="ImprimirNow" style="word-break: break-all">{{o.Observacion}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3" style="text-align: center">TOTAL</th>
+                                                <td>100</td>
+                                                <td>{{Formato.Items| autoSuma : 'Po'}}</td>
+                                                <td>
+                                                    <textarea rows="1" class="form-control" ng-hide="ImprimirNow" ng-model="Formato.Observacion"></textarea>
+                                                    <span ng-show="ImprimirNow" style="word-break: break-all">{{Formato.Observacion}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="col-sm-12 text-center" id="Footer" ng-show="ImprimirNow">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <p>
+                                            <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                            <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                            {{Encabezado.Elaboro}}<br>
+                                            {{Encabezado.CargoElaboro}}
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p>
+                                            <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                            <strong style="font-size: 1em">REVISÓ</strong><br>
+                                            {{Encabezado.Reviso}}<br>
+                                            {{Encabezado.CargoReviso}}
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p>
+                                            <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                            <strong style="font-size: 1em">APROBÓ</strong><br>
+                                            {{Encabezado.Aprobo}}<br>
+                                            {{Encabezado.CargoAprobo}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="Actualizar()">Actualizar</button>
+                        <button class="btn btn-default" ng-click="Imprimir()">Imprimir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="RondaAmbientalModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Agregar ronda ambiental</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <table class="table table-bordered"  ng-repeat="f in Formatos">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center">ITEM</th>
+                                    <th style="text-align: center">AREA: <span ng-repeat="s in Servicios" ng-show="s.ServicioId == ServicioId">{{s.Nombre}}</span></th>
+                                    <th style="text-align: center">FECHA: DIAS <ins>{{f.startsAt.getDate()}}</ins> - <ins>{{f.endsAt.getDate()}}</ins> MES <ins>{{f.startsAt.getMonth() + 1}}</ins> AÑO <ins>{{f.startsAt.getFullYear()}}</ins></th>
+                                    <th colspan="3" style="text-align: center">SITUACIÓN</th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: center">{{f.Identificador}}</th>
+                                    <th colspan="2" style="text-align: center">{{f.Titulo}}</th>
+                                    <th style="text-align: center">PE</th>
+                                    <th style="text-align: center">PO</th>
+                                    <th style="text-align: center">OBSERVACIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="o in f.Items">
+                                    <td>{{o.Identificador}}</td>
+                                    <td colspan="2">{{o.Descripcion}}</td>
+                                    <td>{{o.Pe}}</td>
+                                    <td>
+                                        <input type="number" min="0" max="{{o.Pe}}" ng-model="o.Po" ng-init="o.Po = 0" style="width: 70px" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <textarea rows="1" class="form-control" ng-model="o.Observacion" ng-init="o.Observacion = ''"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" style="text-align: center">TOTAL</th>
+                                    <td>100</td>
+                                    <td>{{f.Items| autoSuma : 'Po'}}</td>
+                                    <td><textarea rows="1" class="form-control" ng-model="f.Observacion" ng-init="f.Observacion = ''"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="Guardar()" ng-disabled="c.Usuario.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Usuario = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

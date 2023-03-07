@@ -1,0 +1,130 @@
+<div class="row" ng-controller="UpdateAmbulanciaKmCtrl">
+    <div class="col-sm-12"  ng-show="!ficha">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">Listado de moviles</h2>
+                <div class="ibox-tools">
+                    <div class="input-group m-b">
+<!--                        <span class="input-group-prepend">
+                            <button class="btn btn-primary" ng-click="GetHojaVidaById()" type="button"><i class="fa fa-search"></i></button>
+                        </span>-->
+                        <input type="text" style="color: black !important;" ng-model="TxtMovil" ng-pattern="onlyNumbers" class="form-control" placeholder="Busqueda rapida">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-condensed table-striped table-bordered">
+                    <thead class="bordered-blueberry">
+                        <tr>
+                            <th class="text-center" style="width: 3%">ID</th>
+                            <th class="text-center" style="width: 4%">Placa</th>
+                            <th class="text-center" style="width: 5%">Km Anterior</th>
+                            <th class="text-center" style="width: 5%">Km Actual</th>
+                            <th class="text-center" style="width: 7%">F. Ultima Actualización</th>
+                            <th class="text-center" style="width: 3%">Estado Movil</th>
+                            <th class="text-center" style="width: 3%">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="m in Moviles | filter : { Placa: TxtMovil }">
+                            <td>{{m.HojaVidaId}}</td>
+                            <td>{{m.Placa}}</td>
+                            <td>{{m.LastKm}}</td>
+                            <td>{{m.Km}}</td>
+                            <td>{{m.FechaUltimaActualizacion}}</td>
+                            <td>{{m.EstadoMovil}}</td>
+                            <td>
+                                <a class="btn btn-success btn-xs icon-only white" data-toggle="tooltip" title="Cambiar Km" ng-click="OpenModalKm(m)"><i class="fa fa-plus"></i></a>
+                                <a class="btn btn-default btn-xs icon-only white" data-toggle="tooltip" title="Editar Km" ng-click="EditModalKm(m)"><i class="fa fa-pencil"></i></a>
+                                <a ng-show="m.EstadoMovil == 'Rodando'" class="btn btn-warning btn-xs icon-only white" data-toggle="tooltip" title="Poner en Stop" ng-click="SetEstadoMovil(m.HojaVidaId, 'Stop')"><i class="fas fa-parking"></i></a>
+                                <a ng-show="m.EstadoMovil == 'Stop'" class="btn btn-primary btn-xs icon-only white" data-toggle="tooltip" title="Poner a Rodar" ng-click="SetEstadoMovil(m.HojaVidaId, 'Rodando')"><i class="fas fa-refresh"></i></a>
+                                <a class="btn btn-danger btn-xs icon-only white" data-toggle="tooltip" title="Dar de baja" ng-click="EliminarMovil(m.HojaVidaId)"><i class="fas fa-times"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="KmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Actualizar KM</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" ng-class="{'has-success': Datos.Km.$valid, 'has-error': Datos.Km.$invalid}">
+                                    <label for="Km">KM</label>
+                                    <input type="number" class="form-control" id="Km"  name="Km" required
+                                           ng-model="Km.Km" min="{{Km.LastKm}}">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="CrearKm()" ng-disabled="Datos.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Km = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="UKmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Actualizar KM ingresado</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos2" novalidate>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" ng-class="{'has-success': Datos2.Km.$valid, 'has-error': Datos2.Km.$invalid}">
+                                    <label for="Km">KM</label>
+                                    <input type="number" class="form-control" id="Km"  name="Km" required
+                                           ng-model="EditKm.Km">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="UpdateKm()" ng-disabled="Datos2.$invalid">Actualizar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="EditKm = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>

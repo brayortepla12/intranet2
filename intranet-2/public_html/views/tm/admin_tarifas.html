@@ -1,0 +1,103 @@
+<div class="row bg-white" ng-controller="AdminTarifasCtrl">
+  <div class="col-sm-10 mx-auto">
+    <div class="row">
+      <div class="col-sm-4">
+        <button class="btn btn-primary" ng-disabled="Isloading" ng-if="!ET" ng-click="NuevaTarifa()">Nueva tarifa</button>
+        
+        <button class="btn btn-default" ng-if="ET" ng-click="Atras()">Atras</button>
+        <button class="btn btn-success" ng-if="ET" ng-click="ActualizarTarifa()">Actualizar</button>
+      </div>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" placeholder="Filtrar" ng-model="txtSearch">
+      </div>
+      <div class="col-sm-12 mt-3" ng-if="!ET">
+        <table class="table table-hover table-condensed table-striped table-bordered">
+          <thead class="bordered-blue">
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Descripcion</th>
+              <th class="text-center">Origen</th>
+              <th class="text-center">Destino</th>
+              <th class="text-center">Precio</th>
+              <th class="text-center">Taxi incluido</th>
+              <th class="text-center">Total</th>
+              <th class="text-center">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="t in Tarifas | filter:{ Nombre: txtSearch } track by $index">
+              <td>{{ t.TarifaId }}</td>
+              <td>{{ t.Nombre }}</td>
+              <td>{{ t.DepartamentoOrigen }} - {{ t.CiudadOrigen }}</td>
+              <td>{{ t.DepartamentoDestino }} - {{ t.CiudadDestino }}</td>
+              <td>{{ t.Precio }}</td>
+              <td>{{ t.PrecioOtro }}</td>
+              <td>{{ t.Precio + t.PrecioOtro }}</td>
+              <td>
+                <button class="btn btn-success btn-xs" ng-click="EditTarifa(t.TarifaId)">Editar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm-12 mt-3" ng-if="ET">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+              <label for="Nombre">Nombre</label>
+              <input type="text" capitalize class="form-control" id="Nombre" ng-model="Tarifa.Nombre" maxlength="280"  name="Nombre" readonly>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.Precio.$valid, 'has-error': Datos.Precio.$invalid}">
+              <label for="Precio">Precio</label>
+              <input type="number" class="form-control" id="Precio" ng-model="Tarifa.Precio" step="50" min="1000" name="Precio" required>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.DepartamentoId.$valid, 'has-error': Datos.DepartamentoId.$invalid}">
+              <label for="DepartamentoId">Departamento origen</label>
+              <select class="form-control" id="DepartamentoId" ng-change="ChangeDepartamento(Tarifa.DepartamentoOrigenId, 'MunicipiosOrigen')"
+                ng-model="Tarifa.DepartamentoOrigenId" name="DepartamentoId"
+                ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" required>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.OrigenId.$valid, 'has-error': Datos.OrigenId.$invalid}">
+              <label for="OrigenId">Municipio  origen</label>
+              <select class="form-control" id="OrigenId" ng-model="Tarifa.OrigenId" ng-change="ChangeMunicipio()"
+                name="OrigenId" ng-options="item.CiudadId as item.Ciudad for item in MunicipiosOrigen" required>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.DepartamentoDestinoId.$valid, 'has-error': Datos.DepartamentoDestinoId.$invalid}">
+              <label for="DepartamentoDestinoId">Departamento destino</label>
+              <select class="form-control" id="DepartamentoDestinoId" ng-change="ChangeDepartamento(Tarifa.DepartamentoDestinoId, 'MunicipiosDestino')"
+                ng-model="Tarifa.DepartamentoDestinoId" name="DepartamentoDestinoId"
+                ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" required>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.DestinoId.$valid, 'has-error': Datos.DestinoId.$invalid}">
+              <label for="DestinoId">Municipio destino</label>
+              <select class="form-control" id="DestinoId" ng-model="Tarifa.DestinoId" ng-change="ChangeMunicipio()"
+                name="DestinoId" ng-options="item.CiudadId as item.Ciudad for item in MunicipiosDestino" required>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div ng-class="{'has-success': Datos.OtroId.$valid, 'has-error': Datos.OtroId.$invalid}">
+              <label for="OtroId">Otro</label>
+              <select class="form-control" id="OtroId" ng-model="Tarifa.OtroId"
+                ng-options="item.OtroId as item.Nombre for item in Otros" required>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

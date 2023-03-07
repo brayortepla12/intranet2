@@ -1,0 +1,177 @@
+<div id="tabla_listReportes" class="row" ng-controller="ListarAllReportesSistemasCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Listado de reportes<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 50px;">
+                        <div class="row">
+                            <div class="col-sm-1" ng-show="Sedes.length > 1">
+                                <label>
+                                    Sede
+                                </label>
+                            </div>
+                            <div class="col-sm-1" style="text-align: right" ng-show="Sedes.length > 1">
+                                <select class="form-control" ng-model="SedeId" ng-change="ChangeSede()" name="Servicio" required>
+                                    <option>--</option>
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <label>
+                                    Servicio
+                                </label>
+                            </div>
+                            <div class="col-sm-2" style="text-align: right">
+                                <select class="form-control" ng-model="ServicioId" ng-change="BuscarReportes()" name="Servicio" required>
+                                    <option value="">--</option>
+                                    <option value="TODOS" ng-selected="ServicioId == 'TODOS'">TODOS</option>
+                                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId === ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <label>
+                                    Tipo Servicio
+                                </label>
+                            </div>
+                            <div class="col-sm-2" style="text-align: right">
+                                <select class="form-control" ng-model="TipoServicio" ng-change="BuscarReportes()" name="TipoServicio" required>
+                                    <option value="">--</option>
+                                    <option>TODOS</option>
+                                    <option>PREVENTIVO</option>
+                                    <option>CORRECTIVO</option>
+                                    <option>SERVICIO</option>
+                                    <option>REDES</option>
+                                    <option>INSTALACION</option>
+                                    <option>RECARGA</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <label>
+                                    Tipo Articulo
+                                </label>
+                            </div>
+                            <div class="col-sm-1" style="text-align: right">
+                                <select class="form-control" ng-model="TipoArticulo" ng-change="BuscarReportes()" name="TipoArticulo" required>
+                                    <option value="">--</option>
+                                    <option>TODOS</option>
+                                    <option>Computador Torre</option>
+                                    <option>Computador All In One</option>
+                                    <option>Computador Portatil</option>
+                                    <option>DVR</option>
+                                    <option>Impresora</option>
+                                    <option>Camara</option>
+                                    <option>TV BOX</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-primary btn-icon" ng-click="ExportarExcel()" tooltip="Exportar a Excel"><i class="fa fa-file-excel-o"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 4%">ID</th>
+                                    <th class="text-center" style="width: 2%">Sede</th>
+                                    <th class="text-center" style="width: 5%">Servicio</th>
+                                    <th class="text-center" style="width: 5%">Ubicación</th>
+                                    <th class="text-center" style="width: 4%">TipoServicio</th>
+                                    <th class="text-center" style="width: 5%">Solicitante</th>
+                                    <th class="text-center" style="width: 8%">Equipo</th>
+                                    <th class="text-center" style="width: 5%">Serial</th>
+                                    <th class="text-center" style="width: 5%" ng-show="TipoArticulo == 'Impresora'">Contador</th>
+                                    <th class="text-center" style="width: 5%">Fecha Reporte</th>
+                                    <th class="text-center" style="width: 5%">Creado Por</th>
+                                    <th class="text-center" style="width: 5%">Fecha de Creación</th>
+                                    <th class="text-center" style="width: 5%">Estado</th>
+                                    <th class="text-center" style="width: 5%">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Modal -->
+<!--    <div class="modal fade" id="ServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Consultar Listado de reportes</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="col-sm-12">
+                            <label>
+                                Sede
+                            </label>
+                            <select class="form-control" ng-model="SedeId" name="SedeId" required ng-change="ChangeSede()">
+                                <option ng-repeat="s in Sedes track by $index" ng-selected="SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label>
+                                Servicio
+                            </label>
+                            <select class="form-control" ng-model="ServicioId" name="ServicioId" required>
+                                <option value="0">Todos los Servicios</option>
+                                <option ng-repeat="s in Servicios2 track by $index" ng-selected="ServicioId === s.ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label>
+                                Año
+                            </label>
+                            <input type="number" ng-model="Year" min="2017" class="form-control" required>
+                        </div>
+                        <div class="col-sm-8">
+                            <label>
+                                Mes
+                            </label>
+                            <select class="form-control" ng-model="Mes" name="Mes" required>
+                                <option value="0">Ultimos reportes de este servicio</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Obtubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-href="/Polivalente#/mantenimiento/ver_reporte_servicio_sistemas/{{SedeId}}/{{ServicioId}}/{{Year}}/{{Mes}}" target="_blank" ng-disabled="c.$error && c.$invalid">Vista Impresion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>

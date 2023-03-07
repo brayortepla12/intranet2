@@ -1,0 +1,399 @@
+<div class="row" ng-controller="AlertaCtrl">
+    <ul class="nav nav-tabs" ng-show="op != ''" role="tablist">
+        <li class="nav-item"><a ng-click="SetOption('Polivalente')" class="nav-link" ng-class="{'active' : op === 'Polivalente'}" id="Polivalente" role="tab" data-toggle="tab" aria-expanded="true">Polivalente</a></li>
+        <li class="nav-item"><a ng-click="SetOption('Sistemas')" class="nav-link" ng-class="{'active' : op === 'Sistemas'}" role="tab" id="Sistemas" data-toggle="tab" aria-expanded="false">Sistemas</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div  ng-if="op === 'Polivalente'" >
+            <div ng-show="Usuario.IsPolivalente" >
+                <div class="row" ng-show="Usuario.Cargo !== 'COORDINADOR' && Usuario.Cargo !== 'COORDINADORA'">
+                    <div class="col-lg-3" ng-show="AlertasMantenimientoPreventivos">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <span class="label label-success float-right">Alerta</span>
+                                <h5>Mto. preventivo pendientes</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{AlertasMantenimientoPreventivos.length}}</h1>
+                                <small>Alertas generadas automaticamente.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <span class="label label-success float-right">Alerta</span>
+                                <h5>Equipos activos</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{TotalEquipos.Total|| 0}}</h1>
+                                <small>Alertas generadas automaticamente.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    <div class="col-lg-3">
+                                            <div class="ibox ">
+                                                <div class="ibox-title">
+                                                    <span class="label label-success float-right">Alerta</span>
+                                                    <h5>Solicitudes de Mto. Activas</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <h1 class="no-margins">{{TotalSolicitudes.Total|| 0}}</h1>
+                                                    <small>Alertas generadas automaticamente.</small>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                    <!--                    <div ng-show="Tareas" class="col-lg-3">
+                                            <div class="ibox ">
+                                                <div class="ibox-title">
+                                                    <span class="label label-success float-right">Alerta</span>
+                                                    <h5>Tareas asignadas</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <h1 class="no-margins">{{Tareas.length}}</h1>
+                                                    <small>Alertas generadas automaticamente.</small>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                </div>
+            </div>
+            <div ng-show="Usuario.IsPolivalente" class="row" ng-show="Usuario.Cargo !== 'COORDINADOR' && Usuario.Cargo !== 'COORDINADORA'">
+                <div class="col-sm-12">
+                    <div class="panel panel-info" ng-controller="GraficaHomeCtrl">
+                        <div class="panel-heading">
+                            <h2>Resumen de mantenimientos - Polivalente</h2>
+                            <div class="ibox-tools">
+                                <div class="input-group m-b" style="color: black !important">
+                                    <span class="input-group-prepend">
+                                        <button class="btn btn-default" ng-click="ConsultarPorFechas()" type="button"><i class="fa fa-search"></i></button>
+                                    </span>
+                                    <input type="daterange" ng-model="Dates" class="form-control" ranges="ranges">
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="demo-container" style="height:280px">
+                                        <div id="chart_plot_01" class="demo-placeholder" style="padding: 0px; position: relative;" ng-mouseleave="LeaveGrafica()">
+                                            <flot dataset="dataset" style="width: 100% !important" options="options" height="280px" on-plot-click="onEventExampleClicked(event, pos, item)"
+                                                  on-plot-hover="onEventExampleHover(event, pos, item)"></flot>
+                                        </div>
+                                        <div id="legend" style="width: 200px; height: 200px;"></div>
+                                    </div>
+                                    <div class="row tiles">
+                                        <div class="col-md-1 tile">
+                                            <span>Correctivos</span>
+                                            <h2>{{CuentaCorrectivos}}</h2>
+                                            <span class="sparkline22 graph" style="height: 160px;"><canvas width="200" height="40" style="display: inline-block; width: 200px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Preventivos</span>
+                                            <h2>{{CuentaPreventivos}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Instalaciones</span>
+                                            <h2>{{CuentaInstalacion}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Garantia</span>
+                                            <h2>{{CuentaGarantia}}</h2>
+                                            <span class="sparkline22 graph" style="height: 160px;"><canvas width="200" height="40" style="display: inline-block; width: 200px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Llamado</span>
+                                            <h2>{{CuentaLlamado}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Infraestructura</span>
+                                            <h2>{{CuentaInfraestructura}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span><strong>TOTAL</strong></span>
+                                            <h2><strong>{{TotalMantenimientos}}</strong></h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="dashboard_graph panel panel-warning">
+                        <div class="panel-heading">
+                            <h2>Mantenimientos preventivos Pendientes<small></small></h2>
+                            <div class="ibox-tools" style="color: black !important">
+                                <ul class="nav navbar-right">
+                                    <li>
+                                        <select class="form-control" ng-model="FiltroPreventivo">
+                                            <option ng-repeat="s in Sedes" ng-selected="FiltroPreventivo === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                        </select>
+                                    </li>
+                                    <li><a ng-click="Imprimir('TablaPreventivo')" style="color: white !important;"><i class="fa fa-print fa-2x"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="height: 320px;max-height: 320px;overflow-y: scroll">
+                                <table id="TablaPreventivo" class="table1 table table-bordered table-hover">
+                                    <tbody>
+                                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                            <th>ITEM</th>
+                                            <th>EQUIPO</th>
+                                            <th>MARCA</th>
+                                            <th>MODELO</th>
+                                            <th>SERIE</th>
+                                            <th>SEDE</th>
+                                            <th>SERVICIO</th>
+                                            <th>UBICACION</th>
+                                            <th>PROXIMO MANTENIMIENTO</th>
+                                            <th>DIFERENCIA</th>
+                                        </tr>
+                                        <tr ng-repeat="m in AlertasMantenimientoPreventivos| filter: { SedeId: FiltroPreventivo }" ui-sref="polivalente.ficha_tecnica({HojaVidaId: m.HojaVidaId})" style="cursor: pointer">
+                                            <td>{{m.HojaVidaId}}</td>
+                                            <td>{{m.Equipo}}</td>
+                                            <td>{{m.Marca}}</td>
+                                            <td>{{m.Modelo}}</td>
+                                            <td>{{m.Serie}}</td>
+                                            <td>{{m.Sede}}</td>
+                                            <td>{{m.Servicio}}</td>
+                                            <td>{{m.Ubicacion}}</td>
+                                            <td>{{m.FechaSiguienteMantenimiento}}</td>
+                                            <td>{{m.DiferenciaFecha}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" id="Calibracion" ng-show="Tareas.length > 0">
+                    <div class="dashboard_graph panel panel-warning">
+                        <div class="panel-heading">
+                            <h2>Tareas Pendientes <small></small></h2>
+                            <div class="ibox-tools" style="color: black !important">
+                                <ul class="nav navbar-right ibox-tools no-print">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up fa-2x"></i></a>
+                                    </li>
+                                    <li><a  ng-click="Imprimir('TablaCalibracion')" style="color: white !important;"><i class="fa fa-print fa-2x"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="max-height: 320px;height: 320px;overflow-y: scroll">
+                                <table id="TablaCalibracion" class="table1 table table-bordered table-hover">
+                                    <tbody>
+                                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                            <th>EQUIPO</th>
+                                            <th>DESCRIPCIÓN DEL PROBLEMA</th>
+                                            <th>TIPO</th>
+                                            <th>OBSERVACIÓN</th>
+                                        </tr>
+                                        <tr ng-repeat="c in Tareas">
+                                            <td>{{c.Equipo}}</td>
+                                            <td>{{c.Descripcion}}</td>
+                                            <td>{{c.Tipo}}</td>
+                                            <td>{{c.Observacion}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="op == 'Sistemas'">
+            <div ng-show="Usuario.IsSistemas" style="margin: 10px 0;">
+                <div class="row">
+                    <div class="col-lg-3" ng-show="AlertasMantenimientoPreventivosSistemas">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-success float-right">Alerta</span>
+                                <h5>Mto. preventivo pendientes</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{AlertasMantenimientoPreventivosSistemas.length}}</h1>
+                                <small>Alertas generadas automaticamente</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-success float-right">Alerta</span>
+                                <h5>Equipos activos</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{TotalEquiposSistemas.Total|| 0}}</h1>
+                                <small>Alertas generadas automaticamente</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3" >
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-success float-right">Alerta</span>
+                                <h5>Computadores activos</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{Computadores.Total|| 0}}</h1>
+                                <small>Alertas generadas automaticamente</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3" ng-show="AlertasMantenimientoPreventivosSistemas">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-success float-right">Alerta</span>
+                                <h5>Impresoras activas</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{Impresoras.Total|| 0}}</h1>
+                                <small>Alertas generadas automaticamente</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Standard Chart -->
+            <div ng-show="Usuario.IsSistemas" class="row" ng-show="Usuario.Cargo !== 'COORDINADOR' && Usuario.Cargo !== 'COORDINADORA'">
+                <div class="col-sm-12">
+                    <div class="panel panel-info" ng-controller="GraficaHomeSistemasCtrl">
+                        <div class="panel-heading">
+                            <h2>Resumen de mantenimientos - Sistemas</h2>
+                            <div class="ibox-tools">
+                                <div class="input-group m-b" style="color: black !important">
+                                    <span class="input-group-prepend">
+                                        <button class="btn btn-default" ng-click="ConsultarPorFechas()" type="button"><i class="fa fa-search"></i></button>
+                                    </span>
+                                    <input type="daterange" ng-model="Dates" class="form-control" ranges="ranges">
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="demo-container" style="height:380px">
+                                        <div id="chart_plot_02" class="demo-placeholder" style="padding: 0px; position: relative;" ng-mouseleave="LeaveGrafica()">
+                                            <flot dataset="dataset" style="width: 100%" options="options" height="380px"  on-plot-click="onEventExampleClicked(event, pos, item)"
+                                                  on-plot-hover="onEventExampleHover(event, pos, item)"></flot>
+                                        </div>
+                                    </div>
+                                    <div class="row tiles">
+                                        <div class="col-md-1 tile">
+                                            <span>Correctivos</span>
+                                            <h2>{{CuentaCorrectivos}}</h2>
+                                            <span class="sparkline22 graph" style="height: 160px;"><canvas width="200" height="40" style="display: inline-block; width: 200px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Preventivos</span>
+                                            <h2>{{CuentaPreventivos}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Instalaciones</span>
+                                            <h2>{{CuentaInstalacion}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Recarga</span>
+                                            <h2>{{CuentaRecarga}}</h2>
+                                            <span class="sparkline22 graph" style="height: 160px;"><canvas width="200" height="40" style="display: inline-block; width: 200px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Redes</span>
+                                            <h2>{{CuentaRedes}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span>Servicio</span>
+                                            <h2>{{CuentaServicio}}</h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                        <div class="col-md-1 tile">
+                                            <span><strong>TOTAL</strong></span>
+                                            <h2><strong>{{TotalMantenimientos}}</strong></h2>
+                                            <span class="sparkline11 graph" style="height: 160px;"><canvas width="198" height="40" style="display: inline-block; width: 198px; height: 40px; vertical-align: top;"></canvas></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h2>Mantenimientos preventivos Pendientes<small></small></h2>
+                            <div class="ibox-tools" style="color: black !important">
+                                <ul class="nav navbar-right ">
+                                    <li>
+                                        <select class="form-control" ng-model="FiltroPreventivo">
+                                            <option ng-repeat="s in Sedes" ng-selected="FiltroPreventivo === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                        </select>
+                                    </li>
+                                    <li><a ng-click="Imprimir('TablaPreventivo2')" style="color: white !important;"><i class="fa fa-print fa-2x"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="height: 320px;max-height: 320px;overflow-y: scroll">
+                                <table id="TablaPreventivo2" class="table1 table table-bordered table-hover">
+                                    <tbody>
+                                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                            <th>ITEM</th>
+                                            <th>EQUIPO</th>
+                                            <th>MARCA</th>
+                                            <th>MODELO</th>
+                                            <th>SERIE</th>
+                                            <th>SERVICIO</th>
+                                            <th>UBICACION</th>
+                                            <th>PROXIMO MANTENIMIENTO</th>
+                                        </tr>
+                                        <tr ng-repeat="m in AlertasMantenimientoPreventivosSistemas| filter: { SedeId: FiltroPreventivo }" ui-sref="sistemas.ficha_tecnica_2({HojaVidaId: m.HojaVidaId})" style="cursor: pointer">
+                                            <td>{{m.HojaVidaId}}</td>
+                                            <td>{{m.Equipo}}</td>
+                                            <td>{{m.Marca}}</td>
+                                            <td>{{m.Modelo}}</td>
+                                            <td>{{m.Serie}}</td>
+                                            <td>{{m.Servicio}}</td>
+                                            <td>{{m.Ubicacion}}</td>
+                                            <td>01-{{m.Mes}}-{{m.Year}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-sm-12" ng-show="op === ''">
+
+        <div class="col-sm-12">
+            <h3>Detalles de la versión 2.7.25</h3>
+            <pre>
+            -Mejora de velocidad en el inicio.
+            -Vincular usuarios con los datos de la persona del Biometric.
+            </pre>
+        </div>
+    </div>
+</div>

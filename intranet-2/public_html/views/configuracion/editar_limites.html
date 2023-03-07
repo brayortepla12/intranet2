@@ -1,0 +1,81 @@
+<div class="row" ng-controller="EditarLimitePedidoCtrl">
+    <div class="row col-sm-12"  ng-show="!ficha">
+        <div class="col-sm-12 row" style="margin-bottom: 50px;">
+            <div class="col-sm-1">
+                <label>
+                    Usuario
+                </label>
+            </div>
+            <div class="col-sm-3" style="text-align: right">
+                <select class="form-control" ng-model="UsuarioId" ng-change="BuscarPlantilla()" name="UsuarioId" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                    <option value="">--</option>
+                    <option ng-repeat="u in Usuarios track by $index" ng-selected="u.UsuarioId === UsuarioId" ng-value='{{u.UsuarioId}}' value='{{u.UsuarioId}}'> {{u.NombreCompleto}}</option>
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <label>
+                    Estado
+                </label>
+            </div>
+            <div class="col-sm-2" style="text-align: right">
+                <select class="form-control" ng-model="Estado" ng-change="BuscarPlantilla()" name="Estado" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                    <option value="">--</option>
+                    <option>Activo</option>
+                    <option>Inactivo</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row col-sm-12" ng-show="!ficha">
+        <div class="col-sm-12" ng-if="cargado">
+            <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                    <tr>
+                        <th class="text-center" style="width: 3%">ID</th>
+                        <th class="text-center" style="width: 10%">Nombre Articulo</th>
+                        <th class="text-center" style="width: 10%">Servicio</th>
+                        <th class="text-center" style="width: 10%">Solicitante</th>
+                        <th class="text-center" style="width: 5%">Limite</th>
+                        <th class="text-center" style="width: 10%">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="EditarLimiteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Editar Limite</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="col-sm-12">
+                            <label>
+                                Limite
+                            </label>
+                            <input type="number" class="form-control" ng-model="Item.Limite" name="Limite" required class="form-control" min="0">
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-click="ActualizarLimite()">Actualizar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

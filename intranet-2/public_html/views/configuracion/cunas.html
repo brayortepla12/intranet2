@@ -1,0 +1,159 @@
+<div class="row" ng-controller="CunaCtrl">
+    <div class="col-sm-2 pull-right" style="padding: 5px;">
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#CunaModal">Crear Cuna <i class="fa fa-plus-square-o" /></button>
+    </div>
+    <div class="col-sm-12">
+        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Rtsp</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Cunas" ng-include="getTemplate(item)">
+            <script type="text/ng-template" id="display">
+                <td>
+                {{item.Nombre}}
+                </td>
+                <td>
+                {{item.Rtsp}}
+                </td>
+                <td>
+                <center>
+                <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-info btn-xs icon-only white" tooltip-placement="bottom" tooltip="Ver cuna" ng-click="VerCuna(item)"><i class="fa fa-eye"></i></a>
+                </center>
+                </td>
+            </script>
+            <script type="text/ng-template" id="edit">
+                <td>
+                    <select class="form-control" ng-model="select.Nombre" name="Nombre"  required>
+                        <option value="">--</option>
+                        <option ng-repeat="s in Camas track by $index" ng-selected="s.HABCAMA === select.Nombre" ng-value='{{s.HABCAMA}}' value='{{s.HABCAMA}}'> {{s.HABCAMA}}</option>
+                    </select>
+                </td>
+                <td><input type="text" ng-model="select.Rtsp" class="form-control input-sm" /></td>
+                <td>
+                <center>
+                <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                </center>
+                </td>
+            </script>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="CunaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Cuna</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="col-sm-12-text-center"><a class="btn btn-default" style="cursor: pointer;" ng-click="Previsualizar()">Previsualizar {{Cuna.Rtsp}}</a></div>
+                        <div class="col-sm-12">
+                            <div class="col-md-6" ng-class="{'has-success': c.CunaId.$valid, 'has-error': c.CunaId.$invalid}">
+                                <label>
+                                    Cama en Kristalos
+                                </label>
+                                <select class="form-control" ng-model="Cuna.Nombre" name="Nombre"  required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Camas track by $index" ng-selected="s.HABCAMA === TokenCuna.Nombre" ng-value='{{s.HABCAMA}}' value='{{s.HABCAMA}}'> {{s.HABCAMA}}</option>
+                                </select>
+                            </div>
+<!--                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.Nombre.$valid, 'has-error': c.Nombre.$invalid}">
+                                    <label for="Nombre">Nombre</label>
+                                    <input type="text" capitalize class="form-control" id="Nombre" ng-model="Cuna.Nombre" maxlength="280"  name="Nombre" required>
+                                </div>
+                            </div>-->
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.Usuario.$valid, 'has-error': c.Usuario.$invalid}">
+                                    <label for="Usuario">Usuario</label>
+                                    <input type="text" class="form-control" id="Usuario" ng-model="Cuna.Usuario" maxlength="280" ng-change="Change()"  name="Usuario" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.Password.$valid, 'has-error': c.Password.$invalid}">
+                                    <label for="Password">Contraseña</label>
+                                    <input type="text" class="form-control" id="Password" ng-model="Cuna.Password" maxlength="280" ng-change="Change()"  name="Rtsp" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.Ip.$valid, 'has-error': c.Ip.$invalid}">
+                                    <label for="Ip">Ip</label>
+                                    <input type="text" class="form-control" id="Ip" ng-model="Cuna.Ip" maxlength="280" ng-change="Change()"  name="Ip" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.Port.$valid, 'has-error': c.Port.$invalid}">
+                                    <label for="Port">Puerto</label>
+                                    <input type="number" class="form-control" id="Port" ng-model="Cuna.Port" maxlength="280" ng-change="Change()"  name="Port" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <label for="Tipo">Tipo</label>
+                                    <input type="text" capitalize class="form-control" id="Tipo" ng-model="Cuna.Tipo" maxlength="280" ng-change="Change()"  name="Tipo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div ng-class="{'has-success': c.Canal.$valid, 'has-error': c.Canal.$invalid}">
+                                    <label for="Canal">Canal</label>
+                                    <input type="number" class="form-control" id="Canal" ng-model="Cuna.Canal" maxlength="280" ng-change="Change()"  name="Canal" required>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarCuna()" ng-disabled="c.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="ResetForm()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="VerCunaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Ver Camara de Cuna</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <!--<button onclick="vxgplayer('vxg_media_player1').src(document.getElementById('url_input').value);">Set</button>-->
+                        <div style="height: 480px !important; width: 640px !important;" id="vxg_media_player2" class="vxgplayer" aspect-ratio latency="3000000" controls avsync></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

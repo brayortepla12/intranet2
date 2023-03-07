@@ -1,0 +1,393 @@
+<style type="text/css">
+    .rojo, .Rojo{
+        color:red;
+    }
+    
+    
+    td a{
+        color: black !important;
+    }
+    
+    .HasCambioSede a{
+        font-weight: bold;
+        color:purple !important;
+        text-decoration: blue underline;
+    }
+
+    .HasPermiso a{
+        font-weight: bold;
+        color:blue !important;
+        text-decoration: blue underline;
+    }
+
+    .Tarde a{
+        font-weight: bold;
+        color:red !important;
+    }
+    @media print {
+        .Tarde{
+            background: #ddd !important;
+        }
+    }
+</style>
+<div ng-controller="LideresCtrl">
+    <div class="col-sm-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Listado de lideres<small></small></h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <input type="text" class="form-control" ng-model="txtSearch" placeholder="Buscar">
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Tipo" style="height: 35.59px !important;" ng-change="getLideres()">
+                                <option ng-selected="Tipo == 'Entrada'">Entrada</option>
+                                <option ng-selected="Tipo == 'Salida'">Salida</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" style="height: 35.59px !important;" ng-change="getLideres()">
+                                <option ng-selected="Mes == 1" ng-value='1' value='1'> Enero</option>
+                                <option ng-selected="Mes == 2" ng-value='2' value='2'> Febrero</option>
+                                <option ng-selected="Mes == 3" ng-value='3' value='3'> Marzo</option>
+                                <option ng-selected="Mes == 4" ng-value='4' value='4'> Abril</option>
+                                <option ng-selected="Mes == 5" ng-value='5' value='5'> Mayo</option>
+                                <option ng-selected="Mes == 6" ng-value='6' value='6'> Junio</option>
+                                <option ng-selected="Mes == 7" ng-value='7' value='7'> Julio</option>
+                                <option ng-selected="Mes == 8" ng-value='8' value='8'> Agosto</option>
+                                <option ng-selected="Mes == 9" ng-value='9' value='9'> Septiembre</option>
+                                <option ng-selected="Mes == 10" ng-value='10' value='10'> Octubre</option>
+                                <option ng-selected="Mes == 11" ng-value='11' value='11'> Noviembre</option>
+                                <option ng-selected="Mes == 12" ng-value='12' value='12'> Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' class="form-control" ng-enter="getLideres()"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="list-group" ng-hide="BanderaHorario">
+                    <div class="list-group-item list-group-item-action flex-column align-items-start" ng-repeat="l in Lideres | filter : txtSearch">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <img ng-src="{{l.Foto}}" class="rounded-circle" width="100"/>
+                            </div>
+                            <div class="col-sm-11">
+                                <p class="mb-1">{{l.PersonaId}}:<strong> {{l.Nombres}} - {{l.Cargo}}</strong></p>
+                                <div class="row" ng-show="Tipo == 'Entrada'">
+                                    <div class="col-sm-3" ng-click="VerListado(l.PersonaId, 'A Tiempo')" style="cursor: pointer"><strong>Llegadas A Tiempo: {{l.T_ATiempo}}</strong></div>
+                                    <div class="col-sm-3 rojo" ng-click="VerListado(l.PersonaId, 'Tarde')" style="cursor: pointer"><strong>Llegadas Tarde: {{l.T_Tarde}}</strong></div>
+                                    <div class="col-sm-3"><button ng-click="GetEstadistica(l.PersonaId, l.Nombres)" class="btn btn-primary"> Estadisticas</button></div>
+                                    <div class="col-sm-3"><button ng-click="GetVerHorario(l.PersonaId, l.Nombres)" class="btn btn-warning">Ver Horario Colaboradores</button></div>
+                                </div>
+                                <div class="row" ng-show="Tipo == 'Salida'">
+                                    <div class="col-sm-3" ng-click="VerListadoSalidas(l.PersonaId, 'A Tiempo')" style="cursor: pointer"><strong>Cumplidas: {{l.T_ATiempo}}</strong></div>
+                                    <div class="col-sm-3 rojo" ng-click="VerListadoSalidas(l.PersonaId, 'Tarde')" style="cursor: pointer"><strong>Incumplidas: {{l.T_Tarde}}</strong></div>
+                                    <div class="col-sm-3"><button ng-click="GetVerHorario(l.PersonaId, l.Nombres)" class="btn btn-warning">Ver Horario Colaboradores</button></div>
+                                </div>
+                                <small></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="BanderaHorario">
+                    <div class="col-sm-12">
+                        <button class="btn btn-default" ng-click="BanderaHorario = false" style="margin-bottom: 25px;">Atras</button>
+                        <button class="btn btn-primary" ng-click="ImprimirHorario()" style="margin-bottom: 25px;">Imprimir</button>
+                        <table class="table table-bordered" id="TablaHorario">
+                            <thead>
+                                <tr>
+                                    <th colspan="16">Funcionario: {{Nombres}}</th>
+                                    <th colspan="16">Periodo: {{Mes}}/{{Year}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <th ng-repeat="d in [] | range: UltimoDiaMes">{{$index + 1}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="p in Horarios">
+                                    <td>{{p.Nombres}}</td>
+                                    <th ng-if="p.HasHorarioFijo == 0" ng-repeat="d in [] | range: UltimoDiaMes">
+                                        <span ng-repeat="h in p.Horario" ng-if="d == h.Dia">
+                                            {{h.Abreviatura}}
+                                        </span>
+                                    </th>
+                                    <th ng-if="p.HasHorarioFijo == 1" colspan="{{UltimoDiaMes}}">{{p.Turno}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="ListadoESModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Entradas/Salidas por mes {{Mes}}/{{Year}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-default" ng-click="BuscarPermiso = false; Permiso = {}">Atras</button>
+                    <button class="btn btn-primary" ng-click="ImprimirEstadisticas()">Imprimir</button>
+                    <table class="table table-borderless table-striped" id="TablaEstadisticas" ng-hide="BuscarPermiso">
+                        <thead>
+                            <tr>
+                                <th colspan="5">Funcionario: {{Nombres}}</th>
+                                <th colspan="5">Periodo: {{Mes}}/{{Year}}</th>
+                            </tr>
+                            <tr>
+                                <th>Dia Semana</th>
+                                <th>Fecha</th>
+                                <th>E1</th>
+                                <th>S2</th>
+                                <th>E3</th>
+                                <th>S4</th>
+                                <th>E5</th>
+                                <th>S6</th>
+                                <th>E7</th>                                
+                                <th>S8</th>                                
+                                <th>TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="l in ListadosES">
+                                <td ng-class="{'Rojo': l.DIA_SEMANA == 'Dom'}">{{l.DIA_SEMANA}}</td>
+                                <td>{{l.fecha| date : 'dd'}}</td>
+                                <td ng-class="{'HasPermiso': l.E1_P && l.E1_P > 0,'Tarde': l.E1_E == 'Tarde' && !(l.E1_P && l.E1_P > 0) && !l.E1_PS,
+                                            'HasCambioSede': l.E1_PS}">
+                                    <a ng-click="VerPermiso(l.E1_P)" data-toggle="tooltip" title="{{l.E1_C}}">{{l.E1}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.S2_P && l.S2_P > 0, 'Tarde': l.S2_E == 'Tarde' && !(l.S2_P && l.S2_P > 0) && !l.S2_PS,
+                                            'HasCambioSede': l.S2_PS}">
+                                    <a ng-click="VerPermiso(l.S2_P)" data-toggle="tooltip" title="{{l.S2_C}}">{{l.S2}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.E3_P && l.E3_P > 0, 'Tarde': l.E3_E == 'Tarde' && !(l.E3_P && l.E3_P > 0) && !l.E3_PS,
+                                            'HasCambioSede': l.E3_PS}">
+                                    <a ng-click="VerPermiso(l.E3_P)" data-toggle="tooltip" title="{{l.E3_C}}">{{l.E3}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.S4_P && l.S4_P > 0, 'Tarde': l.S4_E == 'Tarde' && !(l.S4_P && l.S4_P > 0) && !l.S4_PS,
+                                            'HasCambioSede': l.S4_PS}">
+                                    <a ng-click="VerPermiso(l.S4_P)" data-toggle="tooltip" title="{{l.S4_C}}">{{l.S4}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.E5_P && l.E5_P > 0, 'Tarde': l.E5_E == 'Tarde' && !(l.E5_P && l.E5_P > 0) && !l.E5_PS,
+                                            'HasCambioSede': l.E5_PS}">
+                                    <a ng-click="VerPermiso(l.E5_P)" data-toggle="tooltip" title="{{l.E5_C}}">{{l.E5}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.S6_P && l.S6_P > 0, 'Tarde': l.S6_E == 'Tarde' && !(l.S6_P && l.S6_P > 0) && !l.S6_PS,
+                                            'HasCambioSede': l.S6_PS}">
+                                    <a ng-click="VerPermiso(l.S6_P)" data-toggle="tooltip" title="{{l.S6_C}}">{{l.S6}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.E7_P && l.E7_P > 0, 'Tarde': l.E7_E == 'Tarde' && !(l.E7_P && l.E7_P > 0) && !l.E7_PS,
+                                            'HasCambioSede': l.E7_PS}">
+                                    <a ng-click="VerPermiso(l.E7_P)" data-toggle="tooltip" title="{{l.E7_C}}">{{l.E7}}</a>
+                                </td>
+                                <td ng-class="{'HasPermiso': l.S8_P && l.S8_P > 0, 'Tarde': l.S8_E == 'Tarde' && !(l.S8_P && l.S8_P > 0) && !l.S8_PS,
+                                            'HasCambioSede': l.S8_PS}">
+                                    <a ng-click="VerPermiso(l.S8_P)" data-toggle="tooltip" title="{{l.S8_C}}">{{l.S8}}</a>
+                                </td>
+                                <th>
+                                    {{l.Total}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>--</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>                                
+                                <th></th>  
+                                <th>{{ListadosES | autoSumaTime: 'Total'}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="BuscarPermiso">
+                        <div class="col-sm-12" style="margin-top: 20px;" ng-show="Permiso.Nombres">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <img ng-src="{{Empresa.Logo}}" width="100" alt="">
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-center">
+                                        <h5><strong>AUTORIZACIÓN DE PERMISO</strong></h5>
+                                        GH-F-05 Ver. 01<br>
+                                        Emisión: 03-12-2013 Vigencia:16-12-2013
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 20px;">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <strong>Identificación:</strong> {{Permiso.Cedula}}
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <strong>Fecha:</strong> {{Permiso.CreatedAt}}
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <strong>Funcionario</strong> {{Permiso.Nombres}}
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label style="font-weight: bold;">
+                                                    Motivo
+                                                </label>
+                                                <div class="row">
+                                                    <!--                                        <div class="form-group col-lg-4 col-sm-4">
+                                                                                                <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Cita Médica</label>
+                                                                                                <div class="form-check float-right">
+                                                                                                    <input class="form-check-input" ng-checked="Permiso.Motivo == 'Cita Médica'" disabled 
+                                                                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                                                                </div>
+                                                                                            </div>-->
+                                                    <div class="form-group col-lg-4 col-sm-4">
+                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Laboral</label>
+                                                        <div class="form-check float-right">
+                                                            <input class="form-check-input" ng-checked="Permiso.Motivo == 'Laboral'" 
+                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-lg-4 col-sm-4">
+                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">Personal</label>
+                                                        <div class="form-check float-right">
+                                                            <input class="form-check-input" ng-checked="Permiso.Motivo == 'Personal'" 
+                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <strong>¿Cual?</strong>
+                                                        {{Permiso.Cual}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <strong>Fecha Inicio</strong>
+                                                        {{Permiso.FechaInicio}}
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <strong>Fecha Final</strong>
+                                                        {{Permiso.FechaFin}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <img ng-src="{{Permiso.VBJefe}}" width="100"><br>
+                                                        <strong>Vo. Bo. Jefe de Área</strong>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <img ng-src="{{Permiso.VBGestionHumana}}" width="100"><br>
+                                                        <strong>Gestión Humana</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="EventosModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Listado de eventos - {{TipoTurno}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-borderless table-striped">
+                        <thead>
+                            <tr>
+                                <th>Control ID</th>
+                                <th>Fecha</th>
+                                <th>Jor. 1 Entrada</th>
+                                <th>Jor. 2 Eentrada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="l in Listados">
+                                <td>{{l.ControlId}}</td>
+                                <td>{{l.Fecha}}</td>
+                                <td>{{l.J1E}}</td>
+                                <td>{{l.J2E}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="EventosSalidasModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Listado de salidas - {{TipoTurno}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-borderless table-striped">
+                        <thead>
+                            <tr>
+                                <th>Control ID</th>
+                                <th>Fecha</th>
+                                <th>Jor. 1 Salida</th>
+                                <th>Jor. 2 Salida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="l in Listados">
+                                <td>{{l.ControlId}}</td>
+                                <td>{{l.Fecha}}</td>
+                                <td>{{l.J1S}}</td>
+                                <td>{{l.J2S}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

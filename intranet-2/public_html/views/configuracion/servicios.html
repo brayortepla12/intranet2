@@ -1,0 +1,110 @@
+<div class="row" ng-controller="ServicioCtrl">
+    <div class="col-sm-2 pull-right" style="padding: 5px;">
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#ServicioModal">Crear Servicio <i class="fa fa-plus-square-o" /></button>
+    </div>
+    <div class="col-sm-12">
+        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 20px">ID</th>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Piso</th>
+                    <th class="text-center">Sede</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Servicios" ng-include="getTemplate(item)">
+                    <script type="text/ng-template" id="display">
+                        <td>
+                            {{item.ServicioId}}
+                        </td>
+                        <td>
+                            {{item.Nombre}}
+                        </td>
+                        <td>
+                            {{item.Piso}}
+                        </td>
+                        <td>
+                            {{item.NombreSede}}
+                        </td>
+                        <td>
+                            <center>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                            </center>
+                        </td>
+                    </script>
+                    <script type="text/ng-template" id="edit">
+                        <td>
+                            {{item.ServicioId}}
+                        </td>
+                        <td><input type="text" ng-model="select.Nombre" class="form-control input-sm" capitalize /></td>
+                        <td><input type="number" ng-model="select.Piso" class="form-control input-sm" /></td>
+                        <td>
+                            <select class="form-control" ng-model="select.SedeId" name="Concepto"  required>
+                                <option ng-repeat="s in Sedes | orderBy : 'Nombre' track by $index" ng-selected="select.SedeId === s.SedeId"  ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <center>
+                                <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                                <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                            </center>
+                        </td>
+                    </script>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="col-sm-11">
+                  <h2 class="modal-title">Crear Servicio</h2>
+              </div>
+              <div class="col-sm-1">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-body">
+              <form role="form" name="c.Servicio" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error': c.Servicio.Nombre.$invalid && !c.Servicio.Nombre.$pristine }">
+                            <label for="CodigoServicio">Nombre</label>
+                            <input type="text" capitalize class="form-control" id="CodigoServicio" ng-model="Servicio.Nombre" maxlength="280"  name="CodigoServicio" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error': c.Servicio.Piso.$invalid && !c.Servicio.Piso.$pristine }">
+                            <label for="CodigoServicio">Piso</label>
+                            <input type="number" class="form-control" id="CodigoServicio" ng-model="Servicio.Piso" maxlength="280"  name="CodigoServicio" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error': c.Servicio.Sede.$invalid && !c.Servicio.Sede.$pristine }">
+                            <label>
+                                Sede
+                            </label>
+                            <select class="form-control" ng-model="Servicio.SedeId" name="Concepto"  required>
+                                <option ng-repeat="s in Sedes | orderBy : 'Codigo' track by $index"  ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+              </form>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-footer">
+              <div class="text-center col-sm-12" style="margin-top: 25px;">
+                  <button class="btn btn-success" ng-click="GuardarServicio()" ng-disabled="c.Servicio.$invalid">Guardar</button>
+                  <input type="reset" class="btn btn-danger" ng-click="Servicio = {}" />
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

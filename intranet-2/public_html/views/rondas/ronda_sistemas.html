@@ -1,0 +1,72 @@
+<div id="tabla_listRondas" class="row" ng-controller="RondasSistemasCtrl">
+    <div class="col-sm-12" ng-if="cargado">
+        <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+            <thead class="bordered-blueberry">
+                <tr>
+                    <th class="text-center" style="width: 4%">ID</th>
+                    <th class="text-center" style="width: 2%">Nombre</th>
+                    <th class="text-center" style="width: 2%">Tipo</th>
+                    <th class="text-center" style="width: 5%">Opciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="RondaSistemaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="col-sm-11">
+                  <h2 class="modal-title">Ronda {{Ronda}}</h2>
+              </div>
+              <div class="col-sm-1">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-body">
+              <form role="form" name="c.RondaSistemaServicio" novalidate>
+                  <table class="table table-bordered">
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Observación 1</th>
+                        <th>Observación 2</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                      </tr>
+                      <tr ng-repeat="rs in RondasSistemas" style="padding: 0px">
+                        <td style="padding: 0px">
+                          <input type="text" capitalize class="form-control" id="Nombre" ng-model="rs.Nombre" maxlength="280" name="Nombre" readonly>
+                        </td>
+                        <td style="padding: 0px">
+                            <textarea class="form-control" id="Nombre" ng-model="rs.Observacion1" rows="2"></textarea>
+                        </td>
+                        <td style="padding: 0px">
+                            <textarea class="form-control" id="Nombre" ng-model="rs.Observacion2" rows="2"></textarea>
+                        </td>
+                        <td style="padding: 0px">
+                            <input onfocus="(this.type = 'date')" onblur="(this.type = 'text')" ng-model="rs.Fecha" class="form-control">
+                        </td>
+                        <td style="padding: 0px">
+                            {{rs.Estado}}
+                        </td>
+                      </tr>
+                  </table>
+              </form>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-footer">
+              <div class="text-center col-sm-12" style="margin-top: 25px;">
+                  <button class="btn btn-success" ng-click="GuardarRondaSistema_Detalle()">Guardar</button>
+                  <input type="reset" class="btn btn-danger" ng-click="RondaSistemaServicio = {}" />
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+

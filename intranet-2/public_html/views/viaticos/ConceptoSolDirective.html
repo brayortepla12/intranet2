@@ -1,0 +1,38 @@
+<div class="col-lg-12 col-md-12 col-sm-12">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th colspan="4">CONCEPTOS</th>
+        <th><button class="btn btn-xs btn-success" ng-click="AddConcepto()">Nuevo Concepto</button></th>
+      </tr>
+      <tr>
+        <th>CONCEPTO</th>
+        <th>DIAS</th>
+        <th>VALOR</th>
+        <th>LEGALIZA</th>
+        <th>OPCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="c in Sol.Conceptos track by $index">
+        <td>
+          <div ng-class="{'has-success': Datos['Conceptos' + $index].$valid, 'has-error': Datos['Conceptos' + $index].$invalid}">
+            <input type="text" capitalize ng-model="c.Concepto" name="Conceptos{{ $index }}" class="form-control" required>
+          </div>
+        </td>
+        <td><input type="number" min="1" step="1" ng-model="c.Dias" class="form-control"></td>
+        <td><input type="number" min="0" step="50" ng-model="c.Valor" class="form-control"></td>
+        <td>
+          <input type="checkbox" ng-model="c.Legalizable" ng-checked="c.Legalizable" ng-click="ChangeConceptoBandera($index)" class="form-control"></td>
+        <td><button class="btn btn-xs btn-danger" ng-click="EliminarConcepto($index)">Eliminar Concepto</button></td>
+      </tr>
+      <tr>
+        <td>TOTAL</td>
+        <td>{{ TDias }}</td>
+        <td>{{ TValor | currency: "$": 0 }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

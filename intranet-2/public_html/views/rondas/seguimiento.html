@@ -1,0 +1,104 @@
+<style>
+    .parrafo{
+        display: none;
+    }
+    @media print{
+        .parrafo{
+            display: block;
+        }
+        *{
+            font-size: 0.9em !important;
+            font-family: Comic Sans ms;
+        }
+        @Page{
+            margin: 40pt 60pt 30pt 60pt;
+        }
+    }
+</style>
+<div class="col-sm-12" ng-controller="SeguimientoCtrl">
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <button class="btn btn-default" ng-click="Imprimir()">Imprimir</button>
+        <button class="btn btn-success" ng-click="Actualizar()">Actualizar</button>
+    </div>
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12" id="Planilla">
+        <table class="table table-bordered table-striped break-after">
+            <tr ng-show="ToPrint">
+                <td style="width: 150px">
+                    Valledupar
+                </td>
+                <td colspan="5" rowspan="3">
+                    <div style="float: right">
+                        <img ng-src="{{Empresa.Logo}}" width="90" alt="">
+                    </div>
+                    Cordial Saludo<br><br>
+                    <p style="text-align: justify">
+                        Teniendo en cuenta nuestro compromiso por brindar atención integral a nuestros usuarios, es de gran preocupación como 
+                        líder del servicio de hospitalización el estado de las camas y los aires acondicionados del servicio, a continuación 
+                        el listado de las camas y habitaciones las cuales es de manera urgente intervenir para así brindar comodidad a nuestros pacientes.
+                    </p>
+                </td>
+            </tr>
+            <tr ng-show="ToPrint">
+                <td>
+                    <strong>Fecha:</strong> {{FechaHoy.getDate()}} de {{FechaHoy.getMonthName() | capital}} del {{FechaHoy.getFullYear()}}
+                </td>
+            </tr>
+            <tr ng-show="ToPrint">
+                <td>
+                    <strong>Douglas Amaya:</strong> Líder de Mantenimiento
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: center;">
+                    SERVICIOS / AREAS
+                </th>
+                <th style="text-align: center;">
+                    TRABAJOS A REALIZAR
+                </th>
+                <th style="text-align: center;">
+                    TEC. RESPONSABLES
+                </th>
+                <th colspan="2" style="text-align: center;">
+                    CUMPLIMIENTO
+                </th>
+                <th style="text-align: center;">
+                    OBSERVACIONES
+                </th>
+            </tr>
+            <tbody  ng-repeat="ronda in Rondas">
+                <tr ng-repeat="o in ronda.Equipos">
+                    <td>
+                        {{ronda.Sede}} - {{ronda.Servicio}}
+                    </td>
+                    <td >
+                        -<strong>{{o.Equipo}} </strong>
+                        <br><br>
+                        {{o.Descripcion}}
+                    </td>
+                    <td>
+                        <div ng-repeat="u in o.Usuarios track by $index">
+                            <div class="col-xs-12" style="margin-top: 30px">-{{u.Nombres}} <h4 style="color: red" class="no-print" ng-show="u.Estado === 'Terminado'">(Revizar)</h4></div>
+                        </div>
+                    </td>
+                    <td style="text-align: center;" colspan="2">
+                        <div ng-repeat="u in o.Usuarios track by $index">
+                            <div class="col-xs-6" style="margin-top: 20px">
+                                <label><input type="radio" ng-model="u.Cumplimiento" value="SI" name="Cumplimiento{{u.ActividadUsuarioId}}">SI</label>
+                            </div>
+                            <div class="col-xs-6" style="margin-top: 20px">
+                                <label><input type="radio" ng-model="u.Cumplimiento" value="NO" name="Cumplimiento{{u.ActividadUsuarioId}}">NO</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div ng-repeat="u in o.Usuarios track by $index">
+                            <textarea class="form-control no-print" ng-model="u.Observacion" rows="2"></textarea>
+                            <p class="parrafo" style="margin-top: 40px">{{u.Observacion}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+</div>

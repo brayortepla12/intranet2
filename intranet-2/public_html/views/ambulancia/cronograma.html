@@ -1,0 +1,36 @@
+<div class="row" ng-controller="CronogramaAmbulanciaCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">CRONOGRAMA DE MANTENIMIENTO DE AMBULANCIAS</h2>
+                <div class="ibox-tools" style="color:black;">
+                    <select class="form-control"
+                            ng-model="HojaVidaId"
+                            ng-change="ChangeMovil()">
+                        <option ng-repeat="h in Moviles" ng-selected="HojaVidaId == h.HojaVidaId" ng-value="{{h.HojaVidaId}}" value="{{h.HojaVidaId}}">{{h.Placa}}</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-hover table-condensed table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 10%">DESCRIPCIÓN</th>
+                                    <th class="text-center" style="width: 3%" ng-repeat="intervalo in Intervalos">{{intervalo}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="c in Cronograma">
+                                    <td style="width: 10%">{{c.Descripcion}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

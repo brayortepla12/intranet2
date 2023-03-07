@@ -1,0 +1,338 @@
+<style>
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 0 !important;
+        font-size: 0.91em;
+    }
+</style>
+<div class="row" ng-controller="ViewReporteExtSSTCtrl">
+
+    <div class="col-lg-10 col-lg-offset-1 col-sm-12">
+        <div class="text-center col-sm-12" style="margin-top: 25px;">
+            <button class="btn btn-primary" ng-click="AutoFirmarTODO()">Firmar Reportes</button>
+            <button class="btn btn-success" ng-click="Imprimir()">Imprimir</button>
+        </div>
+        <div id="myElementId">
+            <div  class="Page" ng-repeat="reporte in Reportes" >
+                <div class="break-after">
+                    <div>
+                        <div class="col-sm-4">
+                            <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                        </div>
+                        <div class="col-sm-4 text-center">
+                            <p>
+                                <strong style="font-size: 0.8em">REPORTE DE SERVICIO</strong><br>
+                                Gi-MB-F-06 ver.02 pagína 1 de 1<br>
+                                Emision 05-01-2015 vigilancia:29-01-2016
+                            </p>
+                        </div>
+                        <div class="col-sm-4 pull-right text-right">
+                            <h5 style="margin-right: 1px"><strong>NUMERO DE REPORTE</strong></h5>
+                            <input readonly style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px" readonly type="text" ng-model="reporte.NumeroReporte" class="form-control">
+                        </div>
+                    </div>
+                    <div id="TablaImpresion">
+                        <div>
+                            <div>
+                                <table class="table table-bordered" >
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">INFORMACION GENERAL DE LA INSTALACION</th>
+                                        </tr>
+                                        <tr>
+                                            <th>SEDE</th>
+                                            <td style="width: 180px !important;">
+                                                {{reporte.Sede}}
+                                            </td>
+
+                                            <th style="width: 70px !important;">FECHA</th>
+                                            <td colspan="4">
+                                                {{reporte.Fecha}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>SERVICO</th>
+                                            <td>
+                                                {{reporte.Servicio}}
+                                            </td>
+                                            <th>SOLICITANTE</th>
+                                            <td  colspan="4">
+                                                {{reporte.Solicitante}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>UBICACION</th>
+                                            <td>
+                                                {{reporte.Ubicacion}}
+                                            </td>
+                                            <th>RESPONSABLE</th>
+                                            <td colspan="4">
+                                                {{reporte.Responsable}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">TIPO DE SERVICIO</th>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 !important;width: 180px">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="font-size: 0.5em; transform: translate(0px,10px)">PREVENTIVO</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="reporte.TipoServicio == 'PREVENTIVO'" 
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 0 !important; width: 150px">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="font-size: 0.5em; transform: translate(0px,10px)">CORRECTIVO</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="reporte.TipoServicio == 'CORRECTIVO'" 
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td colspan="5" style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="font-size: 0.5em; transform: translate(0px,10px)">INSTALACION</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="reporte.TipoServicio == 'INSTALACION'"
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">INFORMACION DEL EQUIPO</th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                EQUIPO
+                                            </th>
+                                            <td>
+                                                {{reporte.Nombre}}
+                                            </td>
+                                            <th>
+                                                PROVEEDOR
+                                            </th>
+                                            <td colspan=5>
+                                                {{reporte.Proveedor}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                MODELO
+                                            </th>
+                                            <td>
+                                                {{reporte.Modelo}}
+                                            </td>
+                                            <th>
+                                                SERIAL
+                                            </th>
+                                            <td colspan="5">
+                                                {{reporte.NSerial}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-hide="reporte.ReporteArchivo">
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">FALLA REPORTADA POR EL SERVICIO</th>
+                                        </tr>
+                                        <tr ng-hide="reporte.ReporteArchivo">
+                                            <td colspan="9">
+                                                <p style="word-break: break-all; font-size: 11px !important;">{{reporte.FallaReportada}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr ng-hide="reporte.ReporteArchivo">
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">FALLAS DETECTADAS</th>
+                                        </tr>
+                                        <tr ng-hide="reporte.ReporteArchivo">
+                                            <td style="padding: 0 !important;">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">MAL USO</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.FallaDetectada, 'MAL USO')"
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 0 !important;">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">ACCESORIOS</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.FallaDetectada, 'ACCESORIOS')"
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 0 !important;">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">DESGASTE</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input"  ng-checked="isInArray(reporte.FallaDetectada, 'DESGASTE')" 
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 0 !important;">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">SIN FALLA</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.FallaDetectada, 'SIN FALLA')"
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td colspan="7" style="padding: 0 !important;">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">OTRO</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.FallaDetectada, 'OTRO')"
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-hide="reporte.ReporteArchivo">
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="word-break: break-all; background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">PROCEDIMIENTO REALIZADO</th>
+                                        </tr>
+                                        <tr ng-hide="reporte.ReporteArchivo">
+                                            <td colspan="9">
+                                                <div ng-class="{'has-success': Datos.ProcedimientoRealizado.$valid, 'has-error': Datos.ProcedimientoRealizado.$invalid}">
+                                                    <p style="word-break: break-all; font-size: 11px !important;">{{reporte.ProcedimientoRealizado}}</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">OBSERVACIONES</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="9">
+                                                <p style="word-break: break-all">{{reporte.Observaciones}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="8" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">ESTADO FINAL DEL EQUIPO</th>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">EQUIPO FUNCIONANDO CORRECTAMENTE</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.EstadoFinal, 'EQUIPO FUNCIONANDO CORRECTAMENTE')" 
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td  style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">EQUIPO EN ESPERA DE REPUESTOS</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.EstadoFinal, 'EQUIPO EN ESPERA DE REPUESTOS')" 
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td  colspan="7"  style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">EQUIPO FUERA DE SERVICIO</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.EstadoFinal, 'EQUIPO FUERA DE SERVICIO')"  
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">EQUIPO RETIRADO DEL SERVICIO</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.EstadoFinal, 'EQUIPO RETIRADO DEL SERVICIO')"  
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td  style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">RECOMENDACION DE BAJA</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.EstadoFinal, 'RECOMENDACION DE BAJA')"  
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td  colspan="7"  style="padding: 0 !important">
+                                                <div class="form-group">
+                                                    <label class="text-uppercase" style="transform: translate(0px,10px);font-size: 0.5em;">EQUIPO FUERA DE RANGOS</label>
+                                                    <div class="form-check pull-right">
+                                                        <input class="form-check-input" ng-checked="isInArray(reporte.EstadoFinal, 'EQUIPO FUERA DE RANGO')"  
+                                                               style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="2" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">TECNICO/INGENIERO RESPONSABLE</th>
+                                            <th scope="row" colspan="5" class="text-center cajaTituloImp" style="background-color: rgba(0,0,0,0.2) !important;height:30px;vertical-align:middle; border:2px solid black !important;">RECIBE A SATISFACCIÓN</th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                NOMBRE
+                                            </th>
+                                            <td>
+                                                {{reporte.ResponsableNombre}}
+                                            </td>
+                                            <th>
+                                                FECHA
+                                            </th>
+                                            <td colspan="2">
+                                                {{reporte.RecibeFecha}}
+                                            </td>
+                                            <th>
+                                                HORA
+                                            </th>
+                                            <td colspan="4">
+                                                {{reporte.RecibeHora}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                CARGO
+                                            </th>
+                                            <td>
+                                                {{reporte.ResponsableCargo}}
+                                            </td>
+                                            <th>
+                                                NOMBRE
+                                            </th>
+                                            <td colspan="7">
+                                                {{reporte.RecibeNombre}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" style="height: 80px">
+                                                FIRMA<br>
+                                                <img height="60" style="z-index: 1;" ng-src="{{reporte.ResponsableFirma}}" alt=""/>
+                                            </th>
+                                            <th>
+                                                CARGO
+                                            </th>
+                                            <td colspan="7">
+                                                {{reporte.RecibeCargo}}<br>
+                                                <img height="60" style="z-index: 1;transform: translate(5px,0px);" ng-src="{{reporte.RecibeFirma}}" alt=""/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="text-center col-sm-12" style="margin-top: 25px;">
+            <button class="btn btn-primary" ng-click="AutoFirmarTODO()">Firmar Reportes</button>
+            <button class="btn btn-success" ng-click="Imprimir()">Imprimir</button>
+        </div>
+        <br>
+    </div>
+</div>

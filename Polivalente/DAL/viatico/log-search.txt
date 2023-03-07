@@ -1,0 +1,903 @@
+2021-01-30 09:34:55: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-01-30 09:35:00: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-01-30 09:35:28: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-01-30 09:36:41: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-01-30 09:36:55: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-01-30 09:37:28: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-01-30 09:37:50: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY PreSolicitudId DESC' at line 25 query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 
+        ORDER BY PreSolicitudId DESC;
+
+2021-02-02 09:21:17: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 3
+        ORDER BY PreSolicitudId DESC; 
+ Table 'polivalente.via_procesos' doesn't exist query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 3
+        ORDER BY PreSolicitudId DESC;
+
+2021-02-02 11:57:07: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC; 
+ Table 'polivalente.via_procesos' doesn't exist query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC;
+
+2021-02-02 11:57:29: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC; 
+ Table 'polivalente.via_procesos' doesn't exist query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC;
+
+2021-02-02 11:59:19: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC; 
+ Table 'polivalente.via_procesos' doesn't exist query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC;
+
+2021-02-02 11:59:56: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC; 
+ Table 'polivalente.via_procesos' doesn't exist query: SELECT 
+            s.PreSolicitudId,
+            s.Sede,
+            s.Fecha,
+            s.Estado,
+            CONCAT(s.ResPrimerNombre,
+                    ' ',
+                    s.ResPrimerApellido) AS ANombreDe,
+            CONCAT(s.DepartamentoOrigen,
+                    ' - ',
+                    s.MunicipioOrigen) AS Origen,
+            CONCAT(s.DepartamentoDestino,
+                    ' - ',
+                    s.MunicipioDestino) AS Destino,
+            s.DescripcionSolicitud,
+            s.SolicitudId,
+            ft.IsUltimo,
+            ft.Orden = s.OrdenEncurso AS IsTuTurno,
+            ft.Prefijo,
+            p.HasFirma
+        FROM
+            via_solicitud AS s
+                INNER JOIN
+            via_flujotrabajo AS ft ON ft.ProcesoId = s.ProcesoId
+                INNER JOIN
+            via_procesos AS p ON p.ProcesoId = s.ProcesoId
+        WHERE
+            ft.UsuarioVerificaId = 273
+        ORDER BY PreSolicitudId DESC;
+
+2021-02-02 15:36:31: SELECT p.PersonaId, p.PrimerNombre, p.SegundoNombre, p.PrimerApellido, p.SegundoApellido, c.Cargo, p.Firma
+    FROM ct_persona as p 
+    LEFT JOIN ct_cargo as c on p.CargoId = c.CargoId
+    WHERE p.PersonaId =  
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4 query: SELECT p.PersonaId, p.PrimerNombre, p.SegundoNombre, p.PrimerApellido, p.SegundoApellido, c.Cargo, p.Firma
+    FROM ct_persona as p 
+    LEFT JOIN ct_cargo as c on p.CargoId = c.CargoId
+    WHERE p.PersonaId = 
+
+2021-02-03 16:43:26: SELECT 
+          ps.PreSolicitudId,
+          ps.Sede,
+          ps.Fecha,
+          'Pre-Solicitud' AS Estado,
+          CONCAT(ps.ResPrimerNombre,
+                  ' ',
+                  ps.ResPrimerApellido) AS ANombreDe,
+          CONCAT(ps.DepartamentoOrigen,
+                  ' - ',
+                  ps.MunicipioOrigen) AS Origen,
+          CONCAT(ps.DepartamentoDestino,
+                  ' - ',
+                  ps.MunicipioDestino) AS Destino,
+          ps.DescripcionSolicitud,
+          s.SolicitudId,
+          '' AS Prefijo,
+          '' AS HasFirma
+          '' AS OrdenEncurso
+      FROM
+          via_preSolicitud AS ps
+              LEFT JOIN
+          via_solicitud AS s ON s.PreSolicitudId = ps.PreSolicitudId
+      WHERE
+          s.SolicitudId IS NULL 
+      UNION SELECT 
+          s.PreSolicitudId,
+          s.Sede,
+          s.Fecha,
+          s.Estado,
+          CONCAT(s.ResPrimerNombre,
+                  ' ',
+                  s.ResPrimerApellido) AS ANombreDe,
+          CONCAT(s.DepartamentoOrigen,
+                  ' - ',
+                  s.MunicipioOrigen) AS Origen,
+          CONCAT(s.DepartamentoDestino,
+                  ' - ',
+                  s.MunicipioDestino) AS Destino,
+          s.DescripcionSolicitud,
+          s.SolicitudId,
+          ft.Prefijo,
+          p.HasFirma,
+          s.OrdenEncurso
+      FROM
+          via_solicitud AS s
+              INNER JOIN
+          via_flujotrabajo AS ft ON s.OrdenEncurso = ft.Orden
+              AND s.ProcesoId = ft.ProcesoId
+              INNER JOIN
+          via_proceso AS p ON s.ProcesoId = p.ProcesoId
+      ORDER BY PreSolicitudId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''' AS OrdenEncurso
+      FROM
+          via_preSolicitud AS ps
+              ' at line 19 query: SELECT 
+          ps.PreSolicitudId,
+          ps.Sede,
+          ps.Fecha,
+          'Pre-Solicitud' AS Estado,
+          CONCAT(ps.ResPrimerNombre,
+                  ' ',
+                  ps.ResPrimerApellido) AS ANombreDe,
+          CONCAT(ps.DepartamentoOrigen,
+                  ' - ',
+                  ps.MunicipioOrigen) AS Origen,
+          CONCAT(ps.DepartamentoDestino,
+                  ' - ',
+                  ps.MunicipioDestino) AS Destino,
+          ps.DescripcionSolicitud,
+          s.SolicitudId,
+          '' AS Prefijo,
+          '' AS HasFirma
+          '' AS OrdenEncurso
+      FROM
+          via_preSolicitud AS ps
+              LEFT JOIN
+          via_solicitud AS s ON s.PreSolicitudId = ps.PreSolicitudId
+      WHERE
+          s.SolicitudId IS NULL 
+      UNION SELECT 
+          s.PreSolicitudId,
+          s.Sede,
+          s.Fecha,
+          s.Estado,
+          CONCAT(s.ResPrimerNombre,
+                  ' ',
+                  s.ResPrimerApellido) AS ANombreDe,
+          CONCAT(s.DepartamentoOrigen,
+                  ' - ',
+                  s.MunicipioOrigen) AS Origen,
+          CONCAT(s.DepartamentoDestino,
+                  ' - ',
+                  s.MunicipioDestino) AS Destino,
+          s.DescripcionSolicitud,
+          s.SolicitudId,
+          ft.Prefijo,
+          p.HasFirma,
+          s.OrdenEncurso
+      FROM
+          via_solicitud AS s
+              INNER JOIN
+          via_flujotrabajo AS ft ON s.OrdenEncurso = ft.Orden
+              AND s.ProcesoId = ft.ProcesoId
+              INNER JOIN
+          via_proceso AS p ON s.ProcesoId = p.ProcesoId
+      ORDER BY PreSolicitudId DESC;
+
+2021-02-09 11:27:17: SELECT 
+        l.LegalizacionId, 
+          l.Fecha, 
+          IF(l.TipoLegalizacion = 'Normal', CONCAT(s.ResPrimerNombre, ' ', s.ResPrimerApellido), '') AS ANombreDe, 
+          l.OrdenEncurso, 
+        IF(l.TipoLegalizacion = 'Normal', Via_GetTotalPendienteLegalizar(s.SolicitudId), 0) AS TLegalizar, 
+          Via_GetTotalLegalizado(l.LegalizacionId) AS TLegalizado,
+          l.DL, 
+          l.RC, 
+          l.NC,
+          ft.MensajeEstado,
+          ft.IsUltimo,
+      FROM via_legalizacion AS l 
+        INNER JOIN via_flujotrabajo as ft ON l.ProcesoId = ft.ProcesoId
+          LEFT JOIN via_Solicitud as s ON s.SolicitudId = l.SolicitudId
+      WHERE ft.UsuarioVerificaId = 2 ORDER BY l.LegalizacionId DESC; 
+ You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM via_legalizacion AS l 
+        INNER JOIN via_flujotrabajo as ft ON l.Proc' at line 13 query: SELECT 
+        l.LegalizacionId, 
+          l.Fecha, 
+          IF(l.TipoLegalizacion = 'Normal', CONCAT(s.ResPrimerNombre, ' ', s.ResPrimerApellido), '') AS ANombreDe, 
+          l.OrdenEncurso, 
+        IF(l.TipoLegalizacion = 'Normal', Via_GetTotalPendienteLegalizar(s.SolicitudId), 0) AS TLegalizar, 
+          Via_GetTotalLegalizado(l.LegalizacionId) AS TLegalizado,
+          l.DL, 
+          l.RC, 
+          l.NC,
+          ft.MensajeEstado,
+          ft.IsUltimo,
+      FROM via_legalizacion AS l 
+        INNER JOIN via_flujotrabajo as ft ON l.ProcesoId = ft.ProcesoId
+          LEFT JOIN via_Solicitud as s ON s.SolicitudId = l.SolicitudId
+      WHERE ft.UsuarioVerificaId = 2 ORDER BY l.LegalizacionId DESC;
+
+2021-02-10 15:10:46: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL 
+ Unknown column 'undefined' in 'where clause' query: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL
+
+2021-02-10 15:38:15: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL 
+ Unknown column 'undefined' in 'where clause' query: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL
+
+2021-02-10 15:40:24: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL 
+ Unknown column 'undefined' in 'where clause' query: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL
+
+2021-02-10 15:44:42: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL 
+ Unknown column 'undefined' in 'where clause' query: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL
+
+2021-02-10 15:55:27: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL 
+ Unknown column 'undefined' in 'where clause' query: SELECT dl.DetalleLegalizacionId, dl.Fecha, dl.Factura, dl.Responsable, dl.Concepto, dl.Valor 
+    FROM via_detallelegalizacion AS dl
+    WHERE 
+    dl.LegalizacionId = undefined AND dl.Anexo IS NOT NULL
+
+2021-02-12 09:33:55: SELECT 
+              l.SolicitudId,
+              l.LegalizacionId,
+              CONCAT(l.ResPrimerNombre,
+                      ' ',
+                      l.ResPrimerApellido) AS ANombreDe,
+              l.ResCedula,
+              l.ResPersonaId,
+              l.Fecha,
+              VIA_GETTOTALLEGALIZADO(l.LegalizacionId) AS TLegalizado,
+              l.ProcesoId,
+              l.OrdenEncurso,
+              ft.MensajeEstado AS Estado
+          FROM
+              via_legalizacion AS l
+          INNER JOIN via_flujotrabajo as ft on ft.ProcesoId = l.ProcesoId AND ft.Orden = l.Orden
+          WHERE
+              l.ProcesoId = 3 
+ Unknown column 'l.Orden' in 'on clause' query: SELECT 
+              l.SolicitudId,
+              l.LegalizacionId,
+              CONCAT(l.ResPrimerNombre,
+                      ' ',
+                      l.ResPrimerApellido) AS ANombreDe,
+              l.ResCedula,
+              l.ResPersonaId,
+              l.Fecha,
+              VIA_GETTOTALLEGALIZADO(l.LegalizacionId) AS TLegalizado,
+              l.ProcesoId,
+              l.OrdenEncurso,
+              ft.MensajeEstado AS Estado
+          FROM
+              via_legalizacion AS l
+          INNER JOIN via_flujotrabajo as ft on ft.ProcesoId = l.ProcesoId AND ft.Orden = l.Orden
+          WHERE
+              l.ProcesoId = 3
+
+2021-03-09 11:27:41: SELECT p.*
+    from via_terceros as p
+    WHERE p.Nombres LIKE '%fra%' 
+    OR p.Cedula LIKE '%fra%' 
+ Table 'polivalente.via_terceros' doesn't exist query: SELECT p.*
+    from via_terceros as p
+    WHERE p.Nombres LIKE '%fra%' 
+    OR p.Cedula LIKE '%fra%'
+
+2021-03-09 11:27:42: SELECT p.*
+    from via_terceros as p
+    WHERE p.Nombres LIKE '%fra%' 
+    OR p.Cedula LIKE '%fra%' 
+ Table 'polivalente.via_terceros' doesn't exist query: SELECT p.*
+    from via_terceros as p
+    WHERE p.Nombres LIKE '%fra%' 
+    OR p.Cedula LIKE '%fra%'
+

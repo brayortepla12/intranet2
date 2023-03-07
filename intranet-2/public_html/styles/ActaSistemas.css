@@ -1,0 +1,8 @@
+@media print {
+    @page {
+        margin-top: 5cm;
+        margin-bottom: 5cm;
+        margin-left: 8cm;
+        margin-right: 8cm;
+    }
+}

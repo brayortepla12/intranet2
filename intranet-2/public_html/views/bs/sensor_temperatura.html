@@ -1,0 +1,53 @@
+
+<div ng-controller="STCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2>SENSOR DE TEMPERATURA<small></small></h2>
+                    <div class="ibox-tools" style="transform: translateX(-50px);">
+                        <ul class="nav navbar-right" style="color:black;">
+                            <li>
+                                <input class="form-control" ng-change="AnularIntervalo()" onfocus="(this.type = 'datetime-local')" onblur="(this.type = 'text')" 
+                                       type="text" ng-model="FFrom">
+                            </li>
+                            <li>
+                                <input class="form-control" ng-change="AnularIntervalo()" onfocus="(this.type = 'datetime-local')" onblur="(this.type = 'text')" type="text" ng-model="FTo">
+                            </li>
+                            <li>
+                                <button class="btn btn-primary" ng-click="ConsultarNeveras()">Consultar</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <canvas id="base" class="chart-bar"
+                                    chart-data="data" chart-labels="labels" chart-colors="colors"
+                                    chart-dataset-override="datasetOverride"
+                                    chart-options="Options">
+                            </canvas> 
+                        </div>
+                        <div class="col-sm-6">
+                            <canvas id="base1" class="chart-bar"
+                                    chart-data="data1" chart-labels="labels1" chart-colors="colors"
+                                    chart-dataset-override="datasetOverride1"
+                                    chart-options="Options">
+                            </canvas> 
+                        </div>
+                        <div class="col-sm-6">
+                            <canvas id="base2" class="chart-bar"
+                                    chart-data="data2" chart-labels="labels2" chart-colors="colors"
+                                    chart-dataset-override="datasetOverride2"
+                                    chart-options="Options">
+                            </canvas> 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

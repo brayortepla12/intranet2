@@ -1,0 +1,38 @@
+<style type="text/css">
+    body{
+        background: #f2f2f2;
+    }
+    #avatar1{
+        width: 24%;
+        margin: 0px auto 10px;
+        display: block;
+    }
+</style>
+<div ng-controller="ResetCtrl" style="height: 100vh;">
+    <div>
+        <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <img src="/intranet-2/public_html/image/cld.png" class="img-responsive" style="width: 200px;" id="avatar1">
+            </div>
+            <h3>Restablecimiento de contraseña</h3>
+            <form class="m-t" role="form">
+                <div class="form-group">
+                    <input type="password" ng-enter="ResetPassword()" ng-model="reset.pass" class="form-control" placeholder="Contraseña" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" ng-enter="ResetPassword()" ng-model="reset.pass2" class="form-control" placeholder="Confirme Contraseña" required="">
+                </div>
+                <button type="button" ng-click="ResetPassword()" class="btn btn-primary block full-width m-b">Restablecer Contraseña</button>
+
+                
+                
+            </form>
+            <p class="m-t"> <small>
+                        Desarrollado por Franklin Ospino y Mena Medina</small> </p>
+        </div>
+    </div>
+    <div style="text-align: center">
+        <img src="/intranet-2/public_html/image/menasoft.png" style="width: 10vw;position: absolute !important; bottom: 0 !important; right: 0 !important;" class="img-responsive">
+    </div>
+</div>

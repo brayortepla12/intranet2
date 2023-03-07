@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+      <strong>Fecha de solicitud</strong>
+      <input type="text" class="form-control" ng-model="Sol.Fecha" name="Fecha" onfocus="(this.type = 'datetime-local')"
+        onblur="(this.type = 'text')" disabled />
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div ng-class="{'has-success': Datos.Linea.$valid, 'has-error': Datos.Linea.$invalid}">
+      <strong>Lineas</strong><br>
+      {{Sol.Responsable}} - {{Sol.Telefono}}
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div ng-class="{ 'has-success': Datos.DescripcionDano.$valid, 'has-error': Datos.DescripcionDano.$invalid }">
+      <strong>Descripción del daño</strong>
+      <textarea type="text" class="form-control" ng-model="Sol.DescripcionDano" maxlength="200" name="DescripcionDano"
+        disabled></textarea>
+    </div>
+  </div>
+  <div class="col-sm-12" style="margin-bottom: 40px">
+    <strong>Imagen:</strong>
+    <div class="row">
+      <div class="col-sm-4">
+        <img ng-src="/Polivalente/error_tel/{{Sol.UrlImagen}}" style="height: 150px; max-height: 150px; width: 150px" alt="">
+      </div>
+    </div>
+  </div>
+</div>

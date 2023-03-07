@@ -1,0 +1,76 @@
+<div class="row" ng-controller="VerPermisosCTCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h2>Ver permisos por mes<small></small></h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <select class="form-control" ng-model="SedeId" ng-change="GetPermisos()" style="height: 35.59px !important;">
+                                <option ng-repeat="s in Sedes track by $index" ng-selected="SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" ng-change="GetPermisos()" style="height: 35.59px !important;">
+                                <option ng-selected="Mes == 1" ng-value='1' value='1'> Enero</option>
+                                <option ng-selected="Mes == 2" ng-value='2' value='2'> Febrero</option>
+                                <option ng-selected="Mes == 3" ng-value='3' value='3'> Marzo</option>
+                                <option ng-selected="Mes == 4" ng-value='4' value='4'> Abril</option>
+                                <option ng-selected="Mes == 5" ng-value='5' value='5'> Mayo</option>
+                                <option ng-selected="Mes == 6" ng-value='6' value='6'> Junio</option>
+                                <option ng-selected="Mes == 7" ng-value='7' value='7'> Julio</option>
+                                <option ng-selected="Mes == 8" ng-value='8' value='8'> Agosto</option>
+                                <option ng-selected="Mes == 9" ng-value='9' value='9'> Septiembre</option>
+                                <option ng-selected="Mes == 10" ng-value='10' value='10'> Octubre</option>
+                                <option ng-selected="Mes == 11" ng-value='11' value='11'> Noviembre</option>
+                                <option ng-selected="Mes == 12" ng-value='12' value='12'> Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' ng-enter="GetPermisos()" class="form-control"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 25px">
+                        <button class="btn btn-primary" ng-click="ImprimirListado()">Imprimir</button>
+                        <input class="btn btn-default" type="button" value="Exportar A" ng-click="ExportarPermiso()" />
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="ListadoPermisos">
+                            <thead>
+                                <tr>
+                                    <th colspan="6">
+                                        REPORTE DE PERMISOS {{Sede}}. {{Mes}}/{{Year}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Fecha</th>
+                                    <th>Nombres</th>
+                                    <th>Cargo</th>
+                                    <th>Razón</th>
+                                    <th>Tiempo</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr ng-repeat="p in Permisos">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{p.FechaInicio}}</td>
+                                    <td>{{p.Nombres}}</td>
+                                    <td>{{p.Cargo}}</td>
+                                    <td>{{p.Motivo}}</td>
+                                    <td>{{p.Tiempo}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

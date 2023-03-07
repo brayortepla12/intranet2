@@ -1,0 +1,98 @@
+<div class="row" ng-controller="EncabezadoCtrl">
+    <div class="col-sm-12">
+        <div class="dashboard_graph x_panel">
+            <div class="x_title default-primary-color">
+                <h2 class="text-primary-color">Encabezados y pie de pagina<small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link text-primary-color"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                    </li>
+                    <li><a class="close-link text-primary-color"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <form role="form" name="Datos" novalidate id="configform">
+                        <div class="col-md-6">
+                            <label for="EncabezadoHojaVida">Encabezado Hoja de vida</label>
+                            <text-angular name="EncabezadoHojaVida" ng-model="Encabezado.EncabezadoHojaVida">
+                            </text-angular>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EncabezadoReporte">Encabezado Reporte</label>
+                            <text-angular name="EncabezadoReporte" ng-model="Encabezado.EncabezadoReporte">
+                            </text-angular>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EncabezadoCronograma">Encabezado Cronograma</label>
+                            <text-angular name="EncabezadoCronograma" ng-model="Encabezado.EncabezadoCronograma">
+                            </text-angular>
+                        </div>
+                        <div style="clear: both"></div>
+                        <div class="col-md-6">
+                            <label for="Elaboro">Elaboró</label>
+                            <div ng-class="{'has-success': Datos.Elaboro.$valid, 'has-error': Datos.Elaboro.$invalid}">
+                                <input type="text" name="Elaboro" ng-model="Encabezado.Elaboro" maxlength="299" class="form-control" capitalize required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="CargoElaboro">Cargo Elaboró</label>
+                            <div ng-class="{'has-success': Datos.CargoElaboro.$valid, 'has-error': Datos.CargoElaboro.$invalid}">
+                                <input type="text" name="CargoElaboro" ng-model="Encabezado.CargoElaboro" maxlength="299" class="form-control" capitalize required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="FirmaElaboro">Firma Elaboró</label><br>
+                            <img width="500" src="{{Encabezado.FirmaElaboro}}" style="height: 137px; max-height: 137px; width: 250px" alt="">
+                            <input type="file" my-upload accept="image/*" image="DataImg1" resize-max-height="800" resize-max-width="800" 
+                                   resize-quality="0.7" resize-type="image/jpg" ng-image-compress  class="form-control caja_texto">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="Reviso">Revisó</label>
+                            <div ng-class="{'has-success': Datos.Reviso.$valid, 'has-error': Datos.Reviso.$invalid}">
+                                <input type="text" name="Reviso" ng-model="Encabezado.Reviso" maxlength="299" class="form-control" capitalize required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="CargoReviso">Cargo Revisó</label>
+                            <div ng-class="{'has-success': Datos.CargoReviso.$valid, 'has-error': Datos.Reviso.$invalid}">
+                                <input type="text" name="CargoReviso" ng-model="Encabezado.CargoReviso" maxlength="299" class="form-control" capitalize required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="FirmaReviso">Firma Revisó</label><br>
+                            <img width="500" src="{{Encabezado.FirmaReviso}}" style="height: 137px; max-height: 137px; width: 250px" alt="">
+                            <input type="file" my-upload accept="image/*" image="DataImg2" resize-max-height="800" resize-max-width="800" 
+                                   resize-quality="0.7" resize-type="image/jpg" ng-image-compress  class="form-control caja_texto">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Aprobo">Aprobó</label>
+                            <div ng-class="{'has-success': Datos.Aprobo.$valid, 'has-error': Datos.Aprobo.$invalid}">
+                                <input type="text" name="Aprobo" ng-model="Encabezado.Aprobo" maxlength="299" class="form-control" capitalize required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="CargoAprobo">Cargo Aprobó</label>
+                            <div ng-class="{'has-success': Datos.CargoAprobo.$valid, 'has-error': Datos.CargoAprobo.$invalid}">
+                                <input type="text" name="CargoAprobo" ng-model="Encabezado.CargoAprobo" maxlength="299" class="form-control" capitalize required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="FirmaAprobo">Firma Aprobó</label><br>
+                            <img width="500" src="{{Encabezado.FirmaAprobo}}" style="height: 137px; max-height: 137px; width: 250px" alt="">
+                            <input type="file" my-upload accept="image/*" image="DataImg3" resize-max-height="800" resize-max-width="800" 
+                                   resize-quality="0.7" resize-type="image/jpg" ng-image-compress  class="form-control caja_texto">
+                        </div>
+                        <div class="text-center col-xs-12" style="margin-top: 25px;">
+                            <button class="btn btn-success" ng-click="Actualizar()">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

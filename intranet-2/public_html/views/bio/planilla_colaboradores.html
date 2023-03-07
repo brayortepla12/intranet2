@@ -1,0 +1,73 @@
+<div ng-controller="PlanillaColCtrl">
+    <div class="col-sm-12">
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h2>Listado de colaboradores<small></small></h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <input type="text" class="form-control" ng-model="txtSearch" placeholder="Buscar">
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Dia" ng-options=" d for d in Dias" style="height: 35.59px !important;" ng-change="getColaboradores()">
+                            </select>
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" style="height: 35.59px !important;" ng-change="getColaboradores()">
+                                <option ng-selected="Mes == 1" ng-value='1' value='1'> Enero</option>
+                                <option ng-selected="Mes == 2" ng-value='2' value='2'> Febrero</option>
+                                <option ng-selected="Mes == 3" ng-value='3' value='3'> Marzo</option>
+                                <option ng-selected="Mes == 4" ng-value='4' value='4'> Abril</option>
+                                <option ng-selected="Mes == 5" ng-value='5' value='5'> Mayo</option>
+                                <option ng-selected="Mes == 6" ng-value='6' value='6'> Junio</option>
+                                <option ng-selected="Mes == 7" ng-value='7' value='7'> Julio</option>
+                                <option ng-selected="Mes == 8" ng-value='8' value='8'> Agosto</option>
+                                <option ng-selected="Mes == 9" ng-value='9' value='9'> Septiembre</option>
+                                <option ng-selected="Mes == 10" ng-value='10' value='10'> Octubre</option>
+                                <option ng-selected="Mes == 11" ng-value='11' value='11'> Noviembre</option>
+                                <option ng-selected="Mes == 12" ng-value='12' value='12'> Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' class="form-control" ng-enter="getColaboradores()"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-borderless table-striped">
+                    <thead>
+                        <tr>
+                            <th>Lider</th>
+                            <th>E1</th>
+                            <th>S2</th>
+                            <th>E3</th>
+                            <th>S4</th>
+                            <th>E5</th>
+                            <th>S6</th>
+                            <th>E7</th>
+                            <th>S8</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="l in Colaboradores | filter: txtSearch">
+                            <td>{{l.usuario}}</td>
+                            <td>{{l.E1}}</td>
+                            <td>{{l.S2}}</td>
+                            <td>{{l.E3}}</td>
+                            <td>{{l.S4}}</td>
+                            <td>{{l.E5}}</td>
+                            <td>{{l.S6}}</td>
+                            <td>{{l.E7}}</td>
+                            <td>{{l.S8}}</td>
+                            <td>{{l.Total}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

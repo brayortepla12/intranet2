@@ -1,0 +1,71 @@
+<div ng-controller="CargoCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Listado de cargos<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <button class="btn btn-primary" ng-click="OpenCrearModal()">Crear Cargo</button>
+            </div>
+            <div class="row" ng-show="!ficha">
+                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+                    <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blueberry">
+                            <tr>
+                                <th class="text-center" style="width: 3%">ID</th>
+                                <th class="text-center" style="width: 90%">Nombre</th>
+                                <th class="text-center" style="width: 5%">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="CargoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title" ng-hide="ActualizarBool">Crear Cargo</h2>
+                        <h2 class="modal-title" ng-show="ActualizarBool">Actualizar Cargo</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row col-sm-12">
+                                    <div class="col-sm-12" ng-class="{'has-success': Datos.Cargo.$valid, 'has-error': Datos.Cargo.$invalid}">
+                                        <label>
+                                            Cargo
+                                        </label>
+                                        <input type="text" class="form-control" ng-model="Cargo.Cargo" name="Cargo" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="CrearCargo()" ng-hide="ActualizarBool">Crear Cargo</button>
+                        <button class="btn btn-success" ng-click="ActualizarCargo()" ng-show="ActualizarBool">Actualizar Cargo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

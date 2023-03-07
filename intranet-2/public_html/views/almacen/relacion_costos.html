@@ -1,0 +1,259 @@
+<div class="row" ng-controller="RelacionCostosCtrl">
+    <div class="col-sm-12" style="margin-top: 1vw">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 style="color:white">Plantilla<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 50px">
+                        <form name="Datos" novalidate>
+                            <div class="row">
+                                <div class="col-sm-3"
+                                    ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+                                    <label for="SedeId"><strong>Sede</strong></label>
+                                    <select class="form-control" ng-model="Relacion.SedeId" name="SedeId"
+                                        ng-change="ChangeSede()" required>
+                                        <option ng-repeat="s in Sedes track by $index"
+                                            ng-selected="s.SedeId === Relacion.SedeId" ng-value='{{s.SedeId}}'
+                                            value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-5"
+                                    ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+                                    <label for="ServicioId"><strong>Servicio</strong></label>
+                                    <select class="form-control" ng-model="Relacion.ServicioId" name="ServicioId"
+                                        ng-change="ChangeServicio()" required>
+                                        <option ng-repeat="s in Servicios track by $index" ng-show="s.IsVisible"
+                                            ng-selected="s.ServicioId === Relacion.ServicioId"
+                                            ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class=" form-group">
+                                        <label for="TipoArticulo">
+                                            Tipo de articulos
+                                        </label>
+                                        <select class="form-control" ng-model="Relacion.TipoArticulo"
+                                            ng-change="ChangeTipoArticulo()" name="TipoArticulo">
+                                            <option value="">--</option>
+                                            <option value='Almacen'>Almacen</option>
+                                            <option value='Central'>Central</option>
+                                            <option value='Polivalente'>Polivalente</option>
+                                            <option value='Sistemas'>Sistemas</option>
+                                            <option value='Biomedico'>Biomedico</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 text-center" style="transform: translate(0px,25px)">
+                                    <button class="btn btn-primary" ng-click="ModalCreateRelacion()">Añadir
+                                        Articulo</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions"
+                            class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 7%">Codigo Krystalos</th>
+                                    <th class="text-center" style="width: 15%">Nombre en Krystalos</th>
+                                    <th class="text-center" style="width: 7%">Codigo Interno</th>
+                                    <th class="text-center" style="width: 15%">Nombre</th>
+                                    <th class="text-center" style="width: 5%">Cantidad</th>
+                                    <th class="text-center" style="width: 5%">Dias de Consumo</th>
+                                    <th class="text-center" style="width: 5%">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="RelacionModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Plantilla</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+
+                    <form role="form" name="Datos2" novalidate>
+                        <table class="table table-hover table-condensed table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Articulo</th>
+                                    <th>Cantidad</th>
+                                    <th>Dias Consumo</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="o in Relaciones track by $index">
+                                <td>
+                                    <span ng-hide="o.EditarItem">{{o.Articulo.Nombre}}</span>
+                                    <span ng-show="o.EditarItem">
+                                        <div angucomplete-alt id="ex8" placeholder="Articulo" maxlength="100"
+                                            pause="100" selected-object="EditRelacion.Articulo" local-data="Articulos"
+                                            search-fields="Nombre" title-field="Nombre" minlength="1"
+                                            input-class="form-control form-control-small" match-class="highlight">
+                                        </div>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-hide="o.EditarItem">{{o.Cantidad}}</span>
+                                    <span ng-show="o.EditarItem">
+                                        <input type="number" ng-model="EditRelacion.Cantidad" min="0"
+                                            class="form-control" ng-enter="UpdateItem(o, $index)" />
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-hide="o.EditarItem">{{o.DiasConsumo}}</span>
+                                    <span ng-show="o.EditarItem">
+                                        <select class="form-control" ng-model="EditRelacion.DiasConsumo"
+                                            name="DiasConsumo" required>
+                                            <option value=""></option>
+                                            <option value="7">7</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="60">60</option>
+                                            <option value="365">365</option>
+                                        </select>
+                                        <!--<input type="number" ng-model="EditRelacion.DiasConsumo" min="0" class="form-control"  ng-enter="UpdateItem(o, $index)" />-->
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-xs btn-info" ng-click="o.EditarItem = true; EditItem(o)"
+                                        ng-hide="o.EditarItem"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn btn-xs btn-danger" ng-hide="o.EditarItem"
+                                        ng-click="DeleteItem($index)"><i class="fa fa-trash-o"></i></button>
+                                    <button class="btn btn-xs btn-success" ng-show="o.EditarItem"
+                                        ng-click="UpdateItem(o, $index)"><i class="fa fa-check"></i></button>
+                                    <button class="btn btn-xs btn-danger" ng-click="o.EditarItem = false"
+                                        ng-show="o.EditarItem"><i class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="no-print">
+                                <td>
+                                    <div angucomplete-alt id="ex7" placeholder="Articulo" maxlength="100" pause="100"
+                                        selected-object="Articulo" local-data="Articulos" search-fields="Nombre"
+                                        title-field="Nombre" minlength="1" input-class="form-control form-control-small"
+                                        match-class="highlight"></div>
+                                </td>
+                                <td>
+                                    <input type="number" ng-model="Relacion.Cantidad" min="1" class="form-control"
+                                        ng-enter="AddItem()" required />
+                                </td>
+                                <td>
+                                    <select class="form-control" ng-model="Relacion.DiasConsumo" name="DiasConsumo"
+                                        required>
+                                        <option value=""></option>
+                                        <option value="7">7</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="60">60</option>
+                                        <option value="365">365</option>
+                                    </select>
+                                    <!--<input type="number" ng-model="Relacion.DiasConsumo" min="1" class="form-control"  ng-enter="AddItem()" />-->
+                                </td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary" ng-click="AddItem()"
+                                        style="transform: translate(0px,5px)"><i class="fa fa-plus"></i></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-success" ng-click="CreateRelacion()">Guardar Relación</button>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateRelacionModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Actualizar Plantilla</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <table class="table table-hover table-condensed table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Articulo</th>
+                                    <th>Cantidad</th>
+                                    <th>Dias de Consumo</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>
+                                    <span>
+                                        <div angucomplete-alt id="ex10" placeholder="Articulo" maxlength="100"
+                                            pause="100" selected-object="URelacion.Articulo" local-data="Articulos"
+                                            search-fields="Nombre" title-field="Nombre" minlength="1"
+                                            input-class="form-control form-control-small" match-class="highlight"></div>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <input type="number" ng-model="URelacion.Cantidad" min="1" class="form-control"
+                                            ng-enter="UpdateRelacion()" />
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <select class="form-control" ng-model="URelacion.DiasConsumo" name="DiasConsumo"
+                                            required>
+                                            <option value=""></option>
+                                            <option value="7">7</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="60">60</option>
+                                            <option value="365">365</option>
+                                        </select>
+                                        <!--<input type="number" ng-model="URelacion.DiasConsumo" min="1" class="form-control"  ng-enter="UpdateRelacion()" />-->
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-success" ng-click="UpdateRelacion()">Actualizar Relación</button>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

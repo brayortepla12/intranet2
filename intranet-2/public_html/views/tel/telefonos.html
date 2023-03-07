@@ -1,0 +1,126 @@
+<style>
+  .highlight {
+    color: red;
+  }
+</style>
+<div ng-controller="TelefonosCtrl">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h2>Telefonos<small></small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-default" ng-if="NTEL || VTEL" ng-click="Atras()">Atras</button>
+              <button class="btn btn-primary" ng-if="!NTEL && !VTEL" ng-click="NewTEL()">Nuevo Telefono</button>
+              <button class="btn btn-success" ng-if="NTEL" ng-click="CrearTEL()">
+                <span ng-hide="IsLoading">Crear telefono</span>
+                <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+              </button>
+              <button class="btn btn-success" ng-if="VTEL" ng-click="UpdateTEL()">
+                <span ng-hide="IsLoading">Actualizar telefono</span>
+                <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+              </button>
+            </div>
+          </div>
+          <div class="row" ng-if="LTEL && !NTEL && !VTEL">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <table id="LHD" ui-jq="dataTable" ui-options="TELDATA"
+                class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                  <tr>
+                    <th scope="col" class="text-center">ID</th>
+                    <th scope="col" class="text-center">Lider</th>
+                    <th scope="col" class="text-center">Responsable</th>
+                    <th scope="col" class="text-center">Area</th>
+                    <th scope="col" class="text-center">Sede</th>
+                    <th scope="col" class="text-center">Telefono</th>
+                    <th scope="col" class="text-center">Telefono ANT</th>
+                    <th scope="col" class="text-center">Estado</th>
+                    <th scope="col" class="text-center">Opciones</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <form role="form" name="Datos" novalidate>
+            <div class="row" ng-show="NTEL || VTEL">
+              <div class="col-lg-3 col-sm-4">
+                <div>
+                  <label for="PersonaToAdd">Lider <strong>{{ TEL.Lider }}</strong></label>
+                  <div angucomplete-alt id="persona_input"
+                    placeholder="Cedula ó Nombre"
+                    maxlength="100"
+                    pause="100"
+                    selected-object="LoadPersona"
+                    remote-url="/Polivalente/api/tel/Tel.php?Dato_per="
+                    title-field="Cedula"
+                    description-field="Nombres"
+                    minlength="2"
+                    input-class="form-control form-control-small"
+                    match-class="highlight"></div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.Responsable.$valid, 'has-error': Datos.Responsable.$invalid}">
+                <label>
+                  Responsable
+                </label>
+                <input type="text" capitalize class="form-control" ng-model="TEL.Responsable" name="Responsable" maxlength="70" required>
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.Sede.$valid, 'has-error': Datos.Sede.$invalid}">
+                <label>
+                  Sede
+                </label>
+                <input type="text" capitalize class="form-control" ng-model="TEL.Sede" name="Sede" maxlength="44" required>
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.Area.$valid, 'has-error': Datos.Area.$invalid}">
+                <label>
+                  Area
+                </label>
+                <input type="text" capitalize class="form-control" ng-model="TEL.Area" name="Area" maxlength="44" required>
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.Plan.$valid, 'has-error': Datos.Plan.$invalid}">
+                <label>
+                  Plan
+                </label>
+                <input type="text" capitalize class="form-control" ng-model="TEL.Plan" name="Plan" maxlength="44" required>
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.Telefono.$valid, 'has-error': Datos.Telefono.$invalid}">
+                <label>
+                  Telefono
+                </label>
+                <input type="text" class="form-control" ng-model="TEL.Telefono" name="Telefono" maxlength="44" required>
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.TelefonoAnt.$valid, 'has-error': Datos.TelefonoAnt.$invalid}">
+                <label>
+                  Telefono Ant
+                </label>
+                <input type="text" class="form-control" ng-model="TEL.TelefonoAnt" name="TelefonoAnt" maxlength="44">
+              </div>
+              <div class="col-lg-3 col-sm-4"
+                ng-class="{'has-success': Datos.Estado.$valid, 'has-error': Datos.Estado.$invalid}">
+                <label>
+                  Estado
+                </label>
+                <select class="form-control" ng-model="TEL.Estado" name="Estado" required>
+                  <option>Activo</option>
+                  <option>Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

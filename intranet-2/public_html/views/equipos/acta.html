@@ -1,0 +1,413 @@
+<style>
+    label {
+        font-weight: bolder;
+    }
+
+    @media print {
+        #ImprimeActa {
+            margin: 20pt 30pt 20pt 30pt !important;
+        }
+    }
+</style>
+<div class="row" ng-controller="ActaSistemasCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">Administrar actas para sistemas</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 25px;">
+                    <div class="col-sm-9">
+                        <button class="btn btn-primary" ng-click="NewActa()" ng-hide="NewActaBn || VerActaBn">Nueva
+                            Acta</button>
+                        <button class="btn btn-default" ng-click="Atras()"
+                            ng-show="NewActaBn || VerActaBn">Atras</button>
+                        <button class="btn btn-primary" ng-click="GuardarActa()" ng-show="NewActaBn">Guardar</button>
+                        <button class="btn btn-success" ng-click="Imprimir()" ng-show="VerActaBn">Imprimir</button>
+                    </div>
+                </div>
+                <div class="row" ng-hide="NewActaBn || VerActaBn">
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions"
+                            class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 3%">ID</th>
+                                    <th class="text-center" style="width: 3%">N° ACTA</th>
+                                    <th class="text-center" style="width: 7%">FECHA</th>
+                                    <th class="text-center" style="width: 7%">RESPONSABLE</th>
+                                    <th class="text-center" style="width: 5%">TIPO ACTA</th>
+                                    <th class="text-center" style="width: 7%">SERVICIO</th>
+                                    <th class="text-center" style="width: 7%">RECIBE</th>
+                                    <th class="text-center" style="width: 3%">OPCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-12" ng-show="NewActaBn">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group"
+                                    ng-class="{'has-success': Datos.TipoActa.$valid, 'has-error': Datos.TipoActa.$invalid}">
+                                    <label>
+                                        Tipo Acta
+                                    </label>
+                                    <select class="form-control" ng-model="Acta.TipoActa" name="TipoActa" required>
+                                        <option value=""></option>
+                                        <option value='Entrega'>Entrega</option>
+                                        <option value='Salida'>Salida</option>
+                                        <option value='Baja'>Baja</option>
+                                        <option value='No Mantenimiento'>No Mantenimiento</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa != 'Salida'">
+                                <label>
+                                    Sede
+                                </label>
+                                <select class="form-control" ng-model="SedeId" ng-change="ChangeSede()" name="Servicio">
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === SedeId"
+                                        ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa != 'Salida'">
+                                <label>
+                                    Servicio
+                                </label>
+                                <select class="form-control" ng-model="ServicioId" ng-change="ChangeServicio()"
+                                    name="Servicio" required>
+                                    <option ng-repeat="s in Servicios track by $index"
+                                        ng-selected="s.ServicioId === ServicioId" ng-value='{{s.ServicioId}}'
+                                        value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa == 'Salida'">
+                                <div class="form-group"
+                                    ng-class="{'has-success': Datos.Area.$valid, 'has-error': Datos.Area.$invalid}">
+                                    <label for="Area">Area</label>
+                                    <input type="text" class="form-control" id="Area" name="Area" ng-model="Acta.Area"
+                                        capitalize>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa == 'Salida'">
+                                <div class="form-group"
+                                    ng-class="{'has-success': Datos.Destino.$valid, 'has-error': Datos.Destino.$invalid}">
+                                    <label for="Destino">Destino</label>
+                                    <input type="text" class="form-control" id="Destino" name="Destino"
+                                        ng-change="ChangeDestino()" ng-model="Acta.Destino" capitalize>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"
+                                    ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                                    <label for="Fecha">Fecha</label>
+                                    <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')"
+                                        class="form-control" id="Fecha" name="Fecha" ng-model="Acta.Fecha" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa == 'Salida' || Acta.TipoActa == 'Baja'">
+                                <div class="form-group"
+                                    ng-class="{'has-success': Datos.RecibeN.$valid, 'has-error': Datos.RecibeN.$invalid}">
+                                    <label for="RecibeN">Recibe</label>
+                                    <input type="text" class="form-control" id="RecibeN" name="RecibeN"
+                                        ng-model="Acta.RecibeN" capitalize>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa == 'Salida' || Acta.TipoActa == 'Baja'">
+                                <div class="form-group"
+                                    ng-class="{'has-success': Datos.RecibeC.$valid, 'has-error': Datos.RecibeC.$invalid}">
+                                    <label for="RecibeC">Cargo de quien recibe</label>
+                                    <input type="text" class="form-control" id="RecibeC" name="RecibeC"
+                                        ng-model="Acta.RecibeC" capitalize>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Acta.TipoActa != 'Salida' && Acta.TipoActa != 'Baja'">
+                                <div class="form-group">
+                                    <label for="UsuarioSeleccionado">Recibe</label>
+                                    <multiselect class="no-print" ng-model="UsuarioSeleccionado" show-search="true"
+                                        labels="labels" id-prop="UsuarioId" display-prop="NombreCompleto"
+                                        selection-limit="1" options="Usuarios" classes-btn="'btn-default'">
+                                    </multiselect>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table stripped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px">CANTIDAD</th>
+                                            <th>ELEMENTO</th>
+                                            <th>MARCA</th>
+                                            <th>MODELO</th>
+                                            <th>SERIAL</th>
+                                            <th>OPCIÓN</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="da in Acta.Detalles">
+                                            <td>
+                                                {{da.Cantidad}}
+                                            </td>
+                                            <td>
+                                                {{da.Elemento}}
+                                            </td>
+                                            <td>
+                                                {{da.Marca}}
+                                            </td>
+                                            <td>
+                                                {{da.Modelo}}
+                                            </td>
+                                            <td>
+                                                {{da.Serial}}
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-danger btn-xs icon-only white"
+                                                    ng-click="DeleteDetalle($index)"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" onfocus="(this.type = 'number')"
+                                                    onblur="(this.type = 'text')" step="1" class="form-control"
+                                                    id="Cantidad" name="Cantidad" ng-enter="AddItem()"
+                                                    ng-model="item.Cantidad">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="Elemento" name="Elemento"
+                                                    ng-model="item.Elemento" ng-enter="AddItem()" capitalize>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="Marca" name="Marca"
+                                                    ng-model="item.Marca" ng-enter="AddItem()" capitalize>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="Modelo" name="Modelo"
+                                                    ng-model="item.Modelo" ng-enter="AddItem()" capitalize>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="Serial" name="Serial"
+                                                    ng-model="item.Serial" ng-enter="AddItem()" capitalize>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-default btn-xs icon-only white"
+                                                    ng-click="AddItem()"><i class="fa fa-plus"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="Acta.TipoActa != 'Salida' && Acta.TipoActa != 'Baja'">
+                                            <th colspan="6" style="text-align: center">
+                                                <h2>Ó</h2>
+                                            </th>
+                                        </tr>
+                                        <tr ng-show="Acta.TipoActa != 'Salida' && Acta.TipoActa != 'Baja'">
+                                            <td colspan="6">
+                                                <multiselect class="no-print" ng-model="HojaVidaSeleccionada"
+                                                    show-search="true" labels="labels" id-prop="HojaVidaId"
+                                                    display-prop="Equipo" selection-limit="1" options="Equipos"
+                                                    classes-btn="'btn-default'">
+                                                </multiselect>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="MensajeIntroductorio">Mensaje de introducción</label>
+                                <text-angular name="MensajeIntroductorio" ng-model="Acta.MensajeIntroductorio">
+                                </text-angular>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="Descripcion">Descripción</label>
+                                <text-angular name="Descripcion" ng-model="Acta.Descripcion">
+                                </text-angular>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="Motivo">Motivo:</label>
+                                <text-angular name="Motivo" ng-model="Acta.Motivo">
+                                </text-angular>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="Notas">Notas</label>
+                                <text-angular name="Notas" ng-model="Acta.Nota">
+                                </text-angular>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12" ng-show="VerActaBn">
+                    <div id="ImprimeActa">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                    </div>
+                                    <div class="col-sm-4 text-center" ng-show="VActa.TipoActa == 'Entrega'"
+                                        style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 40pt"
+                                        bind-html-compile="Encabezado.EncabezadoSistemas_ActaEntrega">
+                                    </div>
+                                    <div class="col-sm-4 text-center" ng-show="VActa.TipoActa == 'Salida'"
+                                        style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 40pt"
+                                        bind-html-compile="Encabezado.EncabezadoSistemas_ActaSalida">
+                                    </div>
+                                    <div class="col-sm-4 text-center" ng-show="VActa.TipoActa == 'Baja'"
+                                        style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 40pt"
+                                        bind-html-compile="Encabezado.EncabezadoSistemas_ActaBaja">
+                                    </div>
+                                    <div class="col-sm-4 text-center" ng-show="VActa.TipoActa == 'No Mantenimiento'"
+                                        style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 40pt"
+                                        bind-html-compile="Encabezado.EncabezadoSistemas_ActaNoMan">
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="VActa.TipoActa == 'No Mantenimiento'" class="col-sm-12"
+                                style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 25pt">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        SEDE: {{VActa.Sede}}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        SERVICIO: {{VActa.Servicio}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Tipo mantenimiento:
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="text-uppercase float-right"
+                                                style="font-size: 1em; transform: translate(0px,10px)">BIOMEDICO</label>
+                                            <div class="form-check float-left">
+                                                <input class="form-check-input" disabled
+                                                    style="width: 20px;height: 20px;transform: translate(0px,5px);"
+                                                    type="checkbox">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="text-uppercase float-right"
+                                                style="font-size: 1em; transform: translate(0px,10px)">POLIVALENTE</label>
+                                            <div class="form-check float-left">
+                                                <input class="form-check-input" disabled
+                                                    style="width: 20px;height: 20px;transform: translate(0px,5px);"
+                                                    type="checkbox">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="text-uppercase float-right"
+                                                style="font-size: 1em; transform: translate(0px,10px)">SISTEMAS</label>
+                                            <div class="form-check float-left">
+                                                <input class="form-check-input" disabled checked="true"
+                                                    style="width: 20px;height: 20px;transform: translate(0px,5px);"
+                                                    type="checkbox">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12"
+                                style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 25pt">
+                                {{VActa.Fecha| date : "EEEE, d 'de' MMMM 'de' y" | uppercase}}
+                            </div>
+                            <div class="col-sm-12 text-center"
+                                style="font-family: Candara !important;margin-bottom: 40pt">
+                                <h3 style="margin-right: 1px"><strong>ACTA DE {{VActa.TipoActa| uppercase}} No.
+                                        {{VActa.NumeroActa}}</strong></h3>
+                            </div>
+                            <div class="col-sm-12" bind-html-compile="VActa.MensajeIntroductorio"
+                                style="font-family: Candara !important;font-size: 15px !important;margin-bottom: 20pt">
+                            </div>
+                            <div class="col-sm-12"
+                                style="font-family: Candara !important;font-size:15px !important; margin-bottom: 35pt">
+                                <table class="table table-borderless table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th ng-hide="VActa.TipoActa == 'No Mantenimiento'"
+                                                style="width: 40px;background: rgba(0,0,0,0.2) !important">CANTIDAD</th>
+                                            <th ng-show="VActa.TipoActa == 'No Mantenimiento'"
+                                                style="width: 40px;background: rgba(0,0,0,0.2) !important">ITEM</th>
+                                            <th style="background: rgba(0,0,0,0.2) !important">ELEMENTO</th>
+                                            <th style="background: rgba(0,0,0,0.2) !important">MARCA</th>
+                                            <th style="background: rgba(0,0,0,0.2) !important">MODELO</th>
+                                            <th style="background: rgba(0,0,0,0.2) !important">SERIAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="da in VActa.Detalles">
+                                            <td ng-hide="VActa.TipoActa == 'No Mantenimiento'">
+                                                {{da.Cantidad}}
+                                            </td>
+                                            <th ng-show="VActa.TipoActa == 'No Mantenimiento'">
+                                                {{$index + 1}}
+                                            </th>
+                                            <td>
+                                                {{da.Elemento}}
+                                            </td>
+                                            <td>
+                                                {{da.Marca}}
+                                            </td>
+                                            <td>
+                                                {{da.Modelo}}
+                                            </td>
+                                            <td>
+                                                {{da.Serial}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-12" bind-html-compile="VActa.Descripcion"
+                                style="font-family: Candara !important;font-size: 15px !important; margin-bottom: 30pt">
+                            </div>
+                            <div class="col-sm-12" bind-html-compile="VActa.Motivo"
+                                style="font-family: Candara !important;font-size: 15px !important; margin-bottom: 30pt">
+                            </div>
+                            <div class="col-sm-12" bind-html-compile="VActa.Nota"
+                                style="font-family: Candara !important;font-size: 15px !important; margin-bottom: 20pt">
+                            </div>
+                            <div class="col-sm-12" id="Footer" style="font-family: Candara !important;">
+                                <div class="row">
+                                    <div
+                                        ng-class="{'col-sm-4': VActa.TipoActa == 'Baja','col-sm-6': VActa.TipoActa != 'Baja'}">
+                                        <hr />
+                                        <h4>
+                                            <strong>{{VActa.Responsable}}</strong>
+                                            <br />
+                                            <strong>{{VActa.ResponsableCargo}}</strong>
+                                        </h4>
+                                    </div>
+                                    <div class="col-sm-4" ng-show="VActa.TipoActa == 'Baja'">
+                                        <hr />
+                                        <h4>
+                                            <strong>CARLOS MENA</strong>
+                                            <br />
+                                            <strong>CONTROL INTERNO</strong>
+                                        </h4>
+                                    </div>
+                                    <div
+                                        ng-class="{'col-sm-4': VActa.TipoActa == 'Baja','col-sm-6': VActa.TipoActa != 'Baja'}">
+                                        <hr />
+                                        <h4>
+                                            <strong>{{VActa.Recibe}}</strong>
+                                            <br />
+                                            <strong>{{VActa.RecibeCargo}}</strong>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

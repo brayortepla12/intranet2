@@ -1,0 +1,58 @@
+<div class="h-100" style="background: rgba(0,0,0,0.6); position: absolute; left: 0; right: 0; top:0;z-index: 3000;" ng-controller="RegUserCtrl">
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading default-primary-color">
+                        <h2 class="text-primary-color">VINCULAR USUARIO</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row" style="margin-bottom: 25px;">
+                            <div class="col-sm-12">
+                                <p>
+                                    NOS ENCONTRAMOS VINCULANDO LOS USUARIOS DE APLICACIONES BIOMEDICOS Y POLIVALENTE <br>
+                                    POR FAVOR DEBES INGRESAR TU NUMERO DE DOCUMENTO PARA PODER REALIZAR LA VINCULACIÓN DE ESTE USUARIO A TU BIOMETRIC<br>
+                                    PASOS:<br>
+                                    1- <strong>INGRESA TU NUMERO DE DOCUMENTO</strong><br>
+                                    2- HAZ CLIC EN <strong>VERIFICAR DOCUMENTO</strong><br>
+                                    3- POR ULTIMO HAZ CLIC EN <strong>VINCULAR USUARIO</strong><br>
+                                </p>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <input type="text" name="Documento" placeholder="Ingresa tu n° de documento" ng-model="Documento" only-digits-normal class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-success" ng-click="VerificarDocumento()">Verificar Documento</button>
+                                        <button class="btn btn-primary" ng-if="Persona" ng-click="VincularUsuario()">Vincular Usuario</button>
+                                    </div>
+                                        
+                                </div>
+                                <div class="row" ng-if="Persona">
+                                    <div class="col-sm-4">
+                                        <label style="font-weight: bold">PRIMER NOMBRE</label>
+                                        <p>{{Persona.PrimerNombre}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label style="font-weight: bold">SEGUNDO NOMBRE</label>
+                                        <p>{{Persona.SegundoNombre}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label style="font-weight: bold">PRIMER APELLIDO</label>
+                                        <p>{{Persona.PrimerApellido}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label style="font-weight: bold">SEGUNDO APELLIDO</label>
+                                        <p>{{Persona.SegundoApellido}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

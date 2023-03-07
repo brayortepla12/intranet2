@@ -1,0 +1,104 @@
+<style>
+    @media print{
+        @page {size: landscape}
+        body{
+            font-size: 1em;
+        }
+        th{
+            z-index: -1;
+        }
+        td{
+            padding: 3px !important;
+        }
+    }
+</style>
+<div class="row" ng-controller="InventarioCtrl">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="form-check">
+                            <label>
+                                Año
+                            </label>
+                            <input type="number" min="2017" max="2100" step="1" ng-model="Year" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <label class="col-sm-12">
+                    Seleccione los servicios que desea consultar
+                </label>
+                <div class="col-xs-4 col-lg-3" ng-repeat="s in Servicios| orderBy : 'Nombre' track by $index">
+                    <div class="form-group">
+                            <div class="col-xs-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" ng-click="AddServicios(s)" style="width: 15px;height: 15px;" type="checkbox">
+                                </div>
+                            </div>
+                            <label class="col-xs-8" style="transform: translate(-30%,0px);font-size: 1em">{{s.Nombre}}</label>
+                    </div>
+                </div>
+            </div>
+<!--            <div class="col-xs-6" style="text-align: right">
+                <select class="form-control" ng-model="ServicioId" name="Servicio" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                    <option>--</option>
+                    <option ng-repeat="s in Servicios| orderBy : 'Nombre' track by $index"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>-->
+            <div class="col-sm-12 text-center">
+                <button class="btn btn-primary" ng-click="BuscarEquipo()">Buscar <i class="fa fa-search "/></button>
+                <button ng-show="Equipoes" class="btn btn-default" ng-click="Imprimir()">Imprimir <i class="fa fa-print"/></button>
+            </div>
+        </div>
+    </div>
+    <div id="Equipo">
+        <div ng-repeat="cc in Equipoes.pack">
+            <div class="break-after" >
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cld.png" width="150" alt="">
+                    </div>
+                    <div class="col-xs-4 pull-left text-center">
+                        <p style="font-size: 0.7em !important">
+                            <strong style="font-size: 1.2em !important">CRONOGRAMA DE CALIBRACIONES Y CALIFICACIONES AÑO {{Year}} {{LabelServicios}}</strong><br><br>
+                            GI-MB-F18 ver.01 Pag. {{$index + 1}} de {{Equipoes.pack.length}}<br>
+                            Emision 02-01-2017 vigilancia:03-01-2017
+                        </p>
+                    </div>
+                </div>
+                <div class="row" style="transform: translate(0px,-10px)">
+                    <div class="col-md-10 col-md-offset-1 col-xs-12"  id="myElementId">
+                        <table id="TablaCalibracion" class="table1 table table-bordered">
+                            <tbody>
+                                <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                    <th>ITEM</th>
+                                    <th>EQUIPO</th>
+                                    <th>MARCA</th>
+                                    <th>MODELO</th>
+                                    <th>SERIE</th>
+                                    <th>SERVICIO</th>
+                                    <th>UBICACIÓN</th>
+                                    <th>RESPONSABLE</th>
+                                </tr>
+                                <tr ng-repeat="c in cc" style="font-size: 0.7em">
+                                    <td style="text-align: center">{{c.HojaVidaId}}</td>
+                                    <td>{{c.Equipo}}</td>
+                                    <td>{{c.Marca}}</td>
+                                    <td>{{c.Modelo}}</td>
+                                    <td>{{c.Serie}}</td>
+                                    <td>{{c.Servicio}}</td>
+                                    <td>{{c.Ubicacion}}</td>
+                                    <td>{{c.Responsable}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

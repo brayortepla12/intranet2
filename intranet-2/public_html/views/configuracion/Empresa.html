@@ -1,0 +1,104 @@
+<div class="row" ng-controller="EmpresaCtrl">
+    <div class="col-sm-12">
+        <div class="dashboard_graph panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">Datos de la empresa<small></small></h2>
+                
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <form role="form" name="Datos" novalidate id="configform">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Nombre">Nombre</label>
+                                <div ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                                    <input type="text" name="Nombre" ng-model="Empresa.Nombre" maxlength="299" class="form-control" capitalize required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Nit">Nit</label>
+                                <div ng-class="{'has-success': Datos.Nit.$valid, 'has-error': Datos.Nit.$invalid}">
+                                    <input type="text" name="Nit" ng-model="Empresa.Nit" maxlength="99" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Direccion">Dirección</label>
+                                <div ng-class="{'has-success': Datos.Direccion.$valid, 'has-error': Datos.Direccion.$invalid}">
+                                    <input type="text" name="Direccion" ng-model="Empresa.Direccion" maxlength="299" class="form-control" capitalize required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Telefono">Telefono</label>
+                                <div ng-class="{'has-success': Datos.Telefono.$valid, 'has-error': Datos.Telefono.$invalid}">
+                                    <input type="text" name="Telefono" ng-model="Empresa.Telefono" maxlength="199" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="SitioWeb">Sitio WEB</label>
+                                <div ng-class="{'has-success': Datos.SitioWeb.$valid, 'has-error': Datos.SitioWeb.$invalid}">
+                                    <input type="text" name="SitioWeb" ng-model="Empresa.SitioWeb" maxlength="599" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Correo">Correo</label>
+                                <div ng-class="{'has-success': Datos.Correo.$valid, 'has-error': Datos.Correo.$invalid}">
+                                    <input type="text" name="Correo" ng-model="Empresa.Correo" maxlength="199" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Contacto">Contacto</label>
+                                <div ng-class="{'has-success': Datos.Contacto.$valid, 'has-error': Datos.Contacto.$invalid}">
+                                    <input type="text" name="Contacto" ng-model="Empresa.Contacto" maxlength="199" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <h3>Datos para el envio del correo automatico</h3>
+                                <hr/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="SMTP">SMTP</label>
+                                <div ng-class="{'has-success': Datos.SMTP.$valid, 'has-error': Datos.SMTP.$invalid}">
+                                    <input type="text" name="SMTP" ng-model="Empresa.SMTP" maxlength="199" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="PuertoSmtp">Puerto SMTP</label>
+                                <div ng-class="{'has-success': Datos.PuertoSmtp.$valid, 'has-error': Datos.PuertoSmtp.$invalid}">
+                                    <input type="number" name="PuertoSmtp" min="1" max="65535" ng-model="Empresa.PuertoSmtp" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="CorreoSmtp">Correo para enviar</label>
+                                <div ng-class="{'has-success': Datos.CorreoSmtp.$valid, 'has-error': Datos.CorreoSmtp.$invalid}">
+                                    <input type="text" name="CorreoSmtp" ng-model="Empresa.CorreoSmtp" maxlength="199" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="PasswordSmtp">Contraseña del correo para enviar</label>
+                                <div ng-class="{'has-success': Datos.PasswordSmtp.$valid, 'has-error': Datos.PasswordSmtp.$invalid}">
+                                    <input type="text" name="SMTP" ng-model="Empresa.PasswordSmtp" maxlength="199" class="form-control" required>
+                                </div>
+                            </div>
+                            <!--                        <div class="col-md-6">
+                                                        <label for="FormatoCorreo">Formato Correo del correo para notificar</label>
+                                                        <text-angular name="FormatoCorreo" ng-model="Empresa.FormatoCorreo">
+                                                        </text-angular>
+                                                    </div>-->
+                            <div class="col-md-12">
+                                <label for="Archivo">Logo</label><br>
+                                <img width="500" src="{{image}}" style="height: 237px; max-height: 237px; width: 350px" alt="">
+                                <input type="file" my-upload accept="image/*" image="DataImg" resize-max-height="800" resize-max-width="800" 
+                                       resize-quality="0.7" resize-type="image/jpg" ng-image-compress  class="form-control caja_texto">
+                            </div>
+                            <div class="text-center col-xs-12" style="margin-top: 25px;">
+                                <button class="btn btn-success" ng-click="Actualizar()">Actualizar</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

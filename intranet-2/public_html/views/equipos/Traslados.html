@@ -1,0 +1,230 @@
+<div class="row" ng-controller="TrasladosCtrl" id="myElementId">
+
+    <div class="col-lg-10 col-lg-offset-1 col-sm-12">
+        <div class="row">
+            <form role="form" name="Datos" novalidate id="configform">
+                <div class="text-center col-sm-12" style="margin-top: 25px;">
+                    <button class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                    <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                </div>
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-4">
+                        <label for="SedeOriginal">Sede Original</label>
+                        <div ng-class="{'has-success': Datos.SedeOriginal.$valid, 'has-error': Datos.SedeOriginal.$invalid}">
+                            <select class="form-control" ng-model="reporte.SedeOriginal" name="SedeId"  ng-change="ChangeServiciosOriginal()"
+                                    style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                <option selected="">--</option>
+                                <option ng-repeat="s in Sedes track by $index" ng-selected="reporte.SedeOriginal == s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="SedeOriginal">Servicio Original</label>
+                        <div ng-class="{'has-success': Datos.ServicioOriginal.$valid, 'has-error': Datos.ServicioOriginal.$invalid}">
+                            <select class="form-control" ng-model="reporte.ServicioOriginal" name="SedeId"  ng-change="ChangeEquiposOriginal()"
+                                    style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                <option selected="">--</option>
+                                <option ng-repeat="s in Servicios track by $index" ng-selected="reporte.ServicioOriginal == s.ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">INFORMACION DEL EQUIPO</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        EQUIPO
+                                    </td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': reporte.EquipoId, 'has-error': reporte.EquipoId == '--'}">
+                                            <select class="form-control" ng-model="sol" name="EquipoId" ng-change="ChangeEquipo(sol)" required>
+                                                <option>--</option>
+                                                <option ng-repeat="e in Equipos track by $index"  ng-value='{{$index}}' value='{{$index}}'>{{e.Serie}} - {{e.Equipo}}</option>
+                                            </select>
+                                            <!--                                            <div angucomplete-alt id="ex2"
+                                                                                             placeholder=""
+                                                                                             pause="100"
+                                                                                             selected-object="reporte.EquipoId"
+                                                                                             local-data="Equipos"
+                                                                                             search-fields="Equipo"
+                                                                                             title-field="Equipo"
+                                                                                             minlength="1"
+                                                                                             input-class="form-control form-control-small"
+                                                                                             match-class="highlight"></div>-->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        MARCA
+                                    </td>
+                                    <td colspan="3">
+                                        <input type="text" ng-model="reporte.Marca" readonly class="form-control caja_texto">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">INFORMACION GENERAL DE DESTINO</th>
+                                </tr>
+                                <tr>
+                                    <td>SEDE DESTINO</td>
+                                    <td colspan="4">
+                                        <select class="form-control" ng-model="reporte.SedeId" name="SedeId"  ng-change="ChangeServicios()"
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;"
+                                                ng-class="{ 'has-error': Datos.reporte.SedeId.$invalid && !Datos.reporte.SedeId.$pristine }">
+                                            <option selected="">--</option>
+                                            <option ng-repeat="s in Sedes track by $index" ng-selected="reporte.SedeId == s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                        </select>
+                                    </td>
+
+                                    <td>FECHA</td>
+                                    <td>
+                                        <input type="date" ng-model="reporte.Fecha" class="form-control" style="height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SERVICO DESTINO</td>
+                                    <td colspan="4">
+                                        <div ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid || reporte.ServicioId == '--'}">
+                                            <select class="form-control" ng-model="reporte.ServicioId" name="ServicioId" required
+                                                    style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                                <option selected="">--</option>
+                                                <option ng-repeat="s in Servicios2 track by $index"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>SOLICITANTE</td>
+                                    <td>
+                                        <div ng-class="{'has-success': Datos.Solicitante.$valid, 'has-error': Datos.Solicitante.$invalid}">
+                                            <input type="text" ng-model="reporte.Solicitante" name="Solicitante" class="form-control caja_texto" capitalize required
+                                                   >
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>UBICACION</td>
+                                    <td colspan="4">
+                                        <div ng-class="{'has-success': Datos.Ubicacion.$valid, 'has-error': Datos.Ubicacion.$invalid}">
+                                            <input type="text" name="Ubicacion" ng-model="reporte.Ubicacion" class="form-control caja_texto" capitalize required
+                                                   >
+                                        </div>
+                                    </td>
+                                    <td>RESPONSABLE</td>
+                                    <td>
+                                        <div ng-class="{'has-success': Datos.Responsable.$valid, 'has-error': Datos.Responsable.$invalid}">
+                                            <input type="text" name="Responsable" ng-model="reporte.Responsable" class="form-control caja_texto" capitalize required
+                                                   >
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">TIPO DE SERVICIO</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" style="padding: 0 !important;width: 180px">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">TRASLADO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-checked="reporte.TipoServicio == 'TRASLADO'" disabled
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        MODELO
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="reporte.Modelo" readonly class="form-control caja_texto">
+                                    </td>
+                                    <td>
+                                        SERIE
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="reporte.Serie" readonly class="form-control caja_texto">
+                                    </td>
+                                    <td>
+                                        N° INVENTARIO
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="reporte.Inventario" readonly class="form-control caja_texto">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="4" class="text-center cajaTitulo">TECNICO/INGENIERO RESPONSABLE</th>
+                                    <th scope="row" colspan="3" class="text-center cajaTitulo">RECIBE A SATISFACCIÓN</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        NOMBRE
+                                    </td>
+                                    <td colspan="2">
+                                        {{reporte.ResponsableNombre}}
+                                    </td>
+                                    <td>
+                                        FECHA
+                                    </td>
+                                    <td>
+                                        <input type="date" ng-model="reporte.RecibeFecha" style="height: 30px" 
+                                               ng-class="{ 'has-error': Datos.reporte.RecibeFecha.$invalid && !Datos.reporte.RecibeFecha.$pristine }" 
+                                               class="form-control">
+                                    </td>
+                                    <td>
+                                        HORA
+                                    </td>
+                                    <td>
+                                        <input type="time" ng-model="reporte.RecibeHora"
+                                               ng-class="{ 'has-error': Datos.reporte.RecibeHora.$invalid && !Datos.reporte.RecibeHora.$pristine }" 
+                                               style="height: 30px" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        CARGO
+                                    </td>
+                                    <td colspan="2">
+                                        {{reporte.ResponsableCargo}}
+                                    </td>
+                                    <td>
+                                        NOMBRE
+                                    </td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': r, 'has-error': r == '--'}">
+                                            <select class="form-control" ng-model="r" name="Recibe" ng-change="Recibe(r)" required ng-init="r = '--'"
+                                                    style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                                <option>--</option>
+                                                <option ng-repeat="u in Usuarios track by $index" ng-value='{{$index}}' value='{{$index}}'> {{u.NombreCompleto}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        FIRMA
+                                    </td>
+                                    <td colspan="2">
+                                        <img height="50" ng-src="{{reporte.ResponsableFirma}}" alt="">
+                                    </td>
+                                    <td>
+                                        CARGO
+                                    </td>
+                                    <td colspan="3">
+                                        {{reporte.RecibeCargo}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center col-sm-12" style="margin-top: 25px;">
+                    <button class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                    <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                </div>
+            </form>
+        </div>
+        <br>
+    </div>
+</div>

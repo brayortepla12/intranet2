@@ -1,0 +1,278 @@
+<div class="row" ng-controller="SolicitudCtrl">
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading default-primary-color">
+        <h2 class="text-primary-color">Modulo de Solicitudes</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <video src="/intranet-2/public_html/views/Solicitud/sol.mp4" controls></video>
+          </div>
+          <div class="col-sm-4">
+            <h5>EN ESTE VIDEO PODRAS VER UNA INDUCCIÓN PARA ESTE MODULO</h5>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 25px;">
+          <div class="col-sm-4 mb-5">
+            <a class="cajaBoton" data-toggle="modal" data-target="#ModalCrearSolicitud"
+              ng-if="PREFIJO !== 'medicamentos'">
+              <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"
+                style="transform: translate(0px, 25px);" title="" data-original-title="Crear Solicitud">
+                Nueva Solicitud
+              </button>
+            </a>
+          </div>
+          <div class="col-sm-12" ng-if="cargado && PREFIJO !== 'medicamentos'">
+            <table id="Solicitudes" ui-jq="dataTable" ui-options="simpleTableOptions"
+              class="table table-hover table-condensed table-striped table-bordered">
+              <thead class="bordered-blueberry">
+                <tr>
+                  <th class="text-center" style="width: 3%">ID</th>
+                  <th class="text-center" style="width: 7%">Sede</th>
+                  <th class="text-center" style="width: 8%">Servicio</th>
+                  <th class="text-center" style="width: 15%">Descripcion</th>
+                  <th class="text-center" style="width: 5%">Fecha Solicitud</th>
+                  <th class="text-center" style="width: 5%">Estado</th>
+                  <th class="text-center" style="width: 10%">Opciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="ModalCrearSolicitud" tabindex="-1" role="dialog"
+    aria-labelledby="ModalCrearSolicitudLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalCrearSolicitudLabel">Crear una solicitud</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form role="form" name="Datos" novalidate id="configform">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <table class="table table-bordered">
+                      <tr>
+                        <th class="caja-th">FECHA</th>
+                        <td>
+                          {{solicitud.Fecha}}
+                        </td>
+                        <th class="caja-th">SEDE</th>
+                        <td>
+                          <select class="form-control" ng-model="solicitud.SedeId" name="SedeId"
+                            ng-change="ChangeSede()"
+                            ng-class="{ 'has-error': Datos.solicitud.SedeId.$invalid && !Datos.solicitud.SedeId.$pristine }">
+                            <option selected="">--</option>
+                            <option ng-repeat="s in Sedes| orderBy : 'Nombre' track by $index"
+                              ng-selected="solicitud.SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'>
+                              {{s.Nombre}}</option>
+                          </select>
+                        </td>
+                        <th class="caja-th">SERVICIO</th>
+                        <td colspan="5">
+                          <select class="form-control" ng-model="solicitud.ServicioId" name="ServicioId" required>
+                            <option selected="">--</option>
+                            <option ng-repeat="s in Servicios| orderBy : 'Nombre' track by $index"
+                              ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr ng-if="PREFIJO === 'farmacia'">
+                        <th class="caja-th">ARCHIVO</th>
+                        <td colspan="5">
+                          <input name="Archivo" type="file" my-upload>
+                        </td>
+                        {{ solicitud.Archivo }}
+                      </tr>
+                      <tr>
+                        <th class="caja-th" colspan="7">DESCRIPCIÓN DE LA SOLICITUD</th>
+                      </tr>
+                      <tr>
+                        <td colspan="10">
+                          <textarea name="Descripcion" ng-model="solicitud.Descripcion" class="form-control" required
+                            rows="7" ng-maxlength="300" maxlength="300"></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="caja-th">SOLICITANTE</th>
+                        <td colspan="9">
+                          <input type="text" name="Solicitante" ng-model="solicitud.NombreUsuarioSolicita"
+                            class="form-control" readonly capitalize>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="caja-th">CARGO</th>
+                        <td colspan="9">
+                          <input type="text" name="Cargo" ng-model="solicitud.CargoUsuarioSolicita" class="form-control"
+                            readonly capitalize>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" ng-click="Guardar()">
+            <span ng-hide="IsSaving">Guardar</span>
+            <i class="fa fa-spinner fa-spin" ng-show="IsSaving"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="ModalViewSolicitud" tabindex="-1" role="dialog" aria-labelledby="ModalViewSolicitudLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalViewSolicitudLabel">Solicitud {{Solicitud.SolicitudId}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-sm-12 mb-3">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <img src="/intranet-2/public_html/image/cield.png" width="200" alt="logo-cield-hd">
+                    </div>
+                    <div class="col-sm-10 text-center">
+                      <h4>SOLICITUD PARA MANTENIMIENTO CORRECTIVO</h4>
+                      <p>
+                        GP-F-17 Ver.1 Pagina 1 de 1<br>
+                        Emisión:16-05-2020 Vigencia: 18-05-2020
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <table class="table table-bordered">
+                    <tr>
+                      <th class="caja-th">SEDE</th>
+                      <td>
+                        {{Solicitud.Sede}}
+                      </td>
+                      <th class="caja-th">FECHA</th>
+                      <td>
+                        {{Solicitud.FechaSolicitud}}
+                      </td>
+                      <th class="caja-th">SERVICIO</th>
+                      <td colspan="5">
+                        {{Solicitud.Servicio}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="caja-th">EQUIPO</th>
+                      <td>
+                        {{Solicitud.Equipo}}
+                      </td>
+                      <th class="caja-th">UBICACIÓN</th>
+                      <td>
+                        {{Solicitud.Ubicacion}}
+                      </td>
+                      <th class="caja-th">MARCA</th>
+                      <td>
+                        {{Solicitud.Marca}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="caja-th">SERIE</th>
+                      <td>
+                        {{Solicitud.Serie}}
+                      </td>
+                      <th class="caja-th">INVENTARIO</th>
+                      <td colspan="3">
+                        {{Solicitud.Inventario}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="caja-th" colspan="7">DESCRIPCIÓN DE LA SOLICITUD</th>
+                    </tr>
+                    <tr>
+                      <td colspan="10">
+                        {{Solicitud.Descripcion}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="caja-th">SOLICITANTE</th>
+                      <td colspan="9">
+                        {{Solicitud.NombreUsuarioSolicita}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="caja-th">CARGO</th>
+                      <td colspan="9">
+                        {{Solicitud.CargoUsuarioSolicita}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 mt-3 text-center">
+              <div class="row justify-content-center">
+                <div class="col-sm-3">
+                  <h5>ELEBORACIÓN</h5>
+                  MIASEL CRESPO OROZCO<br>
+                  SUBGERENTE DE APOYO
+                </div>
+                <div class="col-sm-3">
+                  <h5>REVISIÓN ESTRUCTURAL</h5>
+                  KEYLA PINEDA VALERA<br>
+                  COORD. DE ASEG. DE LA CALIDAD
+                </div>
+                <div class="col-sm-3">
+                  <h5>APROBACIÓN</h5>
+                  MARIA MORILLO DAZA<br>
+                  GERENTE
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 mt-5" ng-if="cargarEvento">
+              <h4>Listado eventos de la solicitud</h4>
+              <table id="Eventos" ui-jq="dataTable" ui-options="EventoData"
+                class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                  <tr>
+                    <th class="text-center" style="width: 2%">ID</th>
+                    <th class="text-center" style="width: 4%">Fecha Evento</th>
+                    <th class="text-center" style="width: 10%">Nombre Breve Evento</th>
+                    <th class="text-center" style="width: 8%">Responsable</th>
+                    <th class="text-center" style="width: 8%">Tecnico Responsable</th>
+                    <th class="text-center" style="width: 8%">Descripción</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="clear: both"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" ng-show="Solicitud.Estado == 'Borrador'" class="btn btn-primary"
+            ng-click="VerReporte()">Ver Reporte</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

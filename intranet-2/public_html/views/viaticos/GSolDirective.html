@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-md-4">
+        TIPO SOLICITUD
+      </div>
+      <div class="col-md-4">
+        <div ng-class="{'has-success': Datos.TipoSolicitud.$valid, 'has-error': Datos.TipoSolicitud.$invalid}">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" name="TipoSolicitud" 
+              ng-checked="Sol.TipoSolicitud === 'PASAJE'" ng-click="Sol.TipoSolicitud = 'PASAJE'" 
+              style="width: 20px;height: 20px;" checked>
+              PASAJE
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div ng-class="{'has-success': Datos.TipoSolicitud.$valid, 'has-error': Datos.TipoSolicitud.$invalid}">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" name="TipoSolicitud" 
+              ng-checked="Sol.TipoSolicitud === 'GASTOS DE REPRESENTACIÓN'" ng-click="Sol.TipoSolicitud = 'GASTOS DE REPRESENTACIÓN'" 
+              style="width: 20px;height: 20px;" checked>
+              GASTOS DE REPRESENTACIÓN
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 mt-2">
+    <viatico-sol-data></viatico-sol-data>
+  </div>
+  <div class="col-sm-12 mt-2">
+    <concepto-sol-data></concepto-sol-data>
+  </div>
+  <div class="col-sm-12 mt-2">
+    <div ng-class="{'has-success': Datos.Observacion.$valid, 'has-error': Datos.Observacion.$invalid}">
+      <label for="Observacion">Observacion</label>
+      <textarea class="form-control" name="Observacion" ng-model="Sol.Observacion" maxlength="500" required></textarea>
+    </div>
+  </div>
+</div>
+<div ng-transclude></div>

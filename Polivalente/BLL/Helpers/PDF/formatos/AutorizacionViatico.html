@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTORIZACIÓN N° {{ SolicitudId }}</title>
+  <style>
+    .col-sm-1,
+    .col-sm-2,
+    .col-sm-3,
+    .col-sm-4,
+    .col-sm-5,
+    .col-sm-6,
+    .col-sm-7,
+    .col-sm-8,
+    .col-sm-9,
+    .col-sm-10,
+    .col-sm-11,
+    .col-sm-12 {
+      float: left;
+    }
+
+    .col-sm-12 {
+      width: 100%;
+    }
+
+    .col-sm-11 {
+      width: 91.66666667%;
+    }
+
+    .col-sm-10 {
+      width: 83.33333333%;
+    }
+
+    .col-sm-9 {
+      width: 75%;
+    }
+
+    .col-sm-8 {
+      width: 66.66666667%;
+    }
+
+    .col-sm-7 {
+      width: 58.33333333%;
+    }
+
+    .col-sm-6 {
+      width: 50%;
+    }
+
+    .col-sm-5 {
+      width: 41.66666667%;
+    }
+
+    .col-sm-4 {
+      width: 33.33333333%;
+    }
+
+    .col-sm-3 {
+      width: 25%;
+    }
+
+    .col-sm-2 {
+      width: 16.66666667%;
+    }
+
+    .col-sm-1 {
+      width: 8.33333333%;
+    }
+
+    .col-sm-pull-12 {
+      right: 100%;
+    }
+
+    .col-sm-pull-11 {
+      right: 91.66666667%;
+    }
+
+    .col-sm-pull-10 {
+      right: 83.33333333%;
+    }
+
+    .col-sm-pull-9 {
+      right: 75%;
+    }
+
+    .col-sm-pull-8 {
+      right: 66.66666667%;
+    }
+
+    .col-sm-pull-7 {
+      right: 58.33333333%;
+    }
+
+    .col-sm-pull-6 {
+      right: 50%;
+    }
+
+    .col-sm-pull-5 {
+      right: 41.66666667%;
+    }
+
+    .col-sm-pull-4 {
+      right: 33.33333333%;
+    }
+
+    .col-sm-pull-3 {
+      right: 25%;
+    }
+
+    .col-sm-pull-2 {
+      right: 16.66666667%;
+    }
+
+    .col-sm-pull-1 {
+      right: 8.33333333%;
+    }
+
+    .col-sm-pull-0 {
+      right: auto;
+    }
+
+    .col-sm-push-12 {
+      left: 100%;
+    }
+
+    .col-sm-push-11 {
+      left: 91.66666667%;
+    }
+
+    .col-sm-push-10 {
+      left: 83.33333333%;
+    }
+
+    .col-sm-push-9 {
+      left: 75%;
+    }
+
+    .col-sm-push-8 {
+      left: 66.66666667%;
+    }
+
+    .col-sm-push-7 {
+      left: 58.33333333%;
+    }
+
+    .col-sm-push-6 {
+      left: 50%;
+    }
+
+    .col-sm-push-5 {
+      left: 41.66666667%;
+    }
+
+    .col-sm-push-4 {
+      left: 33.33333333%;
+    }
+
+    .col-sm-push-3 {
+      left: 25%;
+    }
+
+    .col-sm-push-2 {
+      left: 16.66666667%;
+    }
+
+    .col-sm-push-1 {
+      left: 8.33333333%;
+    }
+
+    .col-sm-push-0 {
+      left: auto;
+    }
+
+    .col-sm-offset-12 {
+      margin-left: 100%;
+    }
+
+    .col-sm-offset-11 {
+      margin-left: 91.66666667%;
+    }
+
+    .col-sm-offset-10 {
+      margin-left: 83.33333333%;
+    }
+
+    .col-sm-offset-9 {
+      margin-left: 75%;
+    }
+
+    .col-sm-offset-8 {
+      margin-left: 66.66666667%;
+    }
+
+    .col-sm-offset-7 {
+      margin-left: 58.33333333%;
+    }
+
+    .col-sm-offset-6 {
+      margin-left: 50%;
+    }
+
+    .col-sm-offset-5 {
+      margin-left: 41.66666667%;
+    }
+
+    .col-sm-offset-4 {
+      margin-left: 33.33333333%;
+    }
+
+    .col-sm-offset-3 {
+      margin-left: 25%;
+    }
+
+    .col-sm-offset-2 {
+      margin-left: 16.66666667%;
+    }
+
+    .col-sm-offset-1 {
+      margin-left: 8.33333333%;
+    }
+
+    .col-sm-offset-0 {
+      margin-left: 0%;
+    }
+
+    .visible-xs {
+      display: none !important;
+    }
+
+    .hidden-xs {
+      display: block !important;
+    }
+
+    table.hidden-xs {
+      display: table;
+    }
+
+    tr.hidden-xs {
+      display: table-row !important;
+    }
+
+    th.hidden-xs,
+    td.hidden-xs {
+      display: table-cell !important;
+    }
+
+    .hidden-xs.hidden-print {
+      display: none !important;
+    }
+
+    .hidden-sm {
+      display: none !important;
+    }
+
+    .visible-sm {
+      display: block !important;
+    }
+
+    table.visible-sm {
+      display: table;
+    }
+
+    tr.visible-sm {
+      display: table-row !important;
+    }
+
+    th.visible-sm,
+    td.visible-sm {
+      display: table-cell !important;
+    }
+
+    *,
+    *:before,
+    enter code here *:after {
+      color: #000 !important;
+      text-shadow: none !important;
+      background: transparent !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+      text-decoration: underline;
+    }
+
+    a[href]:after {
+      content: " ("attr(href) ")";
+    }
+
+    abbr[title]:after {
+      content: " ("attr(title) ")";
+    }
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+      content: "";
+    }
+
+    pre,
+    blockquote {
+      border: 1px solid #999;
+
+      page-break-inside: avoid;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tr,
+    img {
+      page-break-inside: avoid;
+    }
+
+    p,
+    h2,
+    h3 {
+      orphans: 3;
+      widows: 3;
+    }
+
+    h2,
+    h3 {
+      page-break-after: avoid;
+    }
+
+    select {
+      background: #fff !important;
+    }
+
+    .navbar {
+      display: none;
+    }
+
+    .btn>.caret,
+    .dropup>.btn>.caret {
+      border-top-color: #000 !important;
+    }
+
+    .label {
+      border: 6px solid #000;
+    }
+
+    .tabla1>tbody>tr>td,
+    .tabla1>tbody>tr>th,
+    .tabla1>tfoot>tr>td,
+    .tabla1>tfoot>tr>th,
+    .tabla1>thead>tr>td,
+    .tabla1>thead>tr>th {
+      padding: 3px !important;
+    }
+
+    body {
+      font-size: 0.9em;
+      font-family: Candara !important;
+      -webkit-print-color-adjust: exact !important;
+      z-index: 1;
+    }
+
+    .table-bordered th,
+    .table-bordered td {
+      border: 1px solid black !important;
+
+    }
+
+    .table {
+      border-collapse: collapse;
+    }
+
+    #logo-cield,
+    #logo-prado {
+      width: 240px !important;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    td,
+    th {
+      font-size: 0.9em;
+    }
+
+    td {
+      text-align: justify;
+    }
+
+    @Page {
+      size: 8.5in 11in;
+      margin: 20pt 20pt 20pt 20pt !important;
+    }
+
+    .table {
+      margin: auto;
+      width: 100% !important;
+    }
+
+    .celda-title {
+      width: 200px;
+      background: rgba(0, 0, 0, 0.4) !important;
+    }
+    .titulo-th {
+      background: #00B0F0 !important;
+    }
+
+    .celda-title-left {
+      background: rgba(0, 0, 0, 0.4) !important;
+      text-align: left;
+    }
+
+    p {
+      text-align: justify;
+    }
+
+    .texto-pie-pagina {
+      font-size: 0.8em;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="col-sm-12" id="H1" style="{{ borrador }}">
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="http://190.131.221.26:8080/intranet-2/public_html/image/cield.png" id="logo-cield"
+          alt="logo-cield-hd">
+      </div>
+      <div class="col-sm-6">
+        <p class="text-center">
+          <strong>AUTORIZACIÓN DE VIATICOS</strong><br>
+          {{ Codificacion }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="titulo-th">No CONSECUTIVO</th>
+              <td colspan="2">
+                {{ Consecutivo }}
+              </td>
+              <th class="titulo-th">FECHA</th>
+              <td>
+                {{ Fecha }}
+              </td>
+              <th class="titulo-th">SEDE</th>
+              <td>
+                {{ Sede }}
+              </td>
+            </tr>
+            <tr>
+              <th class="titulo-th">TIPO SOLICITUD</th>
+              <td colspan="3">
+                <table style="width: 100%; border: none !important; border-collapse: collapse;">
+                  <tr>
+                    <td style="width: 80%; border: none !important;">PASAJE</td>
+                    <td style="width: 20%; border: none !important;"><img src="{{ Pasaje }}" width="20" alt=""></td>
+                  </tr>
+                </table>
+              </td>
+              <td colspan="3">
+                <table style="width: 100%; border: none !important; border-collapse: collapse;">
+                  <tr>
+                    <td style="width: 80%; border: none !important;">GASTOS DE REPRESENTACIÓN</td>
+                    <td style="width: 20%; border: none !important;"><img src="{{ Gastos }}" width="20" alt=""></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th class="titulo-th">A NOMBRE DE</th>
+              <td colspan="2">{{ ANombreDe }}</td>
+              <th class="titulo-th">CEDULA</th>
+              <td>{{ Cedula }}</td>
+              <th class="titulo-th">CARGO</th>
+              <td>{{ Cargo }}</td>
+            </tr>
+            <tr>
+              <th class="titulo-th" colspan="7">DESCRIPCIÓN DE LA SOLICITUD</th>
+            </tr>
+            <tr>
+              <td colspan="7" style="height: 60pt;vertical-align: top;">
+                {{ DescripcionSolicitud }}
+              </td>
+            </tr>
+            <tr>
+              <th class="titulo-th">ORIGEN</th>
+              <td colspan="6">{{ Origen }}</td>
+            </tr>
+            <tr>
+              <th class="titulo-th">DESTINO</th>
+              <td colspan="6">{{ Destino }}</td>
+            </tr>
+            <tr>
+              <th class="titulo-th" colspan="7">CONCEPTOS</th>
+            </tr>
+            <tr>
+              <th class="titulo-th" colspan="4">CONCEPTO</th>
+              <th class="titulo-th">DIAS</th>
+              <th class="titulo-th">LEGALIZA</th>
+              <th class="titulo-th">VALOR</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ Conceptos }}
+            <tr>
+              <td colspan="6">TOTAL</td>
+              <td>{{ Total }}</td>
+            </tr>
+            <tr>
+              <th class="titulo-th" colspan="7">OBSERVACIONES</th>
+            </tr>
+            <tr>
+              <td colspan="7" style="height: 80pt;vertical-align: top;">
+                {{ Observaciones }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm-12" style="margin-top: 10pt;">
+        <p>
+          Yo {{ ANombreDe }} he recibido de la Clinica Integral de Emergencias Laura Daniela S.A la suma de $
+          {{ Total }} en calidad de préstamo para utilizar en {{ TipoSolicitud }} y autorizo a la institución deducir,
+          compensar, retener; según sea el caso, las sumas a mi cargo señaladas antes, del monto de mis salarios,
+          prestaciones sociales, liquidaciones, indemnizaciones o cualquier suma proveniente del contrato de trabajo,
+          durante la existencia de este o después de su terminación por cualquier causa, en el caso que no haga entrega
+          de los soportes descritos al pie de las observaciones.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" style="margin-top: 10pt;">
+        <div class="row">
+          <div class="col-sm-6">
+            <h3>RECIBE</h3>
+          </div>
+          <div class="col-sm-6">
+            <h3>VISTO BUENO</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12" style="margin-top: 10pt;">
+        <div class="row">
+          <div class="col-sm-6">
+            <img src="{{ ResFirma }}"
+              style="width: 200px; height: 70px; border-bottom: 2.2px solid black; height: 80px;" alt="firma">
+            <p>
+              <strong>FIRMA</strong>
+              <br>
+              <strong>NOMBRE: {{ ANombreDe }}</strong>
+              <br>
+              <strong>Cargo: {{ Cargo }}</strong>
+              <br>
+            </p>
+          </div>
+          <div class="col-sm-6">
+            <img src="{{ FirmaVB }}" 
+              style="width: 200px; height: 70px; border-bottom: 2.2px solid black; height: 80px;"
+              alt="firma">
+            <p>
+              <strong>FIRMA</strong>
+              <br>
+              <strong>NOMBRE: {{ NombreVB }}</strong>
+              <br>
+              <strong>Cargo: {{ CargoVB }}</strong>
+              <br>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

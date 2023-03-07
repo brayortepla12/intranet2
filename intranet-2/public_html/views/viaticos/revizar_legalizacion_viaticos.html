@@ -1,0 +1,35 @@
+<div class="row" ng-controller="RevisarLegalizacionCrtl">
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading default-primary-color">
+        <h2 class="text-primary-color">Legalizaciones de viaticos</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <div class="row" style="margin-bottom: 25px;">
+          <div class="col-sm-12" ng-if="LT">
+            <table ui-jq="dataTable" ui-options="LegalizacionDATA"
+              class="table table-hover table-condensed table-striped table-bordered">
+              <thead class="bordered-blueberry">
+                <tr>
+                  <th class="text-center" style="width: 3%">ID</th>
+                  <th class="text-center" style="width: 7%">Fecha</th>
+                  <th class="text-center" style="width: 10%">A nombre de</th>
+                  <th class="text-center" style="width: 10%">Total legalizable</th>
+                  <th class="text-center" style="width: 10%">Total legalizado</th>
+                  <th class="text-center" style="width: 5%">Devolucion</th>
+                  <th class="text-center" style="width: 7%">Recibo de caja</th>
+                  <th class="text-center" style="width: 7%">Nota contable</th>
+                  <th class="text-center" style="width: 5%">Estado</th>
+                  <th class="text-center" style="width: 7%">Es el turno de</th>
+                  <th class="text-center" style="width: 20%">Opciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

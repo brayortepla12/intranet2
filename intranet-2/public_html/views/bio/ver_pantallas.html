@@ -1,0 +1,18 @@
+<div class="row" ng-controller="DetectPantallasCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h2>Ver Pantallas conectadas<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-4 text-center" ng-repeat="p in Pantallas" ng-if="p.is_admin == false">
+                        <img src="/intranet-2/public_html/image/pantalla.png" width="150"/><br>
+                        {{p.UsuarioId}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

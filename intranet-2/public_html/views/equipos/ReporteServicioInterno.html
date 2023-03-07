@@ -1,0 +1,491 @@
+<div class="row" ng-controller="ReporteServicioInternoCtrl" id="myElementId">
+
+    <div class="col-lg-10 col-lg-offset-1 col-sm-12">
+        <div class="row">
+            <form role="form" name="Datos" novalidate id="configform">
+                <div class="text-center col-sm-12" style="margin-top: 25px;">
+                    <button class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                    <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                    </div>
+                    <div class="col-sm-4 text-center" bind-html-compile="Encabezado.EncabezadoReporte">
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <h5 style="margin-right: 1px"><strong>NUMERO DE REPORTE</strong></h5>
+                        <input style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px" readonly type="text" ng-model="NumeroReporte" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">INFORMACION GENERAL DE LA INSTALACION</th>
+                                </tr>
+                                <tr>
+                                    <td>SEDE</td>
+                                    <td colspan="4">
+                                        <input type="text" ng-model="reporte.Sede" name="Sede" class="form-control caja_texto" readonly
+                                               >
+                                    </td>
+
+                                    <td>FECHA</td>
+                                    <td>
+                                        <input type="date" ng-model="reporte.Fecha" class="form-control" style="height: 20px" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SERVICO</td>
+                                    <td colspan="4">
+                                        <input type="text" ng-model="reporte.Servicio" name="Servicio" class="form-control caja_texto" readonly>
+                                    </td>
+                                    <td>SOLICITANTE</td>
+                                    <td>
+                                        <input type="text" ng-model="reporte.Solicitante" name="Solicitante" class="form-control caja_texto" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>UBICACION</td>
+                                    <td colspan="4">
+                                        <input type="text" ng-model="reporte.Ubicacion" name="Ubicacion" class="form-control caja_texto" readonly>
+                                    </td>
+                                    <td>RESPONSABLE</td>
+                                    <td>
+                                        <div ng-class="{'has-success': Datos.Responsable.$valid, 'has-error': Datos.Responsable.$invalid}">
+                                            <input type="text" name="Responsable" ng-model="reporte.Responsable"  maxlength="199" class="form-control caja_texto" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">TIPO DE SERVICIO</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0 !important;width: 180px">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">PREVENTIVO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-checked="reporte.TipoServicio == 'PREVENTIVO'" disabled
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">CORRECTIVO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-checked="reporte.TipoServicio == 'CORRECTIVO'" disabled
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td colspan="2" style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">INSTALACION</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-checked="reporte.TipoServicio == 'INSTALACION'" disabled
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">GARANTIA</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-checked="reporte.TipoServicio == 'GARANTIA'" disabled
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td colspan="2" style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">LLAMADO DE EMERGENCIA</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-checked="reporte.TipoServicio == 'LLAMADO DE EMERGENCIA'" disabled
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">INFORMACION DEL EQUIPO</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        EQUIPO
+                                    </td>
+                                    <td colspan="3">
+                                        <input type="text" ng-model="reporte.Equipo" name="Equipo" class="form-control caja_texto" readonly>
+                                    </td>
+                                    <td>
+                                        MARCA
+                                    </td>
+                                    <td colspan="3">
+                                        <input type="text" ng-model="reporte.Marca" name="Marca" class="form-control caja_texto" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        MODELO
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="reporte.Modelo" name="Modelo" class="form-control caja_texto" readonly>
+                                    </td>
+                                    <td>
+                                        SERIE
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="reporte.Serie" name="Serie" class="form-control caja_texto" readonly>
+                                    </td>
+                                    <td>
+                                        N° INVENTARIO
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="reporte.Inventario" name="Inventario" class="form-control caja_texto" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">FALLA REPORTADA POR EL SERVICIO</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="9">
+                                        <div ng-class="{'has-success': Datos.FallaReportada.$valid, 'has-error': Datos.FallaReportada.$invalid}">
+                                            <textarea class="form-control" name="FallaReportada" rows="1" ng-model="reporte.FallaReportada" name="FallaReportada" maxlength="300" required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">FALLAS DETECTADAS</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0 !important;">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">MAL USO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddFallas('MAL USO'); Otro = false" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0 !important;">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">ACCESORIOS</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddFallas('ACCESORIOS'); Otro = false" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0 !important;width: 200px">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">DESGASTE</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddFallas('DESGASTE'); Otro = false" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0 !important;">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">SIN FALLA</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddFallas('SIN FALLA'); Otro = false"
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0 !important;">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">OTRO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddFallas('OTRO'); Otro = false"
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+<!--                                    <td colspan="3" style="padding: 0 !important;">
+                                        <input ng-hide="!Otro" type="text" ng-model="FallaDetectada" class="form-control"  ng-focus="AddFallas(FallaDetectada)" ng-blur="AddFallas(FallaDetectada)">
+                                    </td>-->
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">PROCEDIMIENTO REALIZADO</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="9">
+                                        <div ng-class="{'has-success': Datos.ProcedimientoRealizado.$valid, 'has-error': Datos.ProcedimientoRealizado.$invalid}">
+                                            <textarea name="ProcedimientoRealizado" class="form-control" rows="6"  maxlength="600" ng-model="reporte.ProcedimientoRealizado" name="ProcedimientoRealizado" required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">MEDIDAS APLICADAS</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="9" style="padding: 0 !important">
+                                        <div class="col-sm-2" style="border-right: 1px solid #ddd;">
+                                            <div class="form-group">
+                                                <label class="text-uppercase" style="font-size: 0.7em;transform: translate(0px,10px)">PR. FUNCIONAMIENTO</label>
+                                                <div class="form-check pull-left">
+                                                    <input class="form-check-input" ng-click="AddMedidas('PR. FUNCIONAMIENTO')" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2" style="border-right: 1px solid #ddd;">
+                                            <div class="form-group">
+                                                <label class="text-uppercase" style="font-size: 0.7em;transform: translate(0px,10px)">PR. SEGURIDAD</label>
+                                                <div class="form-check pull-left">
+                                                    <input class="form-check-input" ng-click="AddMedidas('PR. SEGURIDAD')" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2" style="border-right: 1px solid #ddd;">
+                                            <div class="form-group">
+                                                <label class="text-uppercase" style="font-size: 0.7em;transform: translate(0px,10px)">REPARACION</label>
+                                                <div class="form-check pull-left">
+                                                    <input class="form-check-input" ng-click="AddMedidas('REPARACION')" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2" style="border-right: 1px solid #ddd;">
+                                            <div class="form-group">
+                                                <label class="text-uppercase" style="font-size: 0.7em;transform: translate(0px,10px)">ASESORIO TECNICA</label>
+                                                <div class="form-check pull-left">
+                                                    <input class="form-check-input" ng-click="AddMedidas('ASESORIO TECNICA')" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2" style="border-right: 1px solid #ddd;">
+                                            <div class="form-group">
+                                                <label class="text-uppercase" style="font-size: 0.7em;transform: translate(0px,10px)">AJUSTES</label>
+                                                <div class="form-check pull-left">
+                                                    <input class="form-check-input" ng-click="AddMedidas('AJUSTES')" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label class="text-uppercase" style="font-size: 0.7em;transform: translate(0px,10px)">OTROS</label>
+                                                <div class="form-check pull-left">
+                                                    <input class="form-check-input" ng-click="AddMedidas('OTROS')" 
+                                                           style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">REPUESTOS, INSUMOS, MATERIALES Y/O CONSUMIBLES EMPLEADOS</th>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-center fondoCelda">CODIGO</th>
+                                    <th scope="row" colspan="3" class="text-center fondoCelda">DESCRIPCIÓN</th>
+                                    <th scope="row" class="text-center fondoCelda">CANTIDAD</th>
+                                    <th scope="row" colspan="2" class="text-center fondoCelda">VALOR</th>
+                                </tr>
+                                <tr ng-mouseover="Mouse = true" ng-mouseleave="Mouse = false"  ng-repeat="r in reporte.Repuestos track by $index" data-container="body" data-toggle="popover" 
+                                    data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+                                    <td ng-hide="r.EditMode">
+                                        {{r.Codigo}}
+                                    </td>
+                                    <td colspan="3" ng-hide="r.EditMode">
+                                        {{r.Descripcion}}
+                                    </td>
+                                    <td ng-hide="r.EditMode">
+                                        {{r.Cantidad}}
+                                    </td>
+                                    <td colspan="2" ng-hide="r.EditMode">
+                                        {{r.Valor| currency}}
+                                    </td>
+                                    <td ng-show="r.EditMode">
+                                        <input type="text" ng-model="EditRepuesto.Codigo" class="form-control caja_texto">
+                                    </td>
+                                    <td colspan="3" ng-show="r.EditMode">
+                                        <input type="text" ng-model="EditRepuesto.Descripcion" class="form-control caja_texto">
+                                    </td>
+                                    <td ng-show="r.EditMode">
+                                        <input type="number" min="1" ng-model="EditRepuesto.Cantidad" class="form-control caja_texto">
+                                    </td>
+                                    <td colspan="2" ng-show="r.EditMode">
+                                        <input type="number" ng-model="EditRepuesto.Valor" min="0" class="form-control caja_texto">
+                                    </td>
+                                    <td style="position:absolute; width:110px;"  ng-show="Mouse" >
+                                        <span ng-hide="r.EditMode"><button class="btn btn-primary" ng-click="Edit($index)"><i class="fa fa-pencil"></i> </button></span>
+                                        <span ng-hide="r.EditMode"><button class="btn btn-danger" ng-click="DeleteRepuesto($index)"><i class="fa fa-trash-o"></i> </button></span> 
+                                        <span ng-show="r.EditMode"><button class="btn btn-success" ng-click="EditarRepuesto($index)"><i class="fa fa-check"></i> </button></span>
+                                        <span ng-show="r.EditMode"><button class="btn btn-danger" ng-click="Cancelar($index)"><i class="fa fa-times"></i> </button></span>    
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" ng-model="repuesto.Codigo" class="form-control caja_texto">
+                                    </td>
+                                    <td colspan="3">
+                                        <input type="text" ng-model="repuesto.Descripcion" class="form-control caja_texto" ng-enter="AddRepuesto()" capitalize>
+                                    </td>
+                                    <td>
+                                        <input type="number" min="1" ng-model="repuesto.Cantidad" class="form-control caja_texto" ng-enter="AddRepuesto()">
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="number" min="0" step="any" ng-model="repuesto.Valor" class="form-control caja_texto" ng-enter="AddRepuesto()">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" style="text-align: right">
+                                        TOTAL
+                                    </td>
+                                    <td colspan="2">
+                                        {{reporte.TotalRepuesto| currency}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">OBSERVACIONES</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="9">
+                                        <textarea class="form-control" rows="3"  maxlength="800" ng-model="reporte.Observaciones"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="7" class="text-center cajaTitulo">ESTADO FINAL DEL EQUIPO</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">EQUIPO FUNCIONANDO CORRECTAMENTE</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddEstadoFinal('EQUIPO FUNCIONANDO CORRECTAMENTE')" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td  colspan="2"  style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">EQUIPO EN ESPERA DE REPUESTOS</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddEstadoFinal('EQUIPO EN ESPERA DE REPUESTOS')" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td  colspan="2"  style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">EQUIPO FUERA DE SERVICIO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddEstadoFinal('EQUIPO FUERA DE SERVICIO')" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">EQUIPO RETIRADO DEL SERVICIO</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddEstadoFinal('EQUIPO RETIRADO DEL SERVICIO')" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td  colspan="2"  style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">RECOMENDACION DE BAJA</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddEstadoFinal('RECOMENDACION DE BAJA')" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td  colspan="2"  style="padding: 0 !important">
+                                        <div class="form-group">
+                                            <label class="text-uppercase" style="transform: translate(0px,10px)">EQUIPO FUERA DE RANGOS</label>
+                                            <div class="form-check pull-left">
+                                                <input class="form-check-input" ng-click="AddEstadoFinal('EQUIPO FUERA DE RANGO')" 
+                                                       style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="4" class="text-center cajaTitulo">TECNICO/INGENIERO RESPONSABLE</th>
+                                    <th scope="row" colspan="3" class="text-center cajaTitulo">RECIBE A SATISFACCIÓN</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        NOMBRE
+                                    </td>
+                                    <td colspan="2">
+                                        {{reporte.ResponsableNombre}}
+                                    </td>
+                                    <td>
+                                        FECHA
+                                    </td>
+                                    <td>
+                                        <input type="date" ng-model="reporte.RecibeFecha" style="height: 30px" 
+                                               ng-class="{ 'has-error': Datos.reporte.RecibeFecha.$invalid && !Datos.reporte.RecibeFecha.$pristine }" 
+                                               class="form-control">
+                                    </td>
+                                    <td>
+                                        HORA
+                                    </td>
+                                    <td>
+                                        <input type="time" ng-model="reporte.RecibeHora"
+                                               ng-class="{ 'has-error': Datos.reporte.RecibeHora.$invalid && !Datos.reporte.RecibeHora.$pristine }" 
+                                               style="height: 30px" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        CARGO
+                                    </td>
+                                    <td colspan="2">
+                                        {{reporte.ResponsableCargo}}
+                                    </td>
+                                    <td>
+                                        NOMBRE
+                                    </td>
+                                    <td colspan="3">
+                                        <div ng-class="{'has-success': r, 'has-error': r == '--'}">
+                                            <select class="form-control" ng-model="r" name="Recibe" ng-change="Recibe(r)" required ng-init="r = '--'" disabled
+                                                    style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                                <option>--</option>
+                                                <option ng-repeat="u in Usuarios track by $index" ng-selected="reporte.Solicitante == u.NombreCompleto" ng-value='{{$index}}' value='{{$index}}'> {{u.NombreCompleto}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        FIRMA
+                                    </td>
+                                    <td colspan="2">
+                                        <img height="50" ng-src="{{reporte.ResponsableFirma}}" alt="">
+                                    </td>
+                                    <td>
+                                        CARGO
+                                    </td>
+                                    <td colspan="3">
+                                        {{reporte.RecibeCargo}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center col-sm-12" style="margin-top: 25px;">
+                    <button class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                    <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                </div>
+            </form>
+        </div>
+        <br>
+    </div>
+</div>

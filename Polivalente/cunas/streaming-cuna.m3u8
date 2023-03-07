@@ -1,0 +1,17 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:10
+#EXT-X-MEDIA-SEQUENCE:3
+#EXTINF:9.966667,
+streaming-cuna3.ts
+#EXTINF:10.000000,
+streaming-cuna4.ts
+#EXTINF:10.000000,
+streaming-cuna5.ts
+#EXTINF:10.000000,
+streaming-cuna6.ts
+#EXTINF:10.466667,
+streaming-cuna7.ts
+#EXTINF:6.566667,
+streaming-cuna8.ts
+#EXT-X-ENDLIST

@@ -1,0 +1,56 @@
+<div class="row bg-white" ng-controller="CPSOLCtrl">
+  <div class="col-sm-8 mx-auto">
+    <button class="btn btn-success" ng-click="EnviarSolicitud()">
+      <span ng-hide="IsLoading">Iniciar Proceso</span>
+      <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+    </button>
+  </div>
+  <div class="col-lg-8 col-md-8 col-sm-8 mx-auto mt-3">
+    <form role="form" name="Datos" novalidate>
+      <div class="form-group ng-scope row"
+        ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+        <label class="col-sm-4 control-label" for="Nombre">Sede</label>
+        <div class="col-sm-8">
+          <select class="form-control" ng-model="Proceso.SedeId" name="SedeId" ng-change="ChangeSede()">
+            <option value="">--</option>
+            <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === Proceso.SedeId"
+              ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group ng-scope row"
+        ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+        <label class="col-sm-4 control-label" for="Nombre">Servicio</label>
+        <div class="col-sm-8">
+          <select class="form-control" ng-model="Proceso.ServicioId" name="ServicioId">
+            <option value="">--</option>
+            <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId === Proceso.ServicioId"
+              ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group ng-scope row"
+        ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+        <label class="col-sm-4 control-label" for="Nombre">Nombre del proceso</label>
+        <div class="col-sm-8">
+          <input type="text" name="Nombre" class="form-control" ng-model="Proceso.Nombre" required>
+        </div>
+      </div>
+      <div class="form-group ng-scope row"
+        ng-class="{'has-success': Datos.ProtocoloId.$valid, 'has-error': Datos.ProtocoloId.$invalid}">
+        <label class="col-sm-4 control-label" for="ProtocoloId">Protocolo</label>
+        <div class="col-sm-8">
+          <select class="form-control" ng-model="Proceso.ProtocoloId" name="ProtocoloId" ng-change="ChangeProtocolo()"
+            required>
+            <option value="">--</option>
+            <option ng-repeat="p in Protocolos track by $index" ng-value='{{p.ProtocoloId}}' value='{{p.ProtocoloId}}'>
+              {{p.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-12" ng-if="CargarForm">
+        <div ng-model="input" fb-form="JSON"></div>
+      </div>
+    </form>
+  </div>
+</div>

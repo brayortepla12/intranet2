@@ -1,0 +1,310 @@
+<div id="tabla_listReportes" class="row" ng-controller="ListarAllReportesCtrl">
+  <div
+    style="position: absolute; left: 500;"
+    ng-show="Cargo == 'COORDINADOR MANT. POLIVALENTE' || Cargo == 'INGENIERO'"
+  >
+    <div class="menu">
+      <input
+        type="checkbox"
+        href="#"
+        class="menu-open"
+        name="menu-open"
+        id="menu-open"
+      />
+      <label class="menu-open-button" for="menu-open">
+        <span class="hamburger hamburger-1"></span>
+        <span class="hamburger hamburger-2"></span>
+        <span class="hamburger hamburger-3"></span>
+      </label>
+
+      <!--<a class="menu-item" style="cursor: pointer" ng-click="AutoFirmarTODO()"> <i class="fa fa-pencil-square-o"></i> </a>-->
+      <a
+        style="cursor: pointer;"
+        class="menu-item"
+        ng-click="ImprimirBySERVICIO()"
+      >
+        <i class="fa fa-file-pdf-o"></i>
+      </a>
+      <!--            <a href="#" class="menu-item"> <i class="fa fa-heart"></i> </a>
+                        <a href="#" class="menu-item"> <i class="fa fa-envelope"></i> </a>-->
+    </div>
+    <!-- filters -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      style="visibility: hidden;"
+    >
+      <defs>
+        <filter id="shadowed-goo">
+          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="goo"
+          />
+          <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+          <feColorMatrix
+            in="shadow"
+            mode="matrix"
+            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+            result="shadow"
+          />
+          <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+          <feComposite in2="shadow" in="goo" result="goo" />
+          <feComposite in2="goo" in="SourceGraphic" result="mix" />
+        </filter>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="goo"
+          />
+          <feComposite in2="goo" in="SourceGraphic" result="mix" />
+        </filter>
+      </defs>
+    </svg>
+  </div>
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2>Listado de reportes<small></small></h2>
+        <div class="ibox-tools" style="transform: translateX(-50px);">
+          <ul class="nav navbar-right" style="color: black;">
+            <li ng-hide="Mes == 'TODOS'">
+              <select
+                id="dia-select"
+                class="form-control"
+                ng-disabled="Mes == 'TODOS'"
+                ng-model="Dia"
+                ng-change="GetREPORTES()"
+                style="height: 35.59px !important;"
+              >
+                <option>TODOS</option>
+                <option
+                  ng-repeat="i in []| ranges : UltimoDiaMes"
+                  ng-value="'{{i}}'"
+                  value="{{i}}"
+                  >{{i}}</option
+                >
+              </select>
+            </li>
+            <li>
+              <select
+                class="form-control"
+                ng-model="Mes"
+                ng-change="GetREPORTES()"
+                style="height: 35.59px !important;"
+              >
+                <option>TODOS</option>
+                <option ng-selected="Mes == 1" ng-value="'1'" value="1">
+                  Enero</option
+                >
+                <option ng-selected="Mes == 2" ng-value="'2'" value="2">
+                  Febrero</option
+                >
+                <option ng-selected="Mes == 3" ng-value="'3'" value="3">
+                  Marzo</option
+                >
+                <option ng-selected="Mes == 4" ng-value="'4'" value="4">
+                  Abril</option
+                >
+                <option ng-selected="Mes == 5" ng-value="'5'" value="5">
+                  Mayo</option
+                >
+                <option ng-selected="Mes == 6" ng-value="'6'" value="6">
+                  Junio</option
+                >
+                <option ng-selected="Mes == 7" ng-value="'7'" value="7">
+                  Julio</option
+                >
+                <option ng-selected="Mes == 8" ng-value="'8'" value="8">
+                  Agosto</option
+                >
+                <option ng-selected="Mes == 9" ng-value="'9'" value="9">
+                  Septiembre</option
+                >
+                <option ng-selected="Mes == 10" ng-value="'10'" value="10">
+                  Octubre</option
+                >
+                <option ng-selected="Mes == 11" ng-value="'11'" value="11">
+                  Noviembre</option
+                >
+                <option ng-selected="Mes == 12" ng-value="'12'" value="12">
+                  Diciembre</option
+                >
+              </select>
+            </li>
+            <li>
+              <input
+                type="text"
+                ng-model="Year"
+                ng-enter="GetREPORTES()"
+                class="form-control"
+                onfocus="(this.type = 'number')"
+                onblur="(this.type = 'text')"
+              />
+            </li>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-12" style="margin-bottom: 50px;"></div>
+          <div class="col-sm-12" ng-if="cargado">
+            <table
+              id="Historias"
+              ui-jq="dataTable"
+              ui-options="simpleTableOptions"
+              class="table table-hover table-condensed table-striped table-bordered"
+            >
+              <thead class="bordered-blueberry">
+                <tr>
+                  <th class="text-center" style="width: 4%;">ID</th>
+                  <th class="text-center" style="width: 2%;">Sede</th>
+                  <th class="text-center" style="width: 5%;">Servicio</th>
+                  <th class="text-center" style="width: 5%;">Ubicación</th>
+                  <th class="text-center" style="width: 4%;">TipoServicio</th>
+                  <th class="text-center" style="width: 5%;">Solicitante</th>
+                  <th class="text-center" style="width: 8%;">Equipo</th>
+                  <th class="text-center" style="width: 5%;">Total Repuesto</th>
+                  <th class="text-center" style="width: 5%;">Creado Por</th>
+                  <th class="text-center" style="width: 5%;">
+                    Fecha de Creación
+                  </th>
+                  <th class="text-center" style="width: 5%;">Estado</th>
+                  <th class="text-center" style="width: 5%;">Opciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="ServicioModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="col-sm-11">
+            <h2 class="modal-title">Consultar Listado de reportes</h2>
+          </div>
+          <div class="col-sm-1">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-body">
+          <form role="form" name="c" novalidate>
+            <div class="col-sm-12">
+              <label>
+                Sede
+              </label>
+              <select
+                class="form-control"
+                ng-model="SedeId"
+                name="SedeId"
+                required
+                ng-change="ChangeSede()"
+              >
+                <option
+                  ng-repeat="s in Sedes track by $index"
+                  ng-selected="SedeId === s.SedeId"
+                  ng-value="{{s.SedeId}}"
+                  value="{{s.SedeId}}"
+                >
+                  {{s.Nombre}}</option
+                >
+              </select>
+            </div>
+            <div class="col-sm-12">
+              <label>
+                Servicio
+              </label>
+              <select
+                class="form-control"
+                ng-model="ServicioId"
+                name="ServicioId"
+                required
+              >
+                <option value="0">Todos los Servicios</option>
+                <option
+                  ng-repeat="s in Servicios2 track by $index"
+                  ng-selected="ServicioId === s.ServicioId"
+                  ng-value="{{s.ServicioId}}"
+                  value="{{s.ServicioId}}"
+                >
+                  {{s.Nombre}}</option
+                >
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <label>
+                Año
+              </label>
+              <input
+                type="number"
+                ng-model="Year"
+                min="2017"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="col-sm-8">
+              <label>
+                Mes
+              </label>
+              <select class="form-control" ng-model="Mes" name="Mes" required>
+                <option value="0">Ultimos reportes de este servicio</option>
+                <option value="1">Enero</option
+                >}
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Obtubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+              </select>
+            </div>
+          </form>
+          <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+          <div class="text-center col-sm-12" style="margin-top: 25px;">
+            <a
+              class="btn btn-success"
+              ng-href="/Polivalente/#/polivalente/ver_reporte_servicio/{{SedeId}}/{{ServicioId}}/{{Year}}/{{Mes}}"
+              target="_blank"
+              ng-disabled="c.$invalid"
+              >Vista Impresion</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,346 @@
+<style>
+  .cajas_main:hover {
+    background: rgba(126, 194, 255, 0.09);
+    border-radius: 100px;
+    cursor: pointer;
+  }
+
+  .grises img {
+    filter: url('#grayscale'); /* Versión SVG para IE10, Chrome 17, FF3.5, Safari 5.2 and Opera 11.6 */
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%); /* Para cuando es estándar funcione en todos */
+    filter: Gray(); /* IE4-8 and 9 */
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+  }
+  .caja_activa {
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    filter: none;
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+  }
+</style>
+<div ng-controller="NavCtrl">
+  <!-- top navigation -->
+  <div
+    class="row border-bottom"
+    data-ng-include=" '/intranet-2/public_html/views/partials/Botones.html?v=2.8.19'"
+  ></div>
+  <!-- /top navigation -->
+  <div class="row bg-white" ng-controller="HomeCtrl">
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 mx-auto">
+      <div class="row" ng-if="cargado">
+        <div class="col-12">
+          <h4>INTRANET</h4>
+          <hr />
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !CentraldeMezclas}"
+          id="CentraldeMezclas"
+          ng-click="GotoUrl(CentraldeMezclas)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/central.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Central de mezclas</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Ambulancia}"
+          id="Ambulancia"
+          ng-click="GotoUrl(Ambulancia)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/ambulancia.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Ambulancia</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Solicitud}"
+          id="Solicitud"
+          ng-click="GotoUrl(Solicitud)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/solicitud.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Solicitud Mto</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Almacen}"
+          id="Almacen"
+          ng-click="GotoUrl(Almacen)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/hp-logo-icon.png"
+              width="70"
+              alt=""
+            />
+            <p>Almacen</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Farmacia}"
+          id="Farmacia"
+          ng-click="GotoUrl(Farmacia)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/farmacia.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Farmacia</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Biometrico}"
+          id="Biometrico"
+          ng-click="GotoUrl(Biometrico)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/permisos.png"
+              width="70"
+              alt=""
+            />
+            <p>Biometric</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Sistemas}"
+          id="Sistemas"
+          ng-click="GotoUrl(Sistemas)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/sistemas.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Sistemas</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Polivalente}"
+          id="Polivalente"
+          ng-click="GotoUrl(Polivalente)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/polivalente.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Polivalente</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Biomedico}"
+          id="Biomedico"
+          ng-click="GotoUrl(Biomedico)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/biomedico.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Biomedico</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !ServicioAlimenticio}"
+          id="ServicioAlimenticio"
+          ng-click="GotoUrl(ServicioAlimenticio)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/hd.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Dietas</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !TransportedeMaternas}"
+          id="TransportedeMaternas"
+          ng-click="GotoUrl(TransportedeMaternas)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/baby.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Maternas</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Telefono}"
+          id="Telefono"
+          ng-click="GotoUrl(Telefono)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/celular.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Telefonos</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !ProtocolodeProcesos}"
+          id="ProtocolodeProcesos"
+          ng-click="GotoUrl(ProtocolodeProcesos)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/pc.jpg"
+              width="105"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>P. Compras</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Viaticos}"
+          id="Viaticos"
+          ng-click="GotoUrl(Viaticos)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/viatico.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Viaticos</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !Configuracion}"
+          id="Configuracion"
+          ng-click="GotoUrl(Configuracion)"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/configuracion.png"
+              width="70"
+              alt=""
+            />
+            <p>configuracion</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row bg-white" ng-controller="HomeRCtrl">
+    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 mx-auto" ng-if="cargado">
+      <div class="row">
+        <div class="col-12">
+          <h4>Otros Permisos</h4>
+          <hr />
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !hasRoles('Estadisticas RS')}"
+          ng-click="GotoUrl('Estadisticas RS', '/rs/')"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/rs-mapa-eps.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Estadisticas EPS</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !hasRoles('Costo No Calidad')}"
+          ng-click="GotoUrl('Costo No Calidad', '/no-calidad/')"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/no-calidad.jpg"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Costos de no calidad</p>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 col-md-4 col-sm-6 col-xs-6 cajas_main"
+          ng-class="{'grises': !hasRoles('Lavanderia')}"
+          ng-click="GotoLavandaria('Lavanderia')"
+        >
+          <div class="text-center">
+            <img
+              src="/intranet-2/public_html/image/icon/lavandaria.png"
+              width="70"
+              class="rounded-circle"
+              alt=""
+            />
+            <p>Lavanderia</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

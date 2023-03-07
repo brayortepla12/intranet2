@@ -1,0 +1,199 @@
+<div class="row" ng-controller="CronogramaServicioCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary" id="myElementId">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">Configuración del cronograma de mantenimientos preventivos</h2>
+                <div  class="ibox-tools">
+                    <!--                <div class="input-group m-b">
+                                        <span class="input-group-prepend">
+                                            <button class="btn btn-primary" ng-click="GetHojaVidaById()" type="button"><i class="fa fa-search"></i></button>
+                                        </span>
+                                        <input type="text" ng-model="ReporteId" ng-pattern="onlyNumbers" ng-change="Reset()" ng-enter="GetReporteById()" 
+                                               style="color: black !important;" class="form-control" placeholder="Busqueda rapida">
+                                    </div>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-if="!SUBIRCRONOGRAMA">
+                    <div class="col-sm-4">
+                        <label for="SedeId">Sede</label>
+                        <select class="form-control" ng-model="SedeId" name="SedeId"  ng-change="ChangeSede()"
+                                required>
+                            <option value="">--</option>
+                            <option ng-repeat="s in Sedes track by $index" ng-value='{{s.SedeId}}' 
+                                    value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Vigencia">Vigencia</label>
+                        <input type="number" class="form-control" ng-model="Vigencia"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="btn btn-secondary" ng-href="/Polivalente/api/CronogramaServicio.php?GenerateExcel_SedeId={{SedeId}}&GenerateExcel_Vigencia={{Vigencia}}&Prefijo={{PREFIJO}}" target="_blank"
+                           style="transform: translateY(25px); color:white !important">Descargar Excel</a>
+                        <button class="btn btn-success" ng-click="OpenModalSubirExcel()" style="transform: translateY(25px);">Subir Excel</button>
+                    </div>
+                </div>
+                <div class="row" ng-if="SUBIRCRONOGRAMA">
+                    <div class="col-sm-4">
+                        <button class="btn btn-secondary" ng-click="Atras()">Atras</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <p>Seleccione el archivo que desea subir</p>
+                        <input class="btn btn-default" type="file" ngf-select="SelectFile($file)" />
+                        <input class="btn btn-default" type="button" value="Preview" ng-click="Preview()" />
+                        <input class="btn btn-primary" ng-show="Tabla.length > 0" type="button" value="Subir Archivo" ng-click="SubirCronograma()" />
+                    </div>
+                    <div class="col-sm-12" ng-if="HASDATA">
+                        <table class="table table-bordered table-condensed table-striped table-hover" ui-jq="dataTable" ui-options="DataTable" >
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Equipo</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Serie</th>
+                                    <th>Ubicacion</th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
+                                    <th>5</th>
+                                    <th>6</th>
+                                    <th>7</th>
+                                    <th>8</th>
+                                    <th>9</th>
+                                    <th>10</th>
+                                    <th>11</th>
+                                    <th>12</th>
+                                    <th>Vigencia</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-12" ng-if="HASDATAERROR">
+                        <h4>Listado de equipos que ya existen en el cronograma de {{VigenciaE}}</h4>
+                        <table class="table table-bordered table-condensed table-striped table-hover" ui-jq="dataTable" ui-options="DataTableE" >
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Serie</th>
+                                    <th>Ubicacion</th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
+                                    <th>5</th>
+                                    <th>6</th>
+                                    <th>7</th>
+                                    <th>8</th>
+                                    <th>9</th>
+                                    <th>10</th>
+                                    <th>11</th>
+                                    <th>12</th>
+                                    <th>Vigencia</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="CronogramaServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Cronograma por servicio</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="col-md-6">
+                            <div ng-class="{'has-success': c.SedeId.$valid, 'has-error': c.SedeId.$invalid}">
+                                <label for="SedeId">Sede</label>
+                                <select class="form-control" ng-model="CronogramaServicio.SedeId" name="SedeId"  ng-change="ChangeSede()"
+                                        required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == CronogramaServicio.SedeId" ng-value='{{s.SedeId}}' 
+                                            value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div ng-class="{'has-success': c.ServicioId.$valid, 'has-error': c.ServicioId.$invalid}">
+                                <label for="ServicioId">Servicio</label>
+                                <select class="form-control" ng-model="CronogramaServicio.ServicioId" name="ServicioId"
+                                        required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId == CronogramaServicio.ServicioId" ng-value='{{s.ServicioId}}' 
+                                            value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div ng-class="{'has-success': c.FrecuenciaMantenimientoId.$valid, 'has-error': c.FrecuenciaMantenimientoId.$invalid}">
+                                <label for="FrecuenciaMantenimientoId">Frecuencia Mantenimiento</label>
+                                <select class="form-control" ng-model="CronogramaServicio.FrecuenciaMantenimientoId" name="FrecuenciaMantenimientoId"
+                                        required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Frecuencias track by $index" ng-selected="s.FrecuenciaMantenimientoId == CronogramaServicio.FrecuenciaMantenimientoId" ng-value='{{s.FrecuenciaMantenimientoId}}' 
+                                            value='{{s.FrecuenciaMantenimientoId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div ng-class="{'has-success': c.MesInicial.$valid, 'has-error': c.MesInicial.$invalid}">
+                                <label for="MesInicial">Mes Inicial</label>
+                                <select class="form-control" ng-model="CronogramaServicio.MesInicial" name="MesInicial"
+                                        required>
+                                    <option value="">--</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div ng-class="{'has-success': c.Observaciones.$valid, 'has-error': c.Observaciones.$invalid}">
+                                <label for="Observaciones">Observaciones</label>
+                                <textarea class="form-control" id="Observaciones" ng-model="CronogramaServicio.Observaciones" rows="5"  name="Observaciones"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarCronogramaServicio()" ng-disabled="c.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="CronogramaServicio = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

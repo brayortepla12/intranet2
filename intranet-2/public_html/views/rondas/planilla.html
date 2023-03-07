@@ -1,0 +1,128 @@
+<style>
+    @media print{
+        *{
+            font-size: 0.9em !important;
+        }
+        @Page{
+            margin: 40pt 60pt 30pt 60pt;
+        }
+    }
+</style>
+<div class="col-sm-12" ng-controller="PlanillaCtrl">
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <button class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+    </div>
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12" id="Planilla">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td style="width: 250px; text-align: center">
+                    <img ng-src="{{Empresa.Logo}}" width="250" alt="">
+                </td>
+                <td style="text-align: center;">
+                    <h2 style="font-size: 1.9em !important;font-weight: 700">PLANILLA DE CONTROL DE RONDAS DE SEGURIDAD A LAS DIFERENTES AREAS Y SERVICIOS</h2>
+                </td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered table-striped" id="table2">
+            <tr>
+                <td style="width: 200px;">
+                    <strong>FECHA:</strong><br>
+                    {{ Planilla.Fecha.split(' ')[0]}}
+                </td>
+                <td style="width: 200px;">
+                    <strong>HORA:</strong><br>
+                    {{ Planilla.Fecha.split(' ')[1]}}
+                </td>
+                <td>
+                    <strong>NOMBRE JEFE DE ÁREA:</strong><br>
+                    {{Planilla.NombreJefeArea}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>QUIEN REALIZA LA RONDA</strong><br>
+                    {{ Planilla.Realizo}}
+                </td>
+                <td>
+                    <strong>ÁREA O SERVICIO:</strong><br>
+                    {{Planilla.Servicio}}
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>EQUIPOS</strong>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>REFRIGERACIÓN:</strong><br>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'REFRIGERACIÓN'"><strong>{{$index + 1}}. </strong>{{e.Equipo}}</p>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'REFRIGERACIÓN'"><strong>{{$index + 1}}. </strong>{{e.Descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>SISTEMA ELÉCTRICO O ILUMINACIÓN:</strong><br>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'SISTEMA ELÉCTRICO O ILUMINACIÓN'"><strong>{{$index + 1}}. </strong>{{e.Equipo}}</p>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'SISTEMA ELÉCTRICO O ILUMINACIÓN'"><strong>{{$index + 1}}. </strong>{{e.Descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>EQUIPOS ELECTRÓNICOS:</strong><br>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'EQUIPOS ELECTRÓNICOS'"><strong>{{$index + 1}}. </strong>{{e.Equipo}}</p>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'EQUIPOS ELECTRÓNICOS'"><strong>{{$index + 1}}. </strong>{{e.Descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>PLOMERÍA:</strong><br>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'PLOMERÍA'"><strong>{{$index + 1}}. </strong>{{e.Equipo}}</p>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'PLOMERÍA'"><strong>{{$index + 1}}. </strong>{{e.Descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>NIVEL DE AGUA:</strong><br>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'NIVEL DE AGUA'"><strong>{{$index + 1}}. </strong>{{e.Equipo}}</p>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'NIVEL DE AGUA'"><strong>{{$index + 1}}. </strong>{{e.Descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 230px">
+                    <strong>OTROS:</strong><br>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'OTROS'"><strong>{{$index + 1}}. </strong>{{e.Equipo}}</p>
+                </td>
+                <td colspan="2">
+                    <strong>DESCRIPCIÓN</strong>
+                    <p ng-repeat="e in Planilla.Equipos" ng-show="e.Tipo === 'OTROS'"><strong>{{$index + 1}}. </strong>{{e.Descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <strong>OBSERVACIONES O ANOTACIÓN:</strong><br>
+                    <p style="text-align: justify">{{Planilla.Observaciones}}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

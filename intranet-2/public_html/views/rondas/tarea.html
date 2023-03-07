@@ -1,0 +1,178 @@
+<style>
+    @media print{
+        *{
+            font-size: 0.98em !important;
+            font-family: Comic Sans ms;
+        }
+        @Page{
+            margin: 40pt 60pt 30pt 60pt;
+        }
+        .rondas{
+            font-size: 0.78em !important;
+        }
+    }
+</style>
+<div class="col-sm-12" ng-controller="TareaCtrl">
+    <div class="text-center col-xs-12" style="margin-top: 25px;">
+        <button class="btn btn-default" ng-click="Imprimir()">Imprimir</button>
+        <button class="btn btn-success" ng-click="AsignarTareas()">Asignar Tareas</button>
+        <button class="btn btn-info" ng-click="ViewFormTareas()">Crear Tareas</button>
+    </div>
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12" id="Planilla" style="min-height: 80vh">
+        <img ng-src="{{Empresa.Logo}}" width="250" alt="">
+        <br>
+        <br>
+        Valledupar {{FechaHoy.getDate()}} de {{FechaHoy.getMonthName() | capital}} del {{FechaHoy.getFullYear()}}
+        <br>
+        <br>
+        Ingeniero<br>
+        Misael Crespo<br>
+        Líder de Mantenimiento<br>
+        <br>
+        Cordial Saludo<br><br>
+<!--        <p style="text-align: justify">
+            Teniendo en cuenta nuestro compromiso por brindar atención integral a nuestros usuarios, es de gran preocupación como 
+            líder del servicio de hospitalización el estado de las camas y los aires acondicionados del servicio, a continuación 
+            el listado de las camas y habitaciones las cuales es de manera urgente intervenir para así brindar comodidad a nuestros pacientes.
+        </p>-->
+        <div class="row" ng-repeat="ronda in Rondas" class="rondas" style="margin-top: 15px;">
+            <div class="col-sm-8">
+                <h3 style="font-size: 1.29em !important"><strong>{{ronda.sede}} - {{ronda.Servicio}}</strong></h3>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-danger no-print" ng-click="DeleteActividadRonda(ronda.RondaId)">Eliminar</button>
+            </div>
+            <div ng-repeat="o in ronda.Equipos" style="margin-top: 15px" class="col-sm-12">
+                <div class="col-sm-12">
+                    <span>{{o.Equipo}} - {{o.Descripcion}}</span>  <span>(<strong ng-repeat="u in o.Usuarios2 track by $index">{{u}}, </strong>)</span>
+                </div>
+                <div class="col-sm-4">
+                    <multiselect  class="no-print" ng-model="o.Usuarios2" show-search="true"  
+                                  labels="labels" options="options" classes-btn="'btn-default'">
+                    </multiselect>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="CrearTarea" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear tarea</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <div ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+                                <label for="SedeId">Sede</label>
+                                <select class="form-control" ng-model="item.SedeId" name="SedeId"  ng-change="ChangeSede()" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == item.SedeId" ng-value='{{s.SedeId}}' 
+                                            value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label for="ServicioId">Servicio</label>
+                            <div ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+                                <select class="form-control" ng-model="item.ServicioId" name="ServicioId" ng-change="ChangeServicio()" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Servicios_list track by $index" ng-selected="s.ServicioId == item.ServicioId" 
+                                            ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label for="Fecha">Fecha</label>
+                            <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                                <input onfocus="(this.type = 'datetime-local')" onblur="(this.type = 'text')" 
+                                                           ng-model="item.Fecha" name="Fecha" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label for="NombreJefeArea">Jefe de Area</label>
+                            <div ng-class="{'has-success': Datos.NombreJefeArea.$valid, 'has-error': Datos.NombreJefeArea.$invalid}">
+                                <input type="text" ng-model="item.NombreJefeArea" name="NombreJefeArea" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-xs-3" style="margin-top: 10px">
+                            <label for="Tipo">Tipo Tarea</label>
+                            <div>
+                                <select class="form-control" ng-model="Equipo.Tipo" name="Tipo">
+                                    <option value="">--</option>
+                                    <option>REFRIGERACIÓN</option>
+                                    <option>SISTEMA ELÉCTRICO O ILUMINACIÓN</option>
+                                    <option>EQUIPOS ELECTRÓNICOS</option>
+                                    <option>PLOMERÍA</option>
+                                    <option>NIVEL DE AGUA</option>
+                                    <option>OTROS</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4" style="margin-top: 10px">
+                            <label for="Equipo">Equipo</label>
+                            <div>
+                                <select class="form-control" ng-model="Equipo.Equipo" name="Equipo">
+                                    <option value="">--</option>
+                                    <option ng-repeat="e in Equipos_list">{{e.Equipo}} - {{e.Ubicacion}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4" style="margin-top: 10px">
+                            <label for="Descripcion">Descripción</label>
+                            <div>
+                                <textarea class="form-control" rows="1" ng-model="Equipo.Descripcion" name="Descripcion"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-1" style="margin-top: 10px">
+                            <button class="btn btn-success btn-xs btn-icon" style="transform: translate(0px,30px)" ng-click="AddEquipo()">Agregar</button>
+                        </div>
+                        <div class="col-xs-12">
+                            <table class="table table-bordered" style="margin-top: 20px; margin-bottom: 20px">
+                                <thead>
+                                    <th>Tipo</th>
+                                    <th>Equipo</th>
+                                    <th>Descripción</th>
+                                    <th>Opciones</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="e in item.Equipos track by $index">
+                                        <td>{{e.Tipo}}</td>
+                                        <td>{{e.Equipo}}</td>
+                                        <td>{{e.Descripcion}}</td>
+                                        <td><button class="btn btn-xs btn-danger" ng-click="RemoveEquipo($index)">Eliminar</button> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="Observaciones">Observaciones</label>
+                            <div>
+                                <textarea class="form-control" rows="4" ng-model="item.Observaciones" name="Observaciones"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarTarea()">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="RondaSistemaServicio = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

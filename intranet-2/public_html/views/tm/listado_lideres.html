@@ -1,0 +1,165 @@
+<div class="col-sm-12" ng-controller="ListadoLideresCtrl">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h2>Listado de lideres</h2>
+<!--            <div class="filter">
+                <div class="pull-right col-sm-4">
+                    
+                </div>
+                                <div class="inner-addon left-addon" style="width: 200px;float: right">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                    <input type="daterange" ng-model="Dates" class="form-control" ng-change="ConsultarEstadisticas()" ranges="ranges">
+                                </div>
+            </div>-->
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <button class="btn btn-info" ng-click="CrearLiderModal()">Crear Lideres</button>
+            <div class="col-sm-12" ng-if="cargado">
+                <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                    <thead class="bordered-blueberry">
+                        <tr>
+                            <th class="text-center" style="width: 3%">ID</th>
+                            <th class="text-center" style="width: 10%">Nombres</th>
+                            <th class="text-center" style="width: 10%">Municipio</th>
+                            <th class="text-center" style="width: 10%">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="CrearLiderModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Lider</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': Datos.Documento.$valid, 'has-error': Datos.Documento.$invalid}">
+                                <label for="Documento">Documento</label>
+                                <input type="text" capitalize class="form-control" id="Documento" ng-model="Lider.Documento" 
+                                       ng-change="GetMaternaByDocumento()" maxlength="280"  name="Documento" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': Datos.Nombres.$valid, 'has-error': Datos.Nombres.$invalid}">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" capitalize class="form-control" id="Nombres" ng-model="Lider.Nombres" maxlength="280"  name="Nombres" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': Datos.Telefono.$valid, 'has-error': Datos.Telefono.$invalid}">
+                                <label for="Telefono">Telefono</label>
+                                <input type="tel" class="form-control" id="Telefono" ng-model="Lider.Telefono" maxlength="280"  name="Telefono" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': Datos.DepartamentoId.$valid, 'has-error': Datos.DepartamentoId.$invalid}">
+                                <label for="DepartamentoId">Departamento</label>
+                                <select class="form-control" id="DepartamentoId" ng-model="Lider.DepartamentoId" name="DepartamentoId" 
+                                        ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" required>
+                                    <option value="">--</option>                              
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': Datos.MunicipioId.$valid, 'has-error': Datos.MunicipioId.$invalid}">
+                                <label for="MunicipioId">Municipio</label>
+                                <select class="form-control" id="MunicipioId" ng-model="Lider.MunicipioId" name="MunicipioId" 
+                                        ng-options="item.CiudadId as item.Ciudad for item in Municipios" required>
+                                    <option value="">--</option>                              
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarLider()">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateLiderModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Ver Lider</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="UDatos" novalidate>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': UDatos.Documento.$valid, 'has-error': UDatos.Documento.$invalid}">
+                                <label for="Documento">Documento</label>
+                                <input type="text" capitalize class="form-control" id="Documento" ng-model="ULider.Documento" readonly maxlength="280"  name="Documento" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': UDatos.Nombres.$valid, 'has-error': UDatos.Nombres.$invalid}" readonly>
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" capitalize class="form-control" id="Nombres" ng-model="ULider.Nombres" maxlength="280"  name="Nombres" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': UDatos.Telefono.$valid, 'has-error': UDatos.Telefono.$invalid}" readonly>
+                                <label for="Telefono">Telefono</label>
+                                <input type="tel" class="form-control" id="Telefono" ng-model="ULider.Telefono" maxlength="280"  name="Telefono" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': UDatos.DepartamentoId.$valid, 'has-error': UDatos.DepartamentoId.$invalid}" readonly>
+                                <label for="DepartamentoId">Departamento</label>
+                                <select class="form-control" id="DepartamentoId" ng-model="ULider.DepartamentoId" name="DepartamentoId" 
+                                        ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" required>
+                                    <option value="">--</option>                              
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-class="{'has-success': UDatos.MunicipioId.$valid, 'has-error': UDatos.MunicipioId.$invalid}" readonly>
+                                <label for="MunicipioId">Municipio</label>
+                                <select class="form-control" id="MunicipioId" ng-model="ULider.MunicipioId" name="MunicipioId" 
+                                        ng-options="item.CiudadId as item.Ciudad for item in Municipios" required>
+                                    <option value="">--</option>                              
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+<!--                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarLider()">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="ResetForm()" />
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

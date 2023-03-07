@@ -1,0 +1,170 @@
+<div class="" ng-controller="EstadisticasCtrl">
+    <!-- Standard Chart -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Resumen de mantenimientos <small>Progreso</small></h2>
+                    <div class="filter">
+                        <div class="inner-addon left-addon" style="width: 200px;float: right">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            <input type="daterange" ng-model="Dates" class="form-control" ng-change="ConsultarEstadisticas()" ranges="ranges">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="text-center col-xs-12" style="margin-top: 25px;">
+                            <button class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                        </div>
+                    </div>
+                    <div id="PaginaGrafica">
+                        <div class="break-after">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                </div>
+                                <div class="col-xs-5 pull-left text-center">
+                                    <p style="font-size: 0.7em !important">
+                                        <strong style="font-size: 1.2em !important">INFORME ESTADISTICO DESDE {{Dates.startDate| date : 'dd-MM-yyyy'}} HASTA {{Dates.endDate| date : 'dd-MM-yyyy'}}</strong><br><br>
+                                        GI-MB-F18 ver.01 Pag. {{1}} de {{ReportesServicio.pack.length + 2}}<br>
+                                        Emision 02-01-2017 vigilancia:03-01-2017
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row Page">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div>
+                                        <h2>Tipos de Reportes <small>Por Sede</small></h2>
+                                        <div class="col-xs-12" id="print_sede">
+                                            <small>Cantidad</small>
+                                            <canvas id="RSede" class="chart chart-bar"
+                                                    chart-data="ReportesSede" height="100" chart-options="opciones" chart-labels="ReporteSedeLabel" chart-series="ReporteSedeSerie">
+                                            </canvas>
+                                        </div>
+                                        <div class="col-xs-12" id="print_sede2">
+                                            <small>Total Repuestos</small>
+                                            <canvas id="RSede2" class="chart chart-bar"
+                                                    chart-data="ReportesSedeT" height="100" chart-options="opciones" chart-colors="colors" chart-labels="ReporteSedeLabel" chart-series="ReporteSedeSerie">
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div>
+                                        <h2>Estado Final <small>Por Sede</small></h2>
+                                        <div class="col-sm-12 col-xs-12" id="print_Estado">
+                                            <small>Cantidad</small>
+                                            <canvas id="Estado" class="chart chart-bar"
+                                                    chart-data="EstadosSede" height="100" chart-options="opciones" chart-colors="Colors2" chart-labels="EstadoSedeLabel" chart-series="EstadoSedeSerie">
+                                            </canvas>
+                                        </div>
+
+                                    </div>            
+                                    <!--                        <div style="margin-top: 10px">
+                                                                <h2>Falla Detectadas <small>Por Servicio</small></h2>
+                                                                <div class="col-sm-12">
+                                                                    <canvas id="bar" class="chart chart-bar"
+                                                                            chart-data="EstadosServicio" height="145" chart-labels="EstadoServicioLabel" chart-series="EstadoServicioSerie" chart-options="options" chart-legend="false">
+                                                                    </canvas>
+                                                                </div>
+                                                                <div class="col-sm-12">
+                                                                    <canvas id="bar" class="chart chart-bar"
+                                                                            chart-data="EstadoServicioT" height="145" chart-labels="EstadoServicioLabel" chart-series="EstadoServicioSerie" chart-options="options" chart-legend="false">
+                                                                    </canvas>
+                                                                </div>
+                                                            </div>-->
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="break-after">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                </div>
+                                <div class="col-xs-5 pull-left text-center">
+                                    <p style="font-size: 0.7em !important">
+                                        <strong style="font-size: 1.2em !important">INFORME ESTADISTICO DESDE {{Dates.startDate| date : 'dd-MM-yyyy'}} HASTA {{Dates.endDate| date : 'dd-MM-yyyy'}}</strong><br><br>
+                                        GI-MB-F18 ver.01 Pag. {{2}} de {{ReportesServicio.pack.length + 2}}<br>
+                                        Emision 02-01-2017 vigilancia:03-01-2017
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row Page">
+                                <div class="col-sm-12 col-xs-12" id="print_Estado2">
+                                    <small>Total Repuestos</small>
+                                    <canvas id="Estado2" class="chart chart-bar"
+                                            chart-data="EstadoSedeT" height="100" chart-colors="Colors2"  chart-options="opciones" chart-labels="EstadoSedeLabel" chart-series="EstadoSedeSerie">
+                                    </canvas>
+                                </div>
+                                <h2>Falla Detectadas <small>Por Sede</small></h2>
+                                <div class="col-lg-12 col-xs-12" id="print_Falla">
+                                    <small>Cantidad</small>
+                                    <canvas id="Falla" class="chart chart-bar"
+                                            chart-data="FallaSede" height="100" chart-colors="Colors3"  chart-options="opciones" chart-labels="FallaSedeLabel" chart-series="FallaSedeSerie">
+                                    </canvas>
+                                </div>
+                                <div class="col-lg-12 col-xs-12" id="print_Falla2">
+                                    <small>Total Repuestos</small>
+                                    <canvas id="Falla2" class="chart chart-bar"
+                                            chart-data="FallaSedeT" height="100" chart-colors="Colors3"  chart-options="opciones" chart-labels="FallaSedeLabel" chart-series="FallaSedeSerie">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="break-after" ng-repeat="o in ReportesServicio.pack">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                </div>
+                                <div class="col-xs-5 pull-left text-center">
+                                    <p style="font-size: 0.7em !important">
+                                        <strong style="font-size: 1.2em !important">INFORME ESTADISTICO DESDE {{Dates.startDate| date : 'dd-MM-yyyy'}} HASTA {{Dates.endDate| date : 'dd-MM-yyyy'}}</strong><br><br>
+                                        GI-MB-F18 ver.01 Pag. {{$index + 3}} de {{ReportesServicio.pack.length + 2}}<br>
+                                        Emision 02-01-2017 vigilancia:03-01-2017
+                                    </p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h6>Tipos de Reportes</h6>
+                                </div>
+                            </div>
+                            <div class="row Page">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div style="margin-top: 10px">
+
+                                        <div class="col-xs-12">
+
+                                            <table id="TablaCalibracion" class="table1 table table-bordered">
+                                                <tbody>
+                                                    <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                                        <th>Nombre Servicio</th>
+                                                        <th ng-repeat="l in ReporteServicioLabel">{{l}}</th>
+                                                        <th>TOTAL</th>
+                                                        <th>Total Repuestos</th>
+                                                    </tr>
+                                                    <tr ng-repeat="d in o">
+                                                        <td>{{d.Servicio}}</td>
+                                                        <td>{{d.NCalibracion}}</td>
+                                                        <td>{{d.NPreventivos}}</td>
+                                                        <td>{{d.NCorrectivos}}</td>
+                                                        <td>{{d.NInstalacion}}</td>
+                                                        <td>{{d.NTraslados}}</td>
+                                                        <td>{{d.TotalMantenimientos}}</td>
+                                                        <td>{{d.TotalRepuesto}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

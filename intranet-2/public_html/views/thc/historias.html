@@ -1,0 +1,192 @@
+<style>
+    label{
+        font-weight: bold;
+    }
+    #block{
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px;
+    }
+    .renglon{
+        border-bottom: 1px dashed black;
+    }
+</style>
+<div ng-controller="ConsultaTHCCtrl">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h2>Consultar Historia Clinica<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <label>
+                                    NoAdmision
+                                </label>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div angucomplete-alt id="chistoria_input"
+                                             placeholder="No Admisión"
+                                             maxlength="100"
+                                             pause="100"
+                                             selected-object="NoAdmision"
+                                             remote-url="/Polivalente/api/thc/Historia.php?cahistoria="
+                                             remote-url-data-field="items"
+                                             title-field="NOADMISION"
+                                             minlength="3"
+                                             input-class="form-control form-control-small"
+                                             match-class="highlight"></div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <button class="btn btn-primary" ng-click="ConsultarHistoria()" data-toggle="tooltip" title="Verificar">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7 col-md-7" ng-if="Historia">
+                    <div class="col-sm-12">INFORMACIÓN HISTORIA</div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                No Admisión
+                            </label>
+                            <p>{{Historia.NOADMISION}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Primer Nombre
+                            </label>
+                            <p>{{Historia.PNOMBRE}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Segundo Nombre
+                            </label>
+                            <p>{{Historia.SNOMBRE}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Primer Apellido
+                            </label>
+                            <p>{{Historia.PAPELLIDO}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Primer Apellido
+                            </label>
+                            <p>{{Historia.SAPELLIDO}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Tipo Documento
+                            </label>
+                            <p>{{Historia.TIPO_DOC}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Documento
+                            </label>
+                            <p>{{Historia.IDAFILIADO}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Fecha Alta Medica
+                            </label>
+                            <p>
+                                <span>{{Historia.FECHAALTAMED}}</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Fecha Alta Administrativa
+                            </label>
+                            <p>
+                                <span>{{Historia.FECHAALTAADMINISTRATIVA}}</span> 
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                Cerrada?
+                            </label>
+                            <p>
+                                <span ng-show="Historia.Cerrada">Si</span>
+                                <span ng-show="!Historia.Cerrada">No</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6" ng-show="Historia">
+                            <label>
+                                SECTOR
+                            </label>
+                            <p>
+                                {{Historia.SECTOR}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row pt-1 pb-1" id="notas" ng-if="Historia">
+                        <div class="col-sm-12">
+                            <ul id="HTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" ng-class="{'active': HTab === 1}">
+                                    <a role="tab" data-toggle="tab" ng-click="setHTab(1)" aria-expanded="true">Notas</a>
+                                </li>
+                                <li role="presentation" ng-class="{'active': HTab === 2}">
+                                    <a role="tab" data-toggle="tab" ng-click="setHTab(2); GetTrazabilidad()" aria-expanded="true">Trazabilidad</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12" ng-if="HTab === 1">
+                            <div class="row">
+                                <div class="col-sm-12 text-center" ng-if="Notas.length == 0">
+                                    <h4>No existe nota alguno hasta el momento</h4>
+                                </div>
+                                <div class="col-sm-12" ng-if="Notas.length > 0">
+                                    <div ng-repeat="n in Notas">
+                                        <p>
+                                            <strong>Fecha: </strong>{{n.Fecha}} <br>
+                                            <strong>Usuario: </strong>{{n.NombreCompleto}} <br>
+                                            <strong>Grupo: </strong>{{n.Grupo}}<br>
+                                            <strong>Nota: </strong>{{n.Observacion}}
+                                        </p>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" ng-if="HTab === 2">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-striped bg-white">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Grupo</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="t in TrazabilidadH">
+                                                <td>{{t.NombreUsuario}}</td>
+                                                <td>{{t.Grupo}}</td>
+                                                <td>{{t.Fecha}}</td>
+                                                <td>{{t.Estado}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

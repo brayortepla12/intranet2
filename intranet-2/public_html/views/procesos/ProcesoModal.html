@@ -1,0 +1,151 @@
+
+<div class="modal fade" id="ProcesoModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <div class="col-sm-11">
+                  <h2 class="modal-title">Ver Proceso {{UProceso.Nombre}}</h2>
+              </div>
+              <div class="col-sm-1">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="modal-body">
+              <div class="col-sm-12">
+                  <div class="form-group ng-scope row">
+                      <label class="col-sm-4 control-label" for="Sede" >Sede</label>
+                      <div class="col-sm-8">
+                          {{UProceso.Sede}}
+                      </div>
+                  </div>
+                  <div class="form-group ng-scope row">
+                      <label class="col-sm-4 control-label" for="Servicio" >Servicio</label>
+                      <div class="col-sm-8">
+                          {{UProceso.Servicio}}
+                      </div>
+                  </div>
+                  <div class="form-group ng-scope row">
+                      <label class="col-sm-4 control-label" for="ProtocoloId" >Protocolo</label>
+                      <div class="col-sm-8">
+                          {{UProceso.Protocolo}}
+                      </div>
+                  </div>
+                  <div class="form-group ng-scope row">
+                      <label class="col-sm-4 control-label" for="Solicitante" >Solicitante</label>
+                      <div class="col-sm-8">
+                          {{UProceso.CreatedBy}}
+                      </div>
+                  </div>
+                  <div class="form-group ng-scope row" ng-repeat="df in UProceso.DatosFormulario">
+                      <label class="col-sm-4 control-label" >{{df.label}}</label>
+                      <div class="col-sm-8 angular-with-newlines" ng-hide="df.value[0].data">
+                          {{df.value}}
+                      </div>
+                      <div class="col-sm-8" ng-show="df.value[0].data">
+                          <div class="col-lg-4 col-sm-6" ng-repeat="f in df.value track by $index">
+                              <a style="cursor: pointer" ng-click="OpenURL(f.data, f.type)"><i class="fa fa-file fa-2x"></i><br> {{f.name.substr(0, 10)}}...</a><br>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-12">
+                      <div>
+                          <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                              <li role="presentation" ng-class="{'active': Orden === ft.Orden}" ng-repeat="ft in UProceso.FlujoTrabajo"><a ng-click="changeView(ft.Orden)" role="tab" data-toggle="tab" aria-expanded="true">{{$index + 1}}</a>
+                              </li>
+                          </ul>
+                          <div class="row">
+                              <div class="col-sm-6">
+                                  <div ng-repeat="ft in UProceso.FlujoTrabajo" ng-show="Orden === ft.Orden">
+                                      <div class="col-sm-12" ng-repeat="v in ft.Verificadores">
+                                          <div class="form-group ng-scope row">
+                                              <label class="col-sm-4 control-label">Sede</label>
+                                              <div class="col-sm-8">
+                                                  {{v.Sede}}
+                                              </div>
+                                          </div>
+                                          <div class="form-group ng-scope row">
+                                              <label class="col-sm-4 control-label">Servicio</label>
+                                              <div class="col-sm-8">
+                                                  {{v.Servicio}}
+                                              </div>
+                                          </div>
+                                          <div class="form-group ng-scope row">
+                                              <label class="col-sm-4 control-label">Nombre Verificador</label>
+                                              <div class="col-sm-8">
+                                                  {{v.NombreCompleto}}
+                                              </div>
+                                          </div>
+                                          <hr>
+                                          <div class="row" ng-repeat="a in v.Anexo" ng-if="v.UsuarioId === username.UserId && ft.Orden == UProceso.OrdenEnCurso && !IsInArray(ft.Seguimiento, username.UserId) && !Devolver">
+                                              <div fb-form-object="a"></div>
+                                          </div>
+                                          <div class="form-group ng-scope row" ng-show="v.UsuarioId === username.UserId && ft.Orden == UProceso.OrdenEnCurso && (UProceso.Estado === 'Activo') && !IsInArray(ft.Seguimiento, username.UserId)">
+                                              <label class="col-sm-4 control-label">Observación</label>
+                                              <div class="col-sm-8">
+                                                  <textarea name="Observación" class="form-control" ng-model="VB.Observacion"></textarea>
+                                              </div>
+                                          </div>
+
+                                          <div class="form-group ng-scope row text-center" ng-show="v.UsuarioId === username.UserId && ft.Orden == UProceso.OrdenEnCurso && (UProceso.Estado === 'Activo') && !IsInArray(ft.Seguimiento, username.UserId)">
+                                              <div class="col-sm-12">
+                                                  <button class="btn btn-danger" ng-hide="Devolver" ng-disabled="Isloading" ng-click="Aprobar(v.VerificadorId, ft.FlujoTrabajoId, false, 'Activo', 'Rechazado')">Rechazar</button>
+                                                  <button class="btn btn-success" ng-hide="Devolver" ng-disabled="Isloading" ng-click="Aprobar(v.VerificadorId, ft.FlujoTrabajoId, true, 'Activo', 'Aprobado')">Aprobar</button>
+                                                  <button class="btn btn-warning" ng-show="Devolver" ng-disabled="Isloading" ng-click="Retornar(v.VerificadorId, ft.FlujoTrabajoId, true, 'Devolver', 'Devuelto')">Devolver</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-sm-6">
+                                  <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                      <div class="vertical-timeline-block" ng-repeat="s in Seguimientos| orderBy : '-CreatedAt'">
+                                          <div class="vertical-timeline-icon navy-bg">
+                                              <i class="fa fa-user"></i>
+                                          </div>
+
+                                          <div class="vertical-timeline-content">
+                                              <h2>{{s.CreatedBy}}</h2>
+                                              <button class="btn btn-warning btn-xs icon-only white float-right" ng-click="PrepararDevolver(s)" data-toggle="tooltip" title="Regresar A">
+                                                  <i class="fa fa-arrow-left"></i>
+                                              </button>
+                                              <p>{{s.Observacion}}
+                                              </p>
+                                              <div class="form-group ng-scope row" ng-repeat="df in s.DatosAnexos">
+                                                  <label class="col-sm-4 control-label" >{{df.label}}</label>
+                                                  <div class="col-sm-8" ng-hide="df.value[0].data">
+                                                      {{df.value}}
+                                                  </div>
+                                                  <div class="col-sm-8" ng-show="df.value[0].data">
+                                                      <div class="col-lg-4 col-sm-4" ng-repeat="f in df.value track by $index">
+                                                          <a style="cursor: pointer" ng-click="OpenURL(f.data, f.type)"><i class="fa fa-file fa-2x"></i><br> {{f.name.substr(0, 10)}}...</a><br>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <a class="btn btn-sm" ng-class="{'btn-primary': s.VB, 'btn-danger': !s.VB, 'btn-warning': s.Estado == 'Devolver'}">
+                                                  <span ng-show="s.VB && s.Estado != 'Devolver'">Aprobado</span>
+                                                  <span ng-show="!s.VB">Rechazado</span>
+                                                  <span ng-show="s.Estado == 'Devolver'">Devuelto</span>
+                                              </a>
+                                              <span class="vertical-date">
+                                                  {{s.CreatedAt}} <br>
+                                                  <small>{{s.Sede}} -- {{s.Servicio}}</small>
+                                              </span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                      </div>
+                  </div>
+
+              </div>
+              
+              <div class="clearfix"></div>
+          </div>
+      </div>
+  </div>
+</div>

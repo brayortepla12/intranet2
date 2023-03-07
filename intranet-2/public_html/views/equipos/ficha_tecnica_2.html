@@ -1,0 +1,1070 @@
+
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="panel panel-primary" ng-controller="FichaTecnicaSistemasCtrl">
+        <div class="panel-heading default-primary-color">
+            <h2 class="text-primary-color">HOJA DE VIDA</h2>
+            <div class="ibox-tools">
+                <div class="input-group m-b">
+                    <span class="input-group-prepend">
+                        <button class="btn btn-primary" ng-click="GetHojaVidaById()" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                    <input type="text" style="color: black !important;" ng-model="HojaVidaId" ng-pattern="onlyNumbers" ng-change="Reset()" ng-enter="GetHojaVidaById()" class="form-control" placeholder="Busqueda rapida">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div id="dospaginas" ng-show="ToPrint">
+
+            <main role="main">
+                <section class="tabs">
+                    <div class="tabbed-content">
+                        <div class="break-after" id="tablaprimera">
+                            <div class="Page">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 float-right text-center" bind-html-compile="Encabezado.EncabezadoHojaVida">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+                                            <h5 style="margin-right: 1px;font-size: 0.9em !important;"><strong>NUMERO DE HOJA DE VIDA</strong></h5>
+                                            <input style="font-size: 1em !important; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="ficha.HojaVidaId" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-xs-12">
+                                            <h4><strong>1.FICHA TECNICA</strong></h4>
+                                        </div>
+                                    </div>
+                                    <br>                                    
+                                    <br>
+                                    <form role="form" name="Datos" novalidate>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <table class="tabla1 table table-bordered">
+                                                    <tbody>
+                                                        <tr ng-show="Frecuencias.length > 1" class="no-print">
+                                                            <th scope="row" style="width: 250px;" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FRECUENCIA DE MANTENIMIENTO</th>
+                                                            <td>
+                                                                {{ficha.FrecuenciaMantenimiento}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-show="Frecuencias.length > 1" class="no-print">
+                                                            <th scope="row" style="width: 250px;" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FRECUENCIA DE MANTENIMIENTO</th>
+                                                            <td>
+                                                                {{ficha.FrecuenciaCalibracion}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-show="Sedes.length > 1">
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SEDE</th>
+                                                            <td>
+                                                                {{ficha.Sede}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERVICIO</th>
+                                                            <td>
+                                                                {{ficha.Servicio}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">UBICACION</th>
+                                                            <td>
+                                                                {{ficha.Ubicacion}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;""><strong>1,1 IDENTICICACION</strong></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0px !important">
+                                                    <div class="text-center" style="margin-bottom: 2px">
+                                                        <img ng-show="HojaVida" ng-if="image" ng-src="{{image}}" style="height: 167px; max-height: 167px; max-width: 400px;" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0px !important">
+                                                    <table class="tabla1 table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO ARTICULOS</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.TipoArticulo}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr ng-hide="ficha.TipoArticulo == 'Impresora' || ficha.TipoArticulo == 'DVR'">
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">LICENCIAS</th>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">OFFICE</label>
+                                                                        <div class="form-check float-right">
+                                                                            <input class="form-check-input" ng-checked="ficha.LicenciaOffice" ng-click="ficha.LicenciaOffice = !ficha.LicenciaOffice" 
+                                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">WINDOWS</label>
+                                                                        <div class="form-check float-right">
+                                                                            <input class="form-check-input" ng-checked="ficha.LicenciaWindows" ng-click="ficha.LicenciaWindows = !ficha.LicenciaWindows" 
+                                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">ANTIVIRUS</label>
+                                                                        <div class="form-check float-right">
+                                                                            <input class="form-check-input" ng-checked="ficha.LicenciaAntivirus" ng-click="ficha.LicenciaAntivirus = !ficha.LicenciaAntivirus" 
+                                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>                                            
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE EQUIPO</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.Nombre}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MARCA</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.Fabricante}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MODELO</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.Modelo}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERIAL</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.NSerial}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">S.O.</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.SO}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERIE SO</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.SerieSO}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA INSTALACIÓN</th>
+                                                                <td colspan="3">
+                                                                    {{ficha.FechaInstalacion}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,2 INFORMACION TECNICA</strong></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px">
+                                                    <table class="tabla1 table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PROCESADOR</th>
+                                                                <td>
+                                                                    {{ficha.Procesador}}
+                                                                </td>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">RAM</th>
+                                                                <td>
+                                                                    {{ficha.Ram}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">DISCO DURO</th>
+                                                                <td>
+                                                                    {{ficha.DiscoDuro}}
+                                                                </td>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FRECUENCIA DE MANTENIMIENTO</th>
+                                                                <td>
+                                                                    {{ficha.FrecuenciaMantenimiento}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">IP</th>
+                                                                <td>
+                                                                    {{ficha.IP}}
+                                                                </td>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CONTADOR</th>
+                                                                <td>
+                                                                    {{ficha.Contador}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PUERTO</th>
+                                                                <td>
+                                                                    {{ficha.Puerto}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <table class="tabla1 table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th  scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ACCESORIOS</th>
+                                                            <th  scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MARCA</th>
+                                                            <th  scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MODELO</th>
+                                                            <th  scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERIAL</th>
+                                                            <th  scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA INSTALACIÓN</th>
+                                                            <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CANTIDAD</th>
+                                                        </tr>
+                                                        <tr ng-mouseover="Mouse = true" ng-mouseleave="Mouse = false"  ng-repeat="a in ficha.Accesorios" data-container="body" data-toggle="popover" 
+                                                            data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+                                                            <td ng-hide="a.EditMode">
+                                                                {{a.Nombre}}
+                                                            </td>
+                                                            <td ng-hide="a.EditMode">
+                                                                {{a.Marca}}
+                                                            </td>
+                                                            <td ng-hide="a.EditMode">
+                                                                {{a.Modelo}}
+                                                            </td>
+                                                            <td ng-hide="a.EditMode">
+                                                                {{a.NSerial}}
+                                                            </td>
+                                                            <td ng-hide="a.EditMode">
+                                                                {{a.FechaInstalacion}}
+                                                            </td>
+                                                            <td ng-hide="a.EditMode">
+                                                                {{a.Cantidad}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,3 RECOMENDACIONES DE FRABRICANTE</strong></h6>
+                                                <p style="font-size: 10px; border:1px solid black; margin-top: -10px;" class="angular-with-newlines">{{ficha.RecomendacioneFabricante}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;">
+                                            <button ng-show="!HojaVidaId" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                                            <!--<button ng-show="HojaVida" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>-->
+                                            <input ng-show="!HojaVidaId" type="reset" class="btn btn-danger" ng-click="Reset()" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-controller="ListadoReportesSistemasCtrl" ng-if="ToPrint" id="pagina2">
+                            <div class="break-after" ng-repeat="rr in Reportes2.pack">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 float-right text-center" bind-html-compile="Encabezado.EncabezadoHojaVida">
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+                                        <h5 style="margin-right: 1px;font-size: 0.9em !important;"><strong>NUMERO DE HOJA DE VIDA</strong></h5>
+                                        <input style="font-size: 1em !important; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="ficha.HojaVidaId" class="form-control">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row Page">
+                                    <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-sm-12 col-xs-12"  id="myElementId">
+                                        <table class="table1 table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE EQUIPO</td>
+                                                    <td colspan="2">
+                                                        {{ficha.Nombre}}
+                                                    </td>
+
+                                                    <td style="background-color: rgba(0,0,0,0.1) !important;">MARCA</td>
+                                                    <td colspan="2">
+                                                        {{ficha.Fabricante}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color: rgba(0,0,0,0.1) !important;">MODELO</td>
+                                                    <td colspan="2">
+                                                        {{ficha.Modelo}}
+                                                    </td>
+                                                    <td style="background-color: rgba(0,0,0,0.1) !important;">SERIE</td>
+                                                    <td colspan="2">
+                                                        {{ficha.NSerial}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table id="TablaReportes" class="table1 table table-bordered">
+                                            <tbody>
+                                                <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                                    <th colspan="3">FECHA</th>
+                                                    <th rowspan="2" style="height: 110px; transform: translate(0px,-2px)" class="verticalTableHeader vertical">
+                                                        <span>INSTALACIÓN</span>
+                                                    </th>
+                                                    <th rowspan="2" class="verticalTableHeader vertical" style="height: 110px; transform: translate(0px,-2px)">
+                                                        <span> MTT. PREVENTIVO</span>
+                                                    </th>
+                                                    <th rowspan="2" class="verticalTableHeader vertical" style="height: 110px; transform: translate(0px,-2px)">
+                                                        <span> MTT. CORRECTIVO</span>
+                                                    </th>
+                                                    <th rowspan="2" class="verticalTableHeader vertical" style="height: 110px; transform: translate(0px,-2px)">
+                                                        <span> SERVICIO</span>
+                                                    </th>
+                                                    <th rowspan="2" class="verticalTableHeader vertical" style="height: 110px; transform: translate(0px,-2px)">
+                                                        <span> TRASLADO</span>
+                                                    </th>
+                                                    <th style="width: 500px;border:1px solid #ddd" class="enmedio" rowspan="2">
+                                                        OBSERVACIÓN
+                                                    </th>
+                                                    <th style="width: 200px;border:1px solid #ddd" class="enmedio" rowspan="2">
+                                                        RESPONSABLE
+                                                    </th>
+                                                    <th style="width: 100px;border:1px solid #ddd" class="enmedio" rowspan="2">
+                                                        No. REPORTE
+                                                    </th>
+                                                </tr>
+                                                <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                                    <th>DIA</th>
+                                                    <th>MES</th>
+                                                    <th>AÑO</th>
+                                                </tr>
+                                                <tr ng-repeat="r in rr">
+                                                    <td>{{r.Fecha| date : 'dd'}}</td>
+                                                    <td>{{r.Fecha| date : 'MM'}}</td>
+                                                    <td>{{r.Fecha| date : 'yyyy'}}</td>
+
+                                                    <td>
+                                                        <span ng-show="r.TipoServicio == 'INSTALACION'">X</span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="r.TipoServicio == 'PREVENTIVO'">X</span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="r.TipoServicio == 'CORRECTIVO'">X</span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="r.TipoServicio == 'SERVICIO'">X</span>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="r.TipoServicio == 'TRASLADO'">X</span>
+                                                    </td>
+
+                                                    <td>
+                                                        <p style="word-break: break-all;">{{r.Observaciones}}</p>
+                                                    </td>
+                                                    <td>
+                                                        {{r.Responsable}}
+                                                    </td>
+                                                    <td>
+                                                        {{r.NumeroReporte}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p>
+                        <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                        <strong style="font-size: 1em">ELABORÓ</strong><br>
+                        {{Encabezado.Elaboro}}<br>
+                        {{Encabezado.CargoElaboro}}
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p>
+                        <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                        <strong style="font-size: 1em">REVISÓ</strong><br>
+                        {{Encabezado.Reviso}}<br>
+                        {{Encabezado.CargoReviso}}
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <p>
+                        <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                        <strong style="font-size: 1em">APROBÓ</strong><br>
+                        {{Encabezado.Aprobo}}<br>
+                        {{Encabezado.CargoAprobo}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ToPrint">
+            <div class="panel-body" ng-show="!ver_reportes">
+                <div class="row">
+                    <div class="text-center col-sm-12 col-xs-12" style="margin-top: 25px;">
+                        <button ng-show="!HojaVidaId" class="btn btn-default" ng-click="GuardarBorrador()">Guardar Borrador</button>
+                        <button ng-show="!HojaVidaId" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                        <button ng-show="HojaVida" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                        <button ng-show="HojaVida && IsAdminSistemas" class="btn btn-success" ng-click="UpdateHojaVida()">Actualizar</button>
+                        <!--<button ng-show="HojaVida" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>-->
+                        <input ng-show="!HojaVidaId" type="reset" class="btn btn-danger" ng-click="Reset()" />
+                    </div>
+                    <div class="col-md-10 offset-md-1">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-4">
+                                <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                            </div>
+                            <div class="col-sm-4 col-xs-4 float-right text-center" bind-html-compile="Encabezado.EncabezadoHojaVida">
+                            </div>
+                            <div class="col-sm-4 col-xs-4 text-right">
+                                <h5 style="margin-right: 1px"><strong>NUMERO DE HOJA DE VIDA</strong></h5>
+                                <input ng-show="HojaVida" style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="ficha.HojaVidaId" class="form-control" readonly>
+                                <input ng-show="!HojaVida" style="font-size: 1.5em; width: 180px; float: right;margin-right: 1px"  type="text" ng-model="NumeroHojaVida" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="col-sm-12 col-xs-12">
+                                <h4><strong>1.FICHA TECNICA</strong></h4>
+                            </div>
+                        </div>
+                        <form role="form" name="Datos" novalidate>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr ng-show="Frecuencias.length > 1">
+                                                <th scope="row" style="width: 250px;" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FRECUENCIA DE MANTENIMIENTO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.FrecuenciaMantenimientoId.$valid, 'has-error': Datos.FrecuenciaMantenimientoId.$invalid
+                                                                        || ficha.FrecuenciaMantenimientoId == '--'}">
+                                                        <!--                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.FrecuenciaMantenimiento" name="FrecuenciaMantenimientoId" class="form-control caja_texto"  capitalize 
+                                                                                                                   maxlength="199"readonly>-->
+                                                        <select class="form-control" ng-model="ficha.FrecuenciaMantenimientoId" name="FrecuenciaMantenimientoId"
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option selected>--</option>
+                                                            <option ng-repeat="f in Frecuencias track by $index" ng-selected="f.FrecuenciaMantenimientoId == ficha.FrecuenciaMantenimientoId" 
+                                                                    ng-value='{{f.FrecuenciaMantenimientoId}}' value='{{f.FrecuenciaMantenimientoId}}'> {{f.Nombre}}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <th scope="row" style="width: 250px;" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FRECUENCIA DE CALIBRACIÓN</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.FrecuenciaCalibracionId.$valid, 'has-error': Datos.FrecuenciaCalibracionId.$invalid
+                                                                        || ficha.FrecuenciaCalibracionId == '--'}">
+                                                        <!--                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.FrecuenciaCalibracion" name="FrecuenciaCalibracionId" class="form-control caja_texto"  capitalize 
+                                                                                                                   maxlength="199"readonly>-->
+                                                        <select class="form-control" ng-model="ficha.FrecuenciaCalibracionId" name="FrecuenciaCalibracionId"
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option ng-repeat="f in Frecuencias track by $index" ng-selected="f.FrecuenciaMantenimientoId == ficha.FrecuenciaCalibracionId" 
+                                                                    ng-value='{{f.FrecuenciaMantenimientoId}}' value='{{f.FrecuenciaMantenimientoId}}'> {{f.Nombre}}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th  ng-show="Sedes.length > 1" scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SEDE</th>
+                                                <td  ng-show="Sedes.length > 1">
+                                                    <div ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid
+                                                                        || ficha.SedeId == '--'}">
+                                                        <!--                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Sede" name="SedeId" class="form-control caja_texto"  capitalize 
+                                                                                                                   maxlength="199"readonly>-->
+                                                        <select class="form-control" ng-model="ficha.SedeId" name="SedeId"  ng-change="ChangeServicios()"
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option selected>--</option>
+                                                            <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId == ficha.SedeId" ng-value='{{s.SedeId}}' 
+                                                                    value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERVICIO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid
+                                                                        || ficha.ServicioId == '--'}">
+                                                        <!--                                                    <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Servicio" name="ServicioId" class="form-control caja_texto"  capitalize 
+                                                                                                                   maxlength="199"readonly>-->
+                                                        <select class="form-control" ng-model="ficha.ServicioId" name="ServicioId" 
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option selected="">--</option>
+                                                            <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId == ficha.ServicioId" 
+                                                                    ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">UBICACION</th>
+                                                <td>
+                                                    <div  ng-class="{'has-success': Datos.Ubicacion.$valid, 'has-error': Datos.Ubicacion.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Ubicacion" name="Ubicacion" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize ng-model="ficha.Ubicacion" name="Ubicacion" class="form-control caja_texto" required capitalize 
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA ULTIMO MANTENIMIENTO</th>
+                                                <td>
+                                                    <div>
+                                                        <input type="text" ng-show="HojaVida"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" ng-model="ficha.FechaUltimoMantenimiento" name="FechaUltimoMantenimiento" class="form-control caja_texto" >
+                                                        <input ng-show="!HojaVida" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" 
+                                                               ng-model="ficha.FechaUltimoMantenimiento" name="FechaUltimoMantenimiento" class="form-control caja_texto">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA ULTIMA CALIBRACIÓN</th>
+                                                <td>
+                                                    <div>
+                                                        <input ng-show="HojaVida" type="text"  ng-model="ficha.FechaCalibracion" name="FechaCalibracion" class="form-control caja_texto"   onfocus="(this.type = 'date')" onblur="(this.type = 'text')"  
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" ng-model="ficha.FechaCalibracion" name="FechaCalibracion" 
+                                                               class="form-control caja_texto">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,1 IDENTICICACION</strong></h6>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="text-center">
+                                        <!--                                        <img ng-show="HojaVida" ng-if="image" src="{{image}}" style="height: 260px; max-height: 260px; max-width: 500px;" alt="">-->
+                                        <img ng-if="image" width="500" src="{{image}}" style="height: 237px; max-height: 237px; width: 350px" alt="">
+                                        <input type="file" my-upload accept="image/*" image="DataImg" resize-max-height="800" resize-max-width="800" 
+                                               resize-quality="0.7" resize-type="image/jpg" ng-image-compress ng-model="ARCHIVO" class="form-control caja_texto">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO DE ARTICULO</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.TipoArticulo.$valid, 'has-error': Datos.TipoArticulo.$invalid}">
+                                                        <select class="form-control" ng-model="ficha.TipoArticulo" name="TipoArticulo" 
+                                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                            <option value="">--</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'Computador Torre'">Computador Torre</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'Computador All In One'">Computador All In One</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'Computador Portatil'">Computador Portatil</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'DVR'">DVR</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'Impresora'">Impresora</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'Camara'">Camara</option>
+                                                            <option ng-selected="ficha.TipoArticulo == 'TV BOX'">TV BOX</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE EQUIPO</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                                                        <input  ng-show="HojaVida" type="text" capitalize ng-model="ficha.Nombre" name="Nombre" class="form-control caja_texto"  capitalize 
+                                                                maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Nombre" ng-model="ficha.Nombre" class="form-control caja_texto"
+                                                               maxlength="199"required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-hide="ficha.TipoArticulo == 'Impresora' || ficha.TipoArticulo == 'DVR'">
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">LICENCIAS</th>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">OFFICE</label>
+                                                        <div class="form-check float-right">
+                                                            <input class="form-check-input" ng-checked="ficha.LicenciaOffice" ng-click="ficha.LicenciaOffice = !ficha.LicenciaOffice" 
+                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">WINDOWS</label>
+                                                        <div class="form-check float-right">
+                                                            <input class="form-check-input" ng-checked="ficha.LicenciaWindows" ng-click="ficha.LicenciaWindows = !ficha.LicenciaWindows" 
+                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label class="text-uppercase" style="font-size: 0.8em; transform: translate(0px,10px)">ANTIVIRUS</label>
+                                                        <div class="form-check float-right">
+                                                            <input class="form-check-input" ng-checked="ficha.LicenciaAntivirus" ng-click="ficha.LicenciaAntivirus = !ficha.LicenciaAntivirus" 
+                                                                   style="width: 20px;height: 20px;transform: translate(0px,5px);" type="checkbox">
+                                                        </div>
+                                                    </div>
+                                                </td>                                            
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FABRICANTE</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.Fabricante.$valid, 'has-error': Datos.Fabricante.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Fabricante" name="Fabricante" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Fabricante" ng-model="ficha.Fabricante" class="form-control caja_texto"
+                                                               maxlength="199"required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MODELO</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.Modelo.$valid, 'has-error': Datos.Modelo.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.Modelo" name="Modelo" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Modelo" ng-model="ficha.Modelo" class="form-control caja_texto"
+                                                               maxlength="199"required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERIE</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.NSerial.$valid, 'has-error': Datos.NSerial.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.NSerial" name="NSerial" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="NSerial" ng-model="ficha.NSerial" class="form-control caja_texto"
+                                                               maxlength="199"required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">S.O.</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.SO.$valid, 'has-error': Datos.SO.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.SO" name="SO" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="SO" ng-model="ficha.SO" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERIE S.O.</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.SerieSO.$valid, 'has-error': Datos.SerieSO.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize ng-model="ficha.SerieSO" name="SerieSO" class="form-control caja_texto"  capitalize 
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="SerieSO" ng-model="ficha.SerieSO" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA DE INSTALACIÓN</th>
+                                                <td colspan="3">
+                                                    <div ng-class="{'has-success': Datos.FechaInstalacion.$valid, 'has-error': Datos.FechaInstalacion.$invalid}">
+                                                        <input ng-show="HojaVida"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" type="text" ng-model="ficha.FechaInstalacion" name="FechaAdquisicion" class="form-control caja_texto"  
+                                                               maxlength="199">
+                                                        <input ng-show="!HojaVida" type="text"  onfocus="(this.type = 'date')" onblur="(this.type = 'text')" name="FechaInstalacion" ng-model="ficha.FechaInstalacion" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;"><strong>1,2 INFORMACION TECNICA</strong></h6>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <!--                                            <tr>
+                                                                                            <th scope="row" colspan="4" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">TIPO DE RIESGO</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="text-center" style="vertical-align: middle">
+                                                                                                <div class="col-xs-6" style="text-align: right;transform: translate(0px,7px)">I</div>
+                                                                                                <div class="col-xs-6" style="text-align: left"><input type="checkbox" ng-checked="ficha.TipoRiesgo === 'I'"  style="width: 20px;height: 20px" ng-click="ficha.TipoRiesgo = 'I'"></div>
+                                                                                            </td>
+                                                                                            <td class="text-center" style="vertical-align: middle">
+                                                                                                <div class="col-xs-6" style="text-align: right;transform: translate(0px,7px)">IIA</div>
+                                                                                                <div class="col-xs-6" style="text-align: left"><input type="checkbox" ng-checked="ficha.TipoRiesgo === 'IIA'"  style="width: 20px;height: 20px" ng-click="ficha.TipoRiesgo = 'IIA'"></div>
+                                                                                            </td>
+                                                                                            <td class="text-center" style="vertical-align: middle">
+                                                                                                <div class="col-xs-6" style="text-align: right;transform: translate(0px,7px)">IIB</div>
+                                                                                                <div class="col-xs-6" style="text-align: left"><input type="checkbox" ng-checked="ficha.TipoRiesgo === 'IIB'"  style="width: 20px;height: 20px" ng-click="ficha.TipoRiesgo = 'IIB'"></div>
+                                                                                            </td>
+                                                                                            <td class="text-center" style="vertical-align: middle">
+                                                                                                <div class="col-xs-6" style="text-align: right;transform: translate(0px,7px)">III</div>
+                                                                                                <div class="col-xs-6" style="text-align: left"><input type="checkbox" ng-checked="ficha.TipoRiesgo === 'III'"  style="width: 20px;height: 20px" ng-click="ficha.TipoRiesgo = 'III'"></div>
+                                                                                            </td>
+                                                                                        </tr>-->
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PROCESADOR</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Procesador.$valid, 'has-error': Datos.Procesador.$invalid}">
+                                                        <input ng-show="HojaVida" type="text" capitalize name="Procesador" ng-model="ficha.Procesador" class="form-control caja_texto"
+                                                               maxlength="199" >
+                                                        <input ng-show="!HojaVida" type="text" capitalize name="Procesador" ng-model="ficha.Procesador" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">RAM</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Ram.$valid, 'has-error': Datos.Ram.$invalid}">
+                                                        <input type="text" ng-show="HojaVida" capitalize name="Ram" ng-model="ficha.Ram" class="form-control caja_texto"
+                                                               maxlength="199" >
+                                                        <input type="text" ng-show="!HojaVida" capitalize name="Ram" ng-model="ficha.Ram" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">DISCO DURO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.DiscoDuro.$valid, 'has-error': Datos.DiscoDuro.$invalid}">
+                                                        <input type="text" ng-show="HojaVida" capitalize name="DiscoDuro" ng-model="ficha.DiscoDuro" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                        <input type="text" ng-show="!HojaVida" capitalize name="DiscoDuro" ng-model="ficha.DiscoDuro" class="form-control caja_texto" 
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">IP</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.IP.$valid, 'has-error': Datos.IP.$invalid}">
+                                                        <input type="text" ng-show="HojaVida" capitalize name="IP" ng-model="ficha.IP" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                        <input type="text" ng-show="!HojaVida" capitalize name="IP" ng-model="ficha.IP" class="form-control caja_texto" 
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CONTADOR</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Contador.$valid, 'has-error': Datos.Contador.$invalid}">
+                                                        <input type="text" ng-show="HojaVida" capitalize name="Contador" ng-model="ficha.Contador" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                        <input type="text" ng-show="!HojaVida" capitalize name="Contador" ng-model="ficha.Contador" class="form-control caja_texto" 
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">PUERTO</th>
+                                                <td>
+                                                    <div ng-class="{'has-success': Datos.Puerto.$valid, 'has-error': Datos.Puerto.$invalid}">
+                                                        <input type="text" ng-show="HojaVida" capitalize name="Puerto" ng-model="ficha.Puerto" class="form-control caja_texto"
+                                                               maxlength="199">
+                                                        <input type="text" ng-show="!HojaVida" capitalize name="Puerto" ng-model="ficha.Puerto" class="form-control caja_texto" 
+                                                               maxlength="199">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" colspan="7" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">ACCESORIOS</th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-center fondoCelda" colspan="2" style="background-color: rgba(0,0,0,0.1) !important;">NOMBRE</th>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MARCA</th>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">MODELO</th>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">SERIE</th>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">FECHA INSTALACIÓN</th>
+                                                <th scope="row" class="text-center fondoCelda" style="background-color: rgba(0,0,0,0.1) !important;">CANTIDAD</th>
+                                            </tr>
+                                            <tr ng-mouseover="Mouse = true" ng-mouseleave="Mouse = false"  ng-repeat="a in ficha.Accesorios" 
+                                                data-container="body" data-toggle="popover" ng-show="a.Estado == 'Activo'"
+                                                data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+                                                <td ng-hide="a.EditMode" colspan="2">
+                                                    {{a.Nombre}}
+                                                </td>
+                                                <td ng-hide="a.EditMode">
+                                                    {{a.Marca}}
+                                                </td>
+                                                <td ng-hide="a.EditMode">
+                                                    {{a.Modelo}}
+                                                </td>
+                                                <td ng-hide="a.EditMode">
+                                                    {{a.NSerial}}
+                                                </td>
+                                                <td ng-hide="a.EditMode">
+                                                    {{a.FechaInstalacion}}
+                                                </td>
+                                                <td ng-hide="a.EditMode">
+                                                    {{a.Cantidad}}
+                                                </td>
+                                                <td ng-show="a.EditMode" colspan="2">
+                                                    <input type="text" capitalize ng-model="EditAccesorio.Nombre" class="form-control caja_texto">
+                                                </td>
+                                                <td ng-show="a.EditMode">
+                                                    <input type="text" capitalize ng-model="EditAccesorio.Marca" class="form-control caja_texto">
+                                                </td>
+                                                <td ng-show="a.EditMode">
+                                                    <input type="text" capitalize ng-model="EditAccesorio.Modelo" class="form-control caja_texto">
+                                                </td>
+                                                <td ng-show="a.EditMode">
+                                                    <input type="text" capitalize ng-model="EditAccesorio.NSerial" class="form-control caja_texto">
+                                                </td>
+                                                <td ng-show="a.EditMode">
+                                                    <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')"  ng-model="EditAccesorio.FechaInstalacion" class="form-control caja_texto">
+                                                </td>
+                                                <td ng-show="a.EditMode">
+                                                    <input type="text" ng-model="EditAccesorio.Cantidad" class="form-control caja_texto" onfocus="(this.type = 'number')" onblur="(this.type = 'text')" >
+                                                </td>
+                                                <td style="position:absolute;"  ng-show="Mouse">
+                                                    <span ng-hide="a.EditMode"><button class="btn btn-primary" ng-click="Edit($index)"><i class="fa fa-pencil"></i> </button></span>
+                                                    <span ng-hide="a.EditMode"><button class="btn btn-danger" ng-click="DeleteAccesorio($index)"><i class="fa fa-trash-o"></i> </button></span> 
+                                                    <span ng-show="a.EditMode"><button class="btn btn-success" ng-click="EditarAccesorio($index)"><i class="fa fa-check"></i> </button></span>
+                                                    <span ng-show="a.EditMode"><button class="btn btn-danger" ng-click="Cancelar($index)"><i class="fa fa-times"></i> </button></span>    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <input type="text" capitalize ng-model="accesorio.Nombre" class="form-control caja_texto" ng-enter="AddAccesorio()" maxlength="199">
+                                                </td>
+                                                <td>
+                                                    <input type="text" capitalize ng-model="accesorio.Marca" class="form-control caja_texto" ng-enter="AddAccesorio()" maxlength="199">
+                                                </td>
+                                                <td>
+                                                    <input type="text" capitalize ng-model="accesorio.Modelo" class="form-control caja_texto" ng-enter="AddAccesorio()" maxlength="199">
+                                                </td> 
+                                                <td>
+                                                    <input type="text" capitalize ng-model="accesorio.NSerial" class="form-control caja_texto" ng-enter="AddAccesorio()" maxlength="199">
+                                                </td>
+                                                <td>
+                                                    <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" ng-model="accesorio.FechaInstalacion" class="form-control caja_texto" ng-enter="AddAccesorio()" maxlength="199">
+                                                </td>
+                                                <td>
+                                                    <input type="number" ng-model="accesorio.Cantidad" class="form-control caja_texto" ng-enter="AddAccesorio()" min="0">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div ng-class="{'has-success': Datos.RecomendacioneFabricante.$valid, 'has-error': Datos.RecomendacioneFabricante.$invalid}">
+                                        <h6 class="text-center cajaTitulo" style="background-color: rgba(0,0,0,0.2) !important;""><strong>1,3 OBSERVACIONES</strong></h6>
+                                        <textarea ng-show="HojaVida" style="margin-top: -10px" name="RecomendacioneFabricante" class="form-control" ng-model="ficha.RecomendacioneFabricante" rows="7" 
+                                                  maxlength="5000"></textarea>
+                                        <textarea ng-show="!HojaVida" style="margin-top: -10px" name="RecomendacioneFabricante" class="form-control" ng-model="ficha.RecomendacioneFabricante" rows="7" 
+                                                  maxlength="5000"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <p>
+                                        <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                        <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                        {{Encabezado.Elaboro}}<br>
+                                        {{Encabezado.CargoElaboro}}
+                                    </p>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <p>
+                                        <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                        <strong style="font-size: 1em">REVISÓ</strong><br>
+                                        {{Encabezado.Reviso}}<br>
+                                        {{Encabezado.CargoReviso}}
+                                    </p>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <p>
+                                        <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                        <strong style="font-size: 1em">APROBÓ</strong><br>
+                                        {{Encabezado.Aprobo}}<br>
+                                        {{Encabezado.CargoAprobo}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-center col-xs-12" style="margin-top: 25px;">
+                                <button ng-show="!HojaVidaId" class="btn btn-default" ng-click="GuardarBorrador()">Guardar Borrador</button>
+                                <button ng-show="!HojaVidaId" class="btn btn-success" ng-click="Guardar()">Guardar</button>
+                                <!--<button ng-show="HojaVida" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>-->
+                                <input ng-show="!HojaVidaId" type="reset" class="btn btn-danger" ng-click="Reset()" />
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" ng-if="ver_reportes">
+                <div class="row" ng-controller="ListadoReportesSistemasCtrl">
+                    <div class="text-center col-xs-12" style="margin-top: 25px;">
+                        <button ng-show="HojaVida" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>
+                    </div>
+                    <div class="col-md-10 offset-md-1"  id="myElementId">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 float-right text-center" bind-html-compile="Encabezado.EncabezadoHojaVida">
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>EQUIPO</td>
+                                    <td colspan="2">
+                                        {{ficha.Equipo}}
+                                    </td>
+
+                                    <td>MARCA</td>
+                                    <td colspan="2">
+                                        {{ficha.Marca}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>MODELO</td>
+                                    <td colspan="2">
+                                        {{ficha.Modelo}}
+                                    </td>
+
+                                    <td>SERIE</td>
+                                    <td colspan="2">
+                                        {{ficha.Serie}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table id="TablaReportes" class="table table-bordered">
+                            <tbody>
+                                <tr style="background: #888;">
+                                    <td colspan="3">FECHA</td>
+                                    <th rowspan="2" style="height: 150px" class="verticalTableHeader">
+                                        <span>INSTALACIÓN</span>
+                                    </th>
+                                    <th rowspan="2" class="verticalTableHeader" style="height: 150px">
+                                        <span> MTT. PREVENTIVO</span>
+                                    </th>
+                                    <th rowspan="2" class="verticalTableHeader" style="height: 150px">
+                                        <span> MTT. CORRECTIVO</span>
+                                    </th>
+                                    <th rowspan="2" class="verticalTableHeader" style="height: 150px">
+                                        <span> SERVICIO</span>
+                                    </th>
+                                    <th rowspan="2" class="verticalTableHeader" style="height: 150px">
+                                        <span> TRASLADO</span>
+                                    </th>
+                                    <th style="width: 500px;" rowspan="2">
+                                        OBSERVACIÓN
+                                    </th>
+                                    <th rowspan="2">
+                                        RESPONSABLE
+                                    </th>
+                                    <th rowspan="2">
+                                        No. REPORTE
+                                    </th>
+                                </tr>
+                                <tr style="background: #888;">
+                                    <td>DIA</td>
+                                    <td>MES</td>
+                                    <td>AÑO</td>
+                                </tr>
+                                <tr ng-repeat="r in Reportes">
+                                    <td>{{r.Fecha| date : 'dd'}}</td>
+                                    <td>{{r.Fecha| date : 'MM'}}</td>
+                                    <td>{{r.Fecha| date : 'yyyy'}}</td>
+
+                                    <td>
+                                        <span ng-show="r.TipoServicio == 'INSTALACION'">X</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="r.TipoServicio == 'PREVENTIVO'">X</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="r.TipoServicio == 'CORRECTIVO'">X</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="r.TipoServicio == 'SERVICIO'">X</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="r.TipoServicio == 'TRASLADO'">X</span>
+                                    </td>
+
+                                    <td>
+                                        <p style="word-break: break-all;">{{r.Observaciones.slice(0, 100)}}...</p>
+                                    </td>
+                                    <td>
+                                        {{r.Responsable}}
+                                    </td>
+                                    <td>
+                                        <a ng-show="r.TipoReporte == 'Manual'" ui-sref="sistemas.reporte_servicio_sistemas({Reporte_Id: r.ReporteId})" target="_blank">{{r.NumeroReporte}}</a>
+                                        <a ng-show="r.TipoReporte == 'Externo'" ng-href="/Polivalente/upload_files/{{r.ReporteArchivo}}" target="_blank">{{r.NumeroReporte}}</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                    {{Encabezado.Elaboro}}<br>
+                                    {{Encabezado.CargoElaboro}}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                                    {{Encabezado.Reviso}}<br>
+                                    {{Encabezado.CargoReviso}}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">APROBÓ</strong><br>
+                                    {{Encabezado.Aprobo}}<br>
+                                    {{Encabezado.CargoAprobo}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

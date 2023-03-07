@@ -1,0 +1,394 @@
+<div class="col-sm-12" ng-controller="ListadoMaternasCtrl">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h2>Listado de maternas</h2>
+            <!--            <div class="filter">
+                            <div class="pull-right col-sm-6">
+                                <button class="btn btn-primary" ng-click="ExcelMaternaModal()">Subir Excel</button>
+                            </div>
+                        </div>-->
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <button class="btn btn-info" ng-click="CrearMaternaModal()">Crear Materna</button>
+
+            <div class="col-xs-12" ng-if="cargado">
+                <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                    <thead class="bordered-orange">
+                        <tr>
+                            <th class="text-center" style="width: 3%">ID</th>
+                            <th class="text-center" style="width: 10%">Nombres</th>
+                            <th class="text-center" style="width: 5%">Documento</th>
+                            <th class="text-center" style="width: 7%">F.P.P.</th>
+                            <th class="text-center" style="width: 8%">Municipio</th>
+                            <th class="text-center" style="width: 8%">Teléfono Materna</th>
+                            <th class="text-center" style="width: 10%">Lider</th>
+                            <th class="text-center" style="width: 8%">Teléfono Lider</th>
+                            <th class="text-center" style="width: 8%">Estado</th>
+                            <th class="text-center" style="width: 10%">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="CrearMaternaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Materna</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.Documento.$valid, 'has-error': Datos.Documento.$invalid}">
+                                    <label for="Documento">Documento</label>
+                                    <input type="text" capitalize class="form-control" id="Documento" ng-model="Materna.Documento" 
+                                           ng-change="GetMaternaByDocumento()" maxlength="280"  name="Documento" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.Nombres.$valid, 'has-error': Datos.Nombres.$invalid}">
+                                    <label for="Nombres">Nombres</label>
+                                    <input type="text" capitalize class="form-control" id="Nombres" ng-model="Materna.Nombres" maxlength="280"  name="Nombres" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.Telefono.$valid, 'has-error': Datos.Telefono.$invalid}">
+                                    <label for="Telefono">Telefono</label>
+                                    <input type="tel" class="form-control" id="Telefono" ng-model="Materna.Telefono" maxlength="280"  name="Telefono" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" ng-show="Materna.EdadUltimaEcografia == ''">
+                                <div ng-class="{'has-success': Datos.FechaUltimaRegla.$valid, 'has-error': Datos.FechaUltimaRegla.$invalid}">
+                                    <label for="FechaUltimaRegla">F.U.R.</label>
+                                    <input type="text" class="form-control" id="FechaUltimaRegla" ng-model="Materna.FechaUltimaRegla" ng-change="CalcularFUR()" name="FechaUltimaRegla" 
+                                           onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                            <div class="col-sm-6" ng-show="Materna.FechaUltimaRegla == ''">
+                                <div ng-class="{'has-success': Datos.EdadUltimaEcografia.$valid, 'has-error': Datos.EdadUltimaEcografia.$invalid}" >
+                                    <label for="EdadUltimaEcografia">E.G. primera ecografia</label>
+                                    <input type="text" onfocus="(this.type = 'number')" onblur="(this.type = 'text')" class="form-control" id="EdadUltimaEcografia" ng-model="Materna.EdadUltimaEcografia" ng-change="CalcularEdadGestacional()" name="EdadUltimaEcografia" step=".00">
+                                </div>
+                            </div>
+                            <div class="col-sm-6" ng-show="Materna.FechaUltimaRegla == ''">
+                                <div ng-class="{'has-success': Datos.FechaPrimeraEcografia.$valid, 'has-error': Datos.FechaPrimeraEcografia.$invalid}">
+                                    <label for="FechaPrimeraEcografia">Fecha Primera Ecografia</label>
+                                    <input type="text" class="form-control" id="FechaPrimeraEcografia" ng-model="Materna.FechaPrimeraEcografia" ng-change="CalcularEdadGestacional()" name="FechaPrimeraEcografia" 
+                                           onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.FechaProbableParto.$valid, 'has-error': Datos.FechaProbableParto.$invalid}">
+                                    <label for="EdadGestacional">F.P.P.</label>
+                                    <input type="text" class="form-control" id="FechaProbableParto" ng-model="Materna.FechaProbableParto" name="FechaProbableParto" 
+                                           onfocus="(this.type = 'date')" onblur="(this.type = 'text')" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.DepartamentoId.$valid, 'has-error': Datos.DepartamentoId.$invalid}">
+                                    <label for="DepartamentoId">Departamento</label>
+                                    <select class="form-control" id="DepartamentoId" ng-change="ChangeDepartamento()" ng-model="Materna.DepartamentoId" name="DepartamentoId" 
+                                            ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" required>
+                                        <option value="">--</option>                              
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.MunicipioId.$valid, 'has-error': Datos.MunicipioId.$invalid}">
+                                    <label for="MunicipioId">Municipio</label>
+                                    <select class="form-control" id="MunicipioId" ng-change="ChangeMunicipio()" ng-model="Materna.MunicipioId" name="MunicipioId" 
+                                            ng-options="item.CiudadId as item.Ciudad for item in Municipios" required>
+                                        <option value="">--</option>                              
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="EPS">EPS</label>
+                                <div angucomplete-alt id="ex8"
+                                     placeholder="EPS"
+                                     maxlength="100"
+                                     pause="100"
+                                     selected-object="Materna.EPSId"
+                                     local-data="EPSs"
+                                     search-fields="Nombre"
+                                     title-field="Nombre,TipoEPS"
+                                     minlength="1"
+                                     input-class="form-control form-control-small"
+                                     match-class="highlight"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': Datos.LiderId.$valid, 'has-error': Datos.LiderId.$invalid}">
+                                    <label for="LiderId">Lider</label>
+                                    <select class="form-control" id="LiderId" ng-model="Materna.LiderId" name="LiderId" 
+                                            ng-options="item.LiderId as item.Nombres for item in Lideres" required>
+                                        <option value="">--</option>                              
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarMaterna()">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="EventosModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Listado de eventos</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blue">
+                            <tr>
+                                <th class="text-center" style="width: 3%">ID</th>
+                                <th class="text-center" style="width: 10%">Fecha</th>
+                                <th class="text-center" style="width: 10%">Nombres</th>
+                                <th class="text-center" style="width: 10%">Tipo Evento</th>
+                                <th class="text-center" style="width: 10%">Tipo Transporte</th>
+                                <th class="text-center" style="width: 10%">Total dinero entregado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="e in Eventos">
+                                <td>{{e.EventoId}}</td>
+                                <td>{{e.CreatedAt}}</td>
+                                <td>{{e.Nombres}}</td>
+                                <td>{{e.TipoEvento}}</td>
+                                <td>{{e.TipoTransporte}}</td>
+                                <td>{{e.TotalEntregado | currency : '$'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+<!--                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarMaterna()">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ExcelMaternaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Cargar Excel de las Maternas</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12">
+
+                        <div class="col-xs-12 col-md-3">
+                            <h5>Seleccione el archivo que desee subir</h5>
+                        </div>
+
+                        <div class="col-xs-12 col-md-1" type="file">
+                            <div class="fileUpload" style="color: #9E9E9E; transform: translate(-15px,-15px); ">
+                                <span><i class="fa fa-folder-open fa-2x"></i></span>
+                                <js-xls onread="read" onerror="error"></js-xls>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- Barra de progreso -->
+                        <br />
+                        <!-- footer de la ventana-->
+                        <div class="col-sm-12">
+                            <hot-table
+                                row-headers="true"
+                                min-spare-rows="minSpareRows"
+                                datarows="Excel">
+                                <hot-column data="NOMBRE" title="'Nombre'" read-only></hot-column>
+                                <hot-column data="EPS" title="'EPS'" read-only></hot-column>
+                                <hot-column data="FECHA INGRESO" title="'Fecha Ingreso'" width="200" read-only></hot-column>
+                                <hot-column data="ADMISION" title="'Admision'" read-only></hot-column>
+                                <hot-column data="EPS2" title="'EPS'" type="'autocomplete'">
+                                    <hot-autocomplete datarows="Eps in EPSs"></hot-autocomplete>
+                                </hot-column>
+                                <hot-column data="PROCEDIMIENTO" title="'Procedimiento'" width="150" read-only></hot-column>
+                                <!--<hot-column data="isActive" title="'Is active'" type="'checkbox'" width="65" checked-template="'Yes'" unchecked-template="'No'"></hot-column>-->
+                            </hot-table>
+                        </div>
+                        <!--
+                        <a href="#ventana1" data-toggle="modal">
+                            <div class="col-sm-6 col-sm-3 caja_der        verde" style="text-align: center">
+                                <i class="fa fa-upload icono_grandes"></i>
+                                <h4>Subir lista de empleados</h4>
+                            </div>
+                        </a>
+
+                        <a href="#ventana2" data-toggle="modal">
+                            <div class="col-sm-6 col-sm-3 caja_der verde" style="text-align: center">
+                                <i class="fa fa-list icono_grandes"></i>
+                                <h4>Lista de empleados</h4>
+                            </div>
+                        </a>-->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarMaterna()">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="ResetForm()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="UpdateMaternaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Ver Materna</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="UDatos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.Documento.$valid, 'has-error': UDatos.Documento.$invalid}">
+                                    <label for="Documento">Documento</label>
+                                    <input type="text" capitalize class="form-control" id="Documento" ng-model="UMaterna.Documento" readonly maxlength="280"  name="Documento">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.Nombres.$valid, 'has-error': UDatos.Nombres.$invalid}">
+                                    <label for="Nombres">Nombres</label>
+                                    <input type="text" capitalize class="form-control" id="Nombres" ng-model="UMaterna.Nombres" maxlength="280"  name="Nombres" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.FechaUltimaRegla.$valid, 'has-error': UDatos.FechaUltimaRegla.$invalid}">
+                                    <label for="FechaUltimaRegla">F.U.R.</label>
+                                    <input type="text" class="form-control" id="FechaUltimaRegla" ng-model="UMaterna.FechaUltimaRegla" ng-change="CalcularFUR_U()" name="FechaUltimaRegla" 
+                                           onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.EdadUltimaEcografia.$valid, 'has-error': UDatos.EdadUltimaEcografia.$invalid}" >
+                                    <label for="EdadUltimaEcografia">E.G. primera ecografia</label>
+                                    <input type="text" onfocus="(this.type = 'number')" onblur="(this.type = 'text')" class="form-control" id="EdadUltimaEcografia" ng-model="UMaterna.EdadUltimaEcografia" ng-change="CalcularEdadGestacional_U()" name="EdadUltimaEcografia" step=".00">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.FechaPrimeraEcografia.$valid, 'has-error': UDatos.FechaPrimeraEcografia.$invalid}">
+                                    <label for="FechaPrimeraEcografia">Fecha Primera Ecografia</label>
+                                    <input type="text" class="form-control" id="FechaPrimeraEcografia" ng-model="UMaterna.FechaPrimeraEcografia" ng-change="CalcularEdadGestacional_U()" name="FechaPrimeraEcografia" 
+                                           onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.FechaProbableParto.$valid, 'has-error': UDatos.FechaProbableParto.$invalid}">
+                                    <label for="EdadGestacional">F.P.P</label>
+                                    <input type="text" class="form-control" id="FechaProbableParto" ng-model="UMaterna.FechaProbableParto" name="FechaProbableParto" 
+                                           onfocus="(this.type = 'date')" onblur="(this.type = 'text')" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.Telefono.$valid, 'has-error': UDatos.Telefono.$invalid}">
+                                    <label for="Telefono">Telefono</label>
+                                    <input type="tel" class="form-control" id="Telefono" ng-model="UMaterna.Telefono" maxlength="280"  name="Telefono" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.DepartamentoId.$valid, 'has-error': UDatos.DepartamentoId.$invalid}">
+                                    <label for="DepartamentoId">Departamento</label>
+                                    <select class="form-control" id="DepartamentoId" ng-change="ChangeUDepartamento()" ng-model="UMaterna.DepartamentoId" name="DepartamentoId" 
+                                            ng-options="item.DepartamentoId as item.Departamento for item in Departamentos" required>
+                                        <option value="">--</option>                              
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.MunicipioId.$valid, 'has-error': UDatos.MunicipioId.$invalid}">
+                                    <label for="MunicipioId">Municipio</label>
+                                    <select class="form-control" id="MunicipioId" ng-change="ChangeUMunicipio()" ng-model="UMaterna.MunicipioId" name="MunicipioId" 
+                                            ng-options="item.CiudadId as item.Ciudad for item in Municipios" required>
+                                        <option value="">--</option>                              
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="EPS">EPS</label>
+                                <div angucomplete-alt id="Update"
+                                     placeholder="EPS"
+                                     maxlength="100"
+                                     pause="100"
+                                     selected-object="UMaterna.EPSId"
+                                     local-data="EPSs"
+                                     search-fields="Nombre"
+                                     title-field="Nombre,TipoEPS"
+                                     minlength="1"
+                                     input-class="form-control form-control-small"
+                                     match-class="highlight"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-class="{'has-success': UDatos.LiderId.$valid, 'has-error': UDatos.LiderId.$invalid}">
+                                    <label for="LiderId">Lider</label>
+                                    <select class="form-control" id="LiderId" ng-model="UMaterna.LiderId" name="LiderId" 
+                                            ng-options="item.LiderId as item.Nombres for item in Lideres" required>
+                                        <option value="">--</option>                              
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="ActualizarMaterna()">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

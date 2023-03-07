@@ -1,0 +1,48 @@
+<form role="form" name="Datos" novalidate>
+  <div class="row">
+    <div class="col-sm-12">
+      <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+        <label for="Fecha">Fecha de solicitud</label>
+        <input type="text" class="form-control" ng-model="Sol.Fecha" name="Fecha"
+        onfocus="(this.type = 'datetime-local')" onblur="(this.type = 'text')" disabled />
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div ng-class="{'has-success': Datos.Linea.$valid, 'has-error': Datos.Linea.$invalid}">
+        <label for="Linea">Lineas</label>
+        <select class="form-control" ng-model="LineaSeleccionada" ng-change="ChangeLinea()"
+          style="height: 35.59px !important;">
+          <option value="">--</option>
+          <option ng-repeat="t in Telefonos track by $index" ng-value="'{{$index}}'">{{t.Responsable}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Responsable</label>
+          <input type="text" class="form-control" ng-model="Responsable"disabled />
+        </div>
+        <div class="col-sm-12">
+          <label>Linea</label>
+          <input type="text" class="form-control" ng-model="Telefono"disabled />
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div ng-class="{ 'has-success': Datos.DescripcionDano.$valid, 'has-error': Datos.DescripcionDano.$invalid }">
+        <label for="DescripcionDano">Descripción del daño</label>
+        <textarea type="text" class="form-control" ng-model="Sol.DescripcionDano" maxlength="200" name="DescripcionDano" required></textarea>
+      </div>
+    </div>
+    <div class="col-sm-12" style="margin-bottom: 40px">
+      <strong>Imagen:</strong>
+      <div class="row">
+        <div class="col-sm-4">
+            <img ng-src="{{Sol.Fotos.data}}" style="height: 150px; max-height: 150px; width: 150px" alt="">
+        </div>
+      </div>
+      <input type="file" ng-model="Sol.Fotos" ng-file-model="Sol.Fotos" class="form-control"/>
+  </div>
+  </div>
+</form>

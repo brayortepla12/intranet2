@@ -1,0 +1,120 @@
+<div class="row" ng-controller="UHDCtrl">
+    <div class="col-sm-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>FECHA</th>
+                    <th>{{HD.Fecha}}</th>
+                    <th>SERVICIO</th>
+                    <th colspan="2">
+                        {{HD.DESCRIPCION}}
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Cama<br>
+                        No. admisión
+                    </th>
+                    <th>
+                        Documento <br>
+                        Nombre del paciente (EDAD)
+                    </th>
+                    <th>
+                        Fecha<br>
+                        EPS
+                    </th>
+                    <th>Desayuno</th>
+                    <th>MM</th>
+                    <th>Almuerzo</th>
+                    <th>MT</th>
+                    <th>Cena</th>
+                    <th>MN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="p in HD.Detalles track by $index" ng-hide="p.Nuevo && NP">
+                    <td>
+                        {{p.habcama || p.HABCAMA}}<br>
+                        <span ng-class="{'No-existe': p.NoExiste && !p.Continua, 'Nuevo': p.Nuevo, 'Suspendido': !p.Continua && !p.NoExiste}">
+                            {{p.NOADMISION}}
+                            <span ng-if="p.Nuevo"> (N) </span>
+                            <span ng-if="p.NoExiste"> (Alt) </span> 
+                            <button ng-if="p.NoExiste" class="btn btn-secondary btn-xs" ng-class="{'btn-secondary': !p.Continua, 'btn-primary': p.Continua}" ng-click="HabilitarPaciente($index)">
+                                <i class="fa fa-lock" ng-if="!p.Continua"></i>
+                                <i class="fa fa-unlock" ng-if="p.Continua"></i>
+                            </button>
+                        </span>
+                    </td>
+                    <td>
+                        {{p.IDAFILIADO}}<br>
+                        {{p.NOMBREAFI}} ({{ p.EDAD }})
+                    </td>
+                    <td>
+                        {{p.Fecha}}<br>
+                        {{p.RAZONSOCIAL}}
+                    </td>
+                    <td ng-class="{'pedido-cancelado': p.CancelarDesayuno}">
+                        <span ng-if="p.CancelarDesayuno === 0 && p.Desayuno">
+                            {{p.Desayuno}} <button class="btn btn-danger btn-xs" ng-click="CancelarPedido(p.DHDId, 'Desayuno', HD.Fecha)"><i class="fa fa-times"></i></button>
+                        </span>
+                        <span ng-if="p.CancelarDesayuno === 1">
+                            {{ p.MotivoCD }} <br>
+                            {{p.ResponsableCD}} <br>
+                            {{p.FechaCD}}
+                        </span>
+                    </td>
+                    <td ng-class="{'pedido-cancelado': p.CancelarMM}">
+                        <span ng-if="p.CancelarMM === 0 && p.MM">
+                            {{p.MM}} <button class="btn btn-danger btn-xs" ng-click="CancelarPedido(p.DHDId, 'MM', HD.Fecha)"><i class="fa fa-times"></i></button>
+                        </span>
+                        <span ng-if="p.CancelarMM === 1">
+                            {{ p.MotivoCMM }} <br>
+                            {{p.ResponsableCMM}} <br>
+                            {{p.FechaCMM}}
+                        </span>
+                    </td>
+                    <td ng-class="{'pedido-cancelado': p.CancelarAlmuerzo}">
+                        <span ng-if="p.CancelarAlmuerzo === 0 && p.Almuerzo">
+                            {{p.Almuerzo}} <button class="btn btn-danger btn-xs" ng-click="CancelarPedido(p.DHDId, 'Almuerzo', HD.Fecha)"><i class="fa fa-times"></i></button>
+                        </span>
+                        <span ng-if="p.CancelarAlmuerzo === 1">
+                            {{ p.MotivoCA}} <br>
+                            {{p.ResponsableCA}} <br>
+                            {{p.FechaCA}}
+                        </span>
+                    </td>
+                    <td ng-class="{'pedido-cancelado': p.CancelarMT}">
+                        <span ng-if="p.CancelarMT === 0 && p.MT">
+                            {{p.MT}} <button class="btn btn-danger btn-xs" ng-click="CancelarPedido(p.DHDId, 'MT', HD.Fecha)"><i class="fa fa-times"></i></button>
+                        </span>
+                        <span ng-if="p.CancelarMT === 1">
+                            {{ p.MotivoCMT }} <br>
+                            {{p.ResponsableCMT}} <br>
+                            {{p.FechaCMT}}
+                        </span>
+                    </td>
+                    <td ng-class="{'pedido-cancelado': p.CancelarCena}">
+                        <span ng-if="p.CancelarCena === 0 && p.Cena">
+                            {{p.Cena}} <button class="btn btn-danger btn-xs" ng-click="CancelarPedido(p.DHDId, 'Cena', HD.Fecha)"><i class="fa fa-times"></i></button>
+                        </span>
+                        <span ng-if="p.CancelarCena === 1">
+                            {{ p.MotivoCC }} <br>
+                            {{p.ResponsableCC}} <br>
+                            {{p.FechaCC}}
+                        </span>
+                    </td>
+                    <td ng-class="{'pedido-cancelado': p.CancelarMN}">
+                        <span ng-if="p.CancelarMN === 0 && p.MN">
+                            {{p.MN}} <button class="btn btn-danger btn-xs" ng-click="CancelarPedido(p.DHDId, 'MN', HD.Fecha)"><i class="fa fa-times"></i></button>
+                        </span>
+                        <span ng-if="p.CancelarMN === 1">
+                            {{ p.MotivoCMN }} <br>
+                            {{p.ResponsableCMN}} <br>
+                            {{p.FechaCMN}}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+<div class="row" ng-controller="RondaMantCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">Administar rondas de mantenimiento</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 25px;">
+                    <div class="col-sm-12 mb-2">
+                        <button type="button" class="btn btn-info" ng-click="NuevaRonda()" ng-if="!NEWRONDA && !VIEWRONDA">
+                            Nueva Ronda
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="Atras()" ng-if="NEWRONDA || VIEWRONDA">
+                            Atras
+                        </button>
+                        <button type="button" class="btn btn-success" ng-click="CrearRonda()" ng-if="NEWRONDA && !VIEWRONDA">
+                            Crear Ronda
+                        </button>
+                        <button type="button" class="btn btn-success" ng-click="ActualizarRonda()" ng-if="VIEWRONDA">
+                            Actualizar Ronda
+                        </button>
+                    </div>
+                    <div class="col-sm-12" ng-if="HASRONDAS && !VIEWRONDA">
+                        <table id="RondaMant" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 3%">ID</th>
+                                    <th class="text-center" style="width: 7%">Sede</th>
+                                    <th class="text-center" style="width: 8%">Fecha</th>
+                                    <th class="text-center" style="width: 8%">Hora</th>
+                                    <th class="text-center" style="width: 10%">Responsable</th>
+                                    <th class="text-center" style="width: 10%">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-12 mb-2" ng-if="NEWRONDA || VIEWRONDA" style="background: #f9f9f9">
+                        <div class="row">
+                            <div class="col-sm-12" ng-if="!VIEWRONDA">
+                                <div class="row">
+                                    <div class="col-sm-4 mb-2">
+                                        <label>
+                                            Sede
+                                        </label>
+                                        <select class="form-control" ng-model="RondaMant.SedeId" name="SedeId"  ng-change="ChangeSede()" ng-disabled="VIEWRONDA"
+                                                ng-class="{ 'has-error': Datos.RondaMant.SedeId.$invalid && !Datos.RondaMant.SedeId.$pristine }">
+                                            <option value="">--</option>
+                                            <option ng-repeat="s in Sedes track by $index" ng-selected="RondaMant.SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4" ng-show="Servicios.length > 0">
+                                        <label>Servicio</label>
+                                        <select class="form-control" ng-model="Item.ServicioId" ng-change="ChangeServicio()" name="ServicioId">
+                                            <option value="">--</option>
+                                            <option ng-repeat="s in Servicios track by $index"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4" ng-show="Servicios.length > 0">
+                                        <label>Descripción</label>
+                                        <input type="text" name="Descripcion" ng-model="Item.Descripcion" ng-enter="AddItemToRonda()" class="form-control" capitalize ng-maxLength="70" maxlength="70" />
+                                    </div>
+                                    <div class="col-sm-4" ng-show="Servicios.length > 0">
+                                        <label>Tecnico Responsable</label>
+                                        <input type="text" name="TecnicoResponsable" ng-model="Item.TecnicoResponsable" ng-enter="AddItemToRonda()" class="form-control" capitalize ng-maxLength="70" maxlength="70" />
+                                    </div>
+                                    <div class="col-sm-4" ng-show="Servicios.length > 0">
+                                        <label>COORDINADOR</label>
+                                        <select class="form-control" ng-model="Item.CoordinadorId" name="Coordinador" ng-change="ChangeUsuario()"
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                            <option value="">--</option>
+                                            <option ng-repeat="u in Usuarios track by $index" ng-hide="u.IsStaff" ng-value="'{{u.UsuarioId}}'" value='{{u.UsuarioId}}'> {{u.NombreCompleto}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 mt-3 mb-3 text-center" ng-show="Servicios.length > 0">
+                                        <button class="btn btn-primary" ng-click="AddItemToRonda()" >Añadir tarea</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <table id="NewRondaMant" class="table table-condensed table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>FECHA: {{RondaMant.Fecha}}</th>
+                                            <th colspan="2">HORA: {{RondaMant.Hora}}</th>
+                                            <th colspan="7">RESPONSABLE: {{RondaMant.Responsable}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th rowspan="2" class="text-center" style="vertical-align: middle !important;">SERVICIO/AREA</th>
+                                            <th rowspan="2" class="text-center" style="vertical-align: middle !important;">DESCRIPCIÓN</th>
+                                            <th rowspan="2" colspan="2" class="text-center" style="vertical-align: middle !important;">TECNICO RESPONSABLE</th>
+                                            <th colspan="2" class="text-center" style="vertical-align: middle !important;">CUMPLIMIENTO</th>
+                                            <th rowspan="2" class="text-center" style="vertical-align: middle !important;">FIRMA DEL COORDINADOR DE SERVICIO</th>
+                                            <th rowspan="2" class="text-center" style="vertical-align: middle !important;">OBSERVACIONES</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">SI</th>
+                                            <th class="text-center">NO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dr in RondaMant.DetalleRonda track by $index">
+                                            <td>
+                                                <strong>{{dr.Servicio}}</strong> <br>
+                                                {{dr.NombreCoordinador}}
+                                            </td>
+                                            <td>{{dr.Descripcion}}</td>
+                                            <td colspan="2">{{dr.TecnicoResponsable}}</td>
+                                            <td class="text-center" ng-if="!VIEWRONDA">
+                                            </td>
+                                            <td class="text-center" ng-if="!VIEWRONDA">
+                                            </td>
+                                            <td class="text-center" ng-if="VIEWRONDA">
+                                                <input class="form-check-input" ng-checked="dr.Cumplimiento === 'SI'"
+                                                       ng-click="SetCumplimiento($index, 'SI')" 
+                                                       ng-disabled="dr.IsFirmado"
+                                                       style="width: 20px;height: 20px;margin-left: 0px !important" type="checkbox">
+                                            </td>
+                                            <td class="text-center" ng-if="VIEWRONDA">
+                                                <input class="form-check-input" ng-checked="dr.Cumplimiento === 'NO'"
+                                                       ng-click="SetCumplimiento($index,'NO')"  
+                                                       ng-disabled="dr.IsFirmado"
+                                                       style="width: 20px;height: 20px;margin-left: 0px !important" type="checkbox">
+                                            </td>
+                                            <td>
+                                                <img ng-if="dr.IsFirmado" ng-src="{{dr.FirmaCoordinador}}" alt="Firma-Coordinador">
+                                            </td>
+                                            <td>
+                                                <textarea ng-disabled="dr.IsFirmado" class="form-control" ng-model="dr.Observaciones" ng-maxlength="200" maxlength="200"></textarea>  
+                                            </td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

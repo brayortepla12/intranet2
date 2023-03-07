@@ -1,0 +1,302 @@
+<div id="tabla_listReportes" class="row" ng-controller="SolicitudProcesosCtrl">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Listado de solicitudes <small></small></h2>
+                <!--            <div class="filter">
+                                <div class="inner-addon left-addon" style="width: 200px;float: right">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                    <input type="text" ng-model="txt" class="form-control">
+                                </div>
+                            </div>-->
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-2 float-right" style="padding: 5px;">
+                        <button class="btn btn-primary"  data-toggle="modal" data-target="#ProcesoModal">Crear Solicitud <i class="fa fa-plus-square-o" /></button>
+                    </div>
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 2%">ID</th>
+                                    <th class="text-center" style="width: 4%">Sede</th>
+                                    <th class="text-center" style="width: 6%">Servicio</th>
+                                    <th class="text-center" style="width: 6%">Protocolo</th>
+                                    <th class="text-center" style="width: 10%">Nombre Proceso</th>
+                                    <th class="text-center" style="width: 5%">Fecha</th>
+                                    <th class="text-center" style="width: 5%">Estado</th>
+                                    <th class="text-center" style="width: 5%">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ProcesoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Proceso</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+                            <label class="col-sm-4 control-label" for="Nombre" >Sede</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="Proceso.SedeId" name="SedeId"  ng-change="ChangeSede()" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === Proceso.SedeId" ng-value='{{s.SedeId}}' 
+                                            value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+                            <label class="col-sm-4 control-label" for="Nombre" >Servicio</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="Proceso.ServicioId" name="ServicioId" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId === Proceso.ServicioId" ng-value='{{s.ServicioId}}' 
+                                            value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                            <label class="col-sm-4 control-label" for="Nombre" >Nombre del proceso</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="Nombre" class="form-control" ng-model="Proceso.Nombre" required>
+                            </div>
+                        </div>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': Datos.ProtocoloId.$valid, 'has-error': Datos.ProtocoloId.$invalid}">
+                            <label class="col-sm-4 control-label" for="ProtocoloId" >Protocolo</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="Proceso.ProtocoloId" name="ProtocoloId" ng-change="ChangeProtocolo()" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="p in Protocolos track by $index"  ng-value='{{p.ProtocoloId}}' value='{{p.ProtocoloId}}'> {{p.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" ng-if="CargarForm">
+                            <div ng-model="input" fb-form="JSON"></div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-click="EnviarSolicitud()" ng-disabled="IsLoading">Enviar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="EditProcesoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Editar Proceso</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="DatosE" novalidate>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': DatosE.Nombre.$valid, 'has-error': DatosE.Nombre.$invalid}">
+                            <label class="col-sm-4 control-label" for="Nombre" >Nombre del proceso</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="Nombre" class="form-control" ng-model="UProceso.Nombre" required>
+                            </div>
+                        </div>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': DatosE.SedeId.$valid, 'has-error': DatosE.SedeId.$invalid}">
+                            <label class="col-sm-4 control-label" for="Nombre" >Sede</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="UProceso.SedeId" name="SedeId"  ng-change="ChangeSede()" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === UProceso.SedeId" ng-value='{{s.SedeId}}' 
+                                            value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': DatosE.ServicioId.$valid, 'has-error': DatosE.ServicioId.$invalid}">
+                            <label class="col-sm-4 control-label" for="Nombre" >Servicio</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="UProceso.ServicioId" name="ServicioId" required>
+                                    <option value="">--</option>
+                                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId === Proceso.ServicioId" ng-value='{{s.ServicioId}}' 
+                                            value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ng-scope row" ng-class="{'has-success': DatosE.ProtocoloId.$valid, 'has-error': DatosE.ProtocoloId.$invalid}">
+                            <label class="col-sm-4 control-label" for="ProtocoloId" >Protocolo</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="UProceso.ProtocoloId" name="ProtocoloId" required disabled>
+                                    <option value="">--</option>
+                                    <option ng-repeat="p in Protocolos track by $index" ng-selected="p.ProtocoloId === UProceso.ProtocoloId"  ng-value='{{p.ProtocoloId}}' value='{{p.ProtocoloId}}'> {{p.Nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" ng-repeat="j in UProceso.Formulario">
+                            <div fb-form-object="j"></div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-click="ActualizarSolicitud()" ng-disabled="IsLoading">Enviar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ViewProcesoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Ver Proceso {{UProceso.Nombre}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group ng-scope row">
+                        <label class="col-sm-4 control-label" for="Sede" >Sede</label>
+                        <div class="col-sm-8">
+                            {{UProceso.Sede}}
+                        </div>
+                    </div>
+                    <div class="form-group ng-scope row">
+                        <label class="col-sm-4 control-label" for="Servicio" >Servicio</label>
+                        <div class="col-sm-8">
+                            {{UProceso.Servicio}}
+                        </div>
+                    </div>
+                    <div class="form-group ng-scope row">
+                        <label class="col-sm-4 control-label" for="ProtocoloId" >Protocolo</label>
+                        <div class="col-sm-8">
+                            {{UProceso.Protocolo}}
+                        </div>
+                    </div>
+                    <div class="form-group ng-scope row" ng-repeat="df in UProceso.DatosFormulario">
+                        <label class="col-sm-4 control-label" >{{df.label}}</label>
+                        <div class="col-sm-8" ng-hide="df.value[0].data">
+                            {{df.value}}
+                        </div>
+                        <div class="col-sm-8" ng-show="df.value[0].data">
+                            <div class="col-lg-4 col-sm-6" ng-repeat="f in df.value track by $index">
+                                <a style="cursor: pointer" ng-click="OpenURL(f.data, f.type)"><i class="fa fa-file fa-2x"></i><br> {{f.name.substr(0, 10)}}...</a><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" ng-class="{'active': Orden === ft.Orden}" ng-repeat="ft in UProceso.FlujoTrabajo"><a ng-click="changeView(ft.Orden)" role="tab" data-toggle="tab" aria-expanded="true">{{$index + 1}}</a>
+                                </li>
+                            </ul>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-6">
+                                    <div class="col-sm-12" ng-repeat="ft in UProceso.FlujoTrabajo track by $index" >
+                                        <div class="col-sm-12" ng-repeat="v in ft.Verificadores">
+                                            <div class="form-group ng-scope row">
+                                                <label class="col-sm-4 control-label">Sede</label>
+                                                <div class="col-sm-8">
+                                                    {{v.Sede}}
+                                                </div>
+                                            </div>
+                                            <div class="form-group ng-scope row">
+                                                <label class="col-sm-4 control-label">Servicio</label>
+                                                <div class="col-sm-8">
+                                                    {{v.Servicio}}
+                                                </div>
+                                            </div>
+                                            <div class="form-group ng-scope row">
+                                                <label class="col-sm-4 control-label">Nombre Verificador</label>
+                                                <div class="col-sm-8">
+                                                    {{v.NombreCompleto}}
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                        <div class="vertical-timeline-block" ng-repeat="s in Seguimientos| orderBy : '-CreatedAt'">
+                                            <div class="vertical-timeline-icon navy-bg">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+
+                                            <div class="vertical-timeline-content">
+                                                <h2>{{s.CreatedBy}}</h2>
+                                                <p>{{s.Observacion}}
+                                                </p>
+                                                <div class="form-group ng-scope row" ng-repeat="df in s.DatosAnexos">
+                                                    <label class="col-sm-4 control-label" >{{df.label}}</label>
+                                                    <div class="col-sm-8" ng-hide="df.value[0].data">
+                                                        {{df.value}}
+                                                    </div>
+                                                    <div class="col-sm-8" ng-show="df.value[0].data">
+                                                        <div class="col-lg-4 col-sm-4" ng-repeat="f in df.value track by $index">
+                                                            <a style="cursor: pointer" ng-click="OpenURL(f.data, f.type)"><i class="fa fa-file fa-2x"></i><br> {{f.name.substr(0, 10)}}...</a><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a class="btn btn-sm" ng-class="{'btn-primary': s.VB, 'btn-danger': !s.VB, 'btn-warning': s.Estado == 'Devolver'}">
+                                                    <span ng-show="s.VB && s.Estado != 'Devolver'">Aprobado</span>
+                                                    <span ng-show="!s.VB">Rechazado</span>
+                                                    <span ng-show="s.Estado == 'Devolver'">Devuelto</span>
+                                                </a>
+                                                <span class="vertical-date">
+                                                    {{s.CreatedAt}} <br>
+                                                    <small>{{s.Sede}} -- {{s.Servicio}}</small>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer" ng-show="UProceso.Estado === 'Rechazado'">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-click="ReanudarSolicitud()">Reanudar Proceso</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

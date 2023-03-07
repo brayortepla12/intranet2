@@ -1,0 +1,143 @@
+<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0" ng-controller="SolicitudAdminNavCtrl">
+    <div class="navbar-header">
+        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary "><i class="fa fa-bars"></i> </a>
+<!--        <form role="search" class="navbar-form-custom" action="search_results.html">
+            <div class="form-group">
+                <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+            </div>
+        </form>-->
+    </div>
+    <ul class="nav navbar-top-links">
+        <li>
+            <a ui-sref="app.cambiar_contrasena"><i class="fa fa-lock"></i> Cambiar contraseña</a>
+        </li>
+        <li>
+            <a ng-click="logout()"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+        </li>
+<!--        <li>
+            <span class="m-r-sm text-muted welcome-message">Intranet</span>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown">
+                <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+            </a>
+            <ul class="dropdown-menu dropdown-messages">
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a class="dropdown-item float-left" href="profile.html">
+                            <img alt="image" class="rounded-circle" ng-src="{{Foto}}" width="40" />
+                        </a>
+                        <div>
+                            <small class="float-right">46h ago</small>
+                            <strong>{{NombreUsuario}}</strong><br>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>-->
+
+<!--        <li ng-show="currentState === 'polivalente.solicitud'">
+            <a class="cajaBoton" data-toggle="modal" data-target="#ModalCrearSolicitud">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Crear Solicitud">
+                    <i class="fa fa-plus-circle"  style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>-->
+        <li ng-show="solicitud && currentState === 'polivalente.solicitudAdmin'" ng-click="AddReporte()">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Crear Reporte Manual">
+                    <i class="fa fa-plus-circle"  style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="solicitud && currentState === 'polivalente.solicitudAdmin'" ng-click="AddReporteExterno()">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Crear Reporte Externo">
+                    <i class="fa fa-paperclip"  style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="HojaVidaId" ng-click="ViewHojaVida()">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ver Hoja de Vida">
+                    <i class="fa fa-plus-circle"  style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="solicitud" ng-click="Back(currentState)">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Atras">
+                    <i class="fa fa-arrow-left"  style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="ficha" ng-click="BackInEquipoView(currentState)">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Atras">
+                    <i class="fa fa-arrow-left"  style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="ficha || HojaVida" ng-click="ViewReportes(currentState)">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Listado de Reportes">
+                    <i class="fa " ng-class="{'fa-list': !ver_reportes, 'fa-file-text-o': ver_reportes}" style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="HojaVida" ng-click="CreateReporteManual(HojaVida)">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Crear Reporte">
+                    <i class="fa fa-file" style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="HojaVida" ng-click="CreateReporteExterno(HojaVida)">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Crear Reporte Externo">
+                    <i class="fa fa-paperclip" style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li ng-show="HojaVidaRapida" ng-click="Atras()">
+            <a class="cajaBoton">
+                <button type="button" class="btn btn-primary btn_menu" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Atras">
+                    <i class="fa fa-arrow-left" style="font-size: 1.3em !important"></i>
+                </button>
+            </a>
+        </li>
+        <li role="presentation" class="dropdown" ng-controller="SolicitudAdminNotificacionCtrl">
+            <ng-include ng-if="HASDATASOL" ng-mouseover="DisableAudio()" src="'/intranet-2/public_html/views/partials/pie-timer.html'"></ng-include>
+            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"  ng-if="IsBiomedico || IsSistemas || IsPolivalente">
+                <i class="fa fa-envelope-o"></i>
+                <span class="badge bg-green">{{TotalSolicitudes}}</span>
+            </a>
+            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                <li ng-if="IsBiomedico">
+                    <a>
+                            <span >Biomedicos: {{TotalBiomedico}}</span>
+                    </a>
+                </li>
+                <li ng-if="IsSistemas">
+                    <a>
+                            <span >Sistemas: {{TotalSistemas}}</span>
+                    </a>
+                </li>
+                <li ng-if="IsPolivalente">
+                    <a>
+                            <span >Polivalente: {{TotalPolivalente}}</span>
+                    </a>
+                </li>
+<!--                <li>
+                    <div class="text-center">
+                        <a ui-sref="polivalente.solicitudAdmin">
+                            <strong>Ver mas</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </li>-->
+            </ul>
+        </li>
+    </ul>
+
+</nav>

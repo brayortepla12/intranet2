@@ -1,0 +1,26 @@
+<td>
+    {{item.UsuarioId}}
+</td>
+<td>
+    {{item.NombreCompleto}}
+</td>
+<td>
+    {{item.Email}}
+</td>
+<td>
+    {{item.FechaVecimiento}}
+</td>
+<td>
+    {{item.Cargo}}
+</td>
+<td>
+    <span ng-show="item.Estado == 1">Activo</span>
+    <span ng-show="item.Estado == 0">Desactivado</span>
+</td>
+<td>
+<center>
+    <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+    <a class="btn btn-primary btn-xs icon-only white" ng-click="ViewPermisos(item)" tooltip-placement="bottom" tooltip="Permisos"><i class="fa fa-th-list"></i></a>
+    <a class="btn btn-primary btn-xs icon-only white" ng-click="ViewServicios(item)" tooltip-placement="bottom" tooltip="Permisos"><i class="fa fa-hospital-o"></i></a>
+</center>
+</td>

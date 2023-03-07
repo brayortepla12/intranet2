@@ -1,0 +1,105 @@
+<div ng-controller="InventarioTELCtrl">
+  <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <h2>Inventarios<small></small></h2>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <button class="btn btn-default" ng-if="NINV || VINV" ng-click="Atras()">Atras</button>
+                    <button class="btn btn-primary" ng-if="!NINV && !VINV" ng-click="NewINV()">Nuevo item</button>
+                    <button class="btn btn-success" ng-if="NINV" ng-click="CrearINV()">
+                      <span ng-hide="IsLoading">Añadir a inventario</span>
+                      <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+                    </button>
+                    <button class="btn btn-success" ng-if="VINV" ng-click="UpdateINV()">
+                      <span ng-hide="IsLoading">Actualizar</span>
+                      <i class="fa fa-spinner fa-spin" ng-show="IsLoading"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row" ng-if="LINV && !NINV && !VINV">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <table id="LHD" ui-jq="dataTable" ui-options="InvDATA" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead class="bordered-blueberry">
+                              <tr>
+                                  <th scope="col" class="text-center">ID</th>
+                                  <th scope="col" class="text-center">Marca</th>
+                                  <th scope="col" class="text-center">Modelo</th>
+                                  <th scope="col" class="text-center">Operador</th>
+                                  <th scope="col" class="text-center">Color</th>
+                                  <th scope="col" class="text-center">IMEI1</th>
+                                  <th scope="col" class="text-center">IMEI2</th>
+                                  <th scope="col" class="text-center">Stock</th>
+                                  <th scope="col" class="text-center">Estado Articulo</th>
+                                  <th scope="col" class="text-center">Opciones</th>
+                              </tr>
+                          </thead>
+                          <tbody></tbody>
+                      </table>
+                  </div>
+                </div>
+                <form role="form" name="Datos" novalidate>
+                  <div class="row" ng-show="NINV || VINV">
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.Marca.$valid, 'has-error': Datos.Marca.$invalid}">
+                        <label>
+                            Marca
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.Marca" name="Marca" maxlength="44" required>
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.Modelo.$valid, 'has-error': Datos.Modelo.$invalid}">
+                        <label>
+                            Modelo
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.Modelo" name="Modelo" maxlength="44" required>
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.Operador.$valid, 'has-error': Datos.Operador.$invalid}">
+                        <label>
+                            Operador
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.Operador" name="Operador" maxlength="44" required>
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.Color.$valid, 'has-error': Datos.Color.$invalid}">
+                        <label>
+                            Color
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.Color" name="Color" maxlength="44" required>
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.IMEI1.$valid, 'has-error': Datos.IMEI1.$invalid}">
+                        <label>
+                            IMEI1
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.IMEI1" name="IMEI1" maxlength="44" required>
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.IMEI2.$valid, 'has-error': Datos.IMEI2.$invalid}">
+                        <label>
+                            IMEI2
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.IMEI2" name="IMEI2" maxlength="44">
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.Stock.$valid, 'has-error': Datos.Stock.$invalid}">
+                        <label>
+                            Stock
+                        </label>
+                        <input type="text" class="form-control" ng-model="Inv.Stock" name="Stock" min="0" max="1" required 
+                        onfocus="(this.type = 'number')" onblur="(this.type = 'text')">
+                    </div>
+                    <div class="col-lg-3 col-sm-4" ng-class="{'has-success': Datos.EstadoArticulo.$valid, 'has-error': Datos.EstadoArticulo.$invalid}">
+                        <label>
+                            Estado Articulo
+                        </label>
+                        <select class="form-control" ng-model="Inv.EstadoArticulo" name="EstadoArticulo" required>
+                          <option>Nuevo</option>
+                          <option>Usado</option>
+                        </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

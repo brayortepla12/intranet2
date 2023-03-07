@@ -1,0 +1,158 @@
+<style>
+  .highlight {
+    color: red;
+  }
+</style>
+<div class="row">
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+      <label for="Fecha">Fecha</label>
+      <input type="text" class="form-control" name="Fecha" ng-model="Sol.Fecha" 
+        onfocus="(this.type = 'date')" onblur="(this.type = 'text')" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+      <label for="Sede">Sede</label>
+      <select class="form-control" name="SedeId" ng-model="Sol.SedeId"
+          ng-options="s.SedeId as s.Nombre for s in Sedes"
+          required>
+          <option value="">--</option>                         
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.NombreSolicita.$valid, 'has-error': Datos.NombreSolicita.$invalid}">
+      <label for="NombreSolicita">Nombre del Solicitante</label>
+      <input type="text" capitalize class="form-control" name="NombreSolicita" ng-model="Sol.NombreSolicita" minlength="3" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.CargoSolicita.$valid, 'has-error': Datos.CargoSolicita.$invalid}">
+      <label for="CargoSolicita">Cargo del Solicitante</label>
+      <input type="text" capitalize class="form-control" name="CargoSolicita" ng-model="Sol.CargoSolicita" minlength="3" required>
+    </div>
+  </div>
+  <div class="col-sm-12" style="border: 0.5px solid gray !important; margin-top: 5px; margin-bottom: 5px;"></div>
+  <div class="col-lg-6 col-md-6 col-sm-6" ng-hide="Sol.ResIsExterno || CompShowDatos">
+    <div>
+      <label for="PersonaToAdd">Buscar persona</label>
+      <div angucomplete-alt id="persona_input"
+        placeholder="Cedula ó Nombre"
+        maxlength="100"
+        pause="100"
+        selected-object="LoadPersona"
+        remote-url="/Polivalente/api/viatico/Viatico.php?Dato_per="
+        title-field="Cedula"
+        description-field="Nombres"
+        minlength="2"
+        input-class="form-control form-control-small"
+        match-class="highlight"></div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input" name="ResIsExterno" ng-disabled="ShowDatos"
+      ng-checked="Sol.ResIsExterno" ng-click="ChangeIsExterno()" 
+      style="width: 20px;height: 20px;" checked>
+      Es externo?
+    </label>
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12"></div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResPrimerNombre.$valid, 'has-error': Datos.ResPrimerNombre.$invalid}">
+      <label for="ResPrimerNombre">Beneficiario Primer Nombre</label>
+      <input type="text" capitalize class="form-control" name="ResPrimerNombre" ng-model="Sol.ResPrimerNombre" minlength="3" ng-readonly="Sol.ResPersonaId" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResSegundoNombre.$valid, 'has-error': Datos.ResSegundoNombre.$invalid}">
+      <label for="ResSegundoNombre">Beneficiario Segundo Nombre</label>
+      <input type="text" capitalize class="form-control" name="ResSegundoNombre" ng-model="Sol.ResSegundoNombre" ng-readonly="Sol.ResPersonaId">
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResPrimerApellido.$valid, 'has-error': Datos.ResPrimerApellido.$invalid}">
+      <label for="ResPrimerApellido">Beneficiario Primer Apellido</label>
+      <input type="text" capitalize class="form-control" name="ResPrimerApellido" ng-model="Sol.ResPrimerApellido" minlength="3" ng-readonly="Sol.ResPersonaId" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResSegundoApellido.$valid, 'has-error': Datos.ResSegundoApellido.$invalid}">
+      <label for="ResSegundoApellido">Beneficiario Segundo Apellido</label>
+      <input type="text" capitalize class="form-control" name="ResSegundoApellido" ng-model="Sol.ResSegundoApellido" ng-readonly="Sol.ResPersonaId">
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResCargo.$valid, 'has-error': Datos.ResCargo.$invalid}">
+      <label for="ResCargo">Beneficiario Cargo</label>
+      <input type="text" capitalize class="form-control" name="ResCargo" ng-model="Sol.ResCargo" minlength="3" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResCedula.$valid, 'has-error': Datos.ResCedula.$invalid}">
+      <label for="ResCedula">Beneficiario Cedula</label>
+      <input type="text" class="form-control" name="ResCedula" ng-model="Sol.ResCedula" minlength="3" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.ResCelular.$valid, 'has-error': Datos.ResCelular.$invalid}">
+      <label for="ResCelular">Beneficiario Celular</label>
+      <input type="tel" class="form-control" name="ResCelular" ng-model="Sol.ResCelular" minlength="3" required>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6" ng-show="ShowDatos">
+    <div ng-class="{'has-success': Datos.email.$valid, 'has-error': Datos.email.$invalid}">
+      <label for="email">Beneficiario Correo</label>
+      <input type="email" class="form-control" name="email" ng-model="Sol.ResCorreo" minlength="3" required>
+    </div>
+  </div>
+  <div class="col-sm-12" style="border: 1px solid black; margin-top: 5px; margin-bottom: 5px;"></div>
+  <div class="col-sm-12">
+    <div ng-class="{'has-success': Datos.DescripcionSolicitud.$valid, 'has-error': Datos.DescripcionSolicitud.$invalid}">
+      <label for="DescripcionSolicitud">Descripción de la solicitud</label>
+      <textarea class="form-control" name="DescripcionSolicitud" ng-model="Sol.DescripcionSolicitud" maxlength="500" required></textarea>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.DepartamentoOrigenId.$valid, 'has-error': Datos.DepartamentoOrigenId.$invalid}">
+      <label for="DepartamentoOrigen">Dpt. Origen</label>
+      <select class="form-control" name="DepartamentoOrigenId" ng-model="Sol.DepartamentoOrigenId" ng-change="GetMunicipiosOrigen()"  
+          ng-options="d.DepartamentoId as d.Departamento for d in Departamentos"
+          required>
+          <option value="">--</option>  
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.MunicipioOrigenId.$valid, 'has-error': Datos.MunicipioOrigenId.$invalid}">
+      <label for="MunicipioOrigenId">Municipio Origen</label>
+      <select class="form-control" name="MunicipioOrigenId" ng-model="Sol.MunicipioOrigenId" 
+          ng-options="c.CiudadId as c.Ciudad for c in MunicipiosOrigen"
+          required>
+          <option value="">--</option>  
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.DepartamentoDestinoId.$valid, 'has-error': Datos.DepartamentoDestinoId.$invalid}">
+      <label for="DepartamentoDestino">Dpt. Destino</label>
+      <select class="form-control" name="DepartamentoDestinoId" ng-model="Sol.DepartamentoDestinoId"  ng-change="GetMunicipiosDestino()"
+          ng-options="d.DepartamentoId as d.Departamento for d in Departamentos"
+          required>
+          <option value="">--</option>   
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div ng-class="{'has-success': Datos.MunicipioDestinoId.$valid, 'has-error': Datos.MunicipioDestinoId.$invalid}">
+      <label for="MunicipioDestinoId">Municipio Destino</label>
+      <select class="form-control" name="MunicipioDestinoId" ng-model="Sol.MunicipioDestinoId"
+          ng-options="c.CiudadId as c.Ciudad for c in MunicipiosDestino"
+          required>
+          <option value="">--</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div ng-transclude></div>

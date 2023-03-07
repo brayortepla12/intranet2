@@ -1,0 +1,347 @@
+<div class="row" ng-controller="SolicitarMantAmbulanciaCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">SOLICITAR MANTENIMIENTO DE AMBULANCIAS</h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <input type="text"
+                            class="form-control" name="placa" ng-model="Placa" ng-change="FiltrarPorPlaca()" placeholder="Filtrar Por Placa">
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Estado" ng-change='BuscarSolicituds()' style="height: 35.59px !important;">
+                                <option ng-selected="Estado == 'Activo'" ng-value="'Activo'" value='Activo'>Activo</option>
+                                <option ng-selected="Estado == 'Facturado'" ng-value="'Facturado'" value='Facturado'>Facturado</option>
+                                <option ng-selected="Estado == 'Pedido'" ng-value="'Pedido'" value='Pedido'>Pedido</option>
+                                <option ng-selected="Estado == 'Vinculado'" ng-value="'Vinculado'" value='Vinculado'>Vinculado</option>
+                                <option ng-selected="Estado == 'Rechazado'" ng-value="'Rechazado'" value='Rechazado'>Rechazado</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" ng-change='BuscarSolicituds()' style="height: 35.59px !important;">
+                                <option ng-selected="Mes == 'TODOS'" value='TODOS'>Todos</option>
+                                <option ng-selected="Mes == 1" ng-value="'1'" value='1'>Enero</option>
+                                <option ng-selected="Mes == 2" ng-value="'2'" value='2'>Febrero</option>
+                                <option ng-selected="Mes == 3" ng-value="'3'" value='3'>Marzo</option>
+                                <option ng-selected="Mes == 4" ng-value="'4'" value='4'>Abril</option>
+                                <option ng-selected="Mes == 5" ng-value="'5'" value='5'>Mayo</option>
+                                <option ng-selected="Mes == 6" ng-value="'6'" value='6'>Junio</option>
+                                <option ng-selected="Mes == 7" ng-value="'7'" value='7'>Julio</option>
+                                <option ng-selected="Mes == 8" ng-value="'8'" value='8'>Agosto</option>
+                                <option ng-selected="Mes == 9" ng-value="'9'" value='9'>Septiembre</option>
+                                <option ng-selected="Mes == 10" ng-value="'10'" value='10'>Octubre</option>
+                                <option ng-selected="Mes == 11" ng-value="'11'" value='11'>Noviembre</option>
+                                <option ng-selected="Mes == 12" ng-value="'12'" value='12'>Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' onfocus="(this.type = 'number')" onblur="(this.type = 'text')" ng-enter='BuscarSolicituds()' class="form-control"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-9" style="margin-bottom: 25px;">
+                        <button class="btn btn-primary" ng-click="OpenModal()">Solicitar mantenimiento <i class="fa fa-plus-square-o" /></button>
+                    </div>
+                </div>
+                <div class="row" ng-show="!ficha">
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 3%">ID</th>
+                                    <th class="text-center" style="width: 7%">FECHA</th>
+                                    <th class="text-center" style="width: 7%">TIPO SOLICITUD</th>
+                                    <th class="text-center" style="width: 5%">AMBULANCIA</th>
+                                    <th class="text-center" style="width: 15%">DESCRIPCIÓN</th>
+                                    <th class="text-center" style="width: 3%">OPCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="VerFacturaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Factura</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row" style="margin-bottom: 25px;">
+                        <div class="col-sm-12" ng-show="TipoSolicitud == 'MANTENIMIENTO'">
+                            <button class="btn btn-success" ng-click="GenerarReporte()" ng-hide="BanderaReporte || BnFR">Generar Reporte</button>
+                            <button class="btn btn-default" ng-click="BanderaReporte = false" ng-show="BanderaReporte && !BnFR">Atras</button>
+                            <button class="btn btn-success" ng-click="GuardarReporte()" ng-show="BanderaReporte && !BnFR">
+                                <span ng-hide="BSaveReport || BnFR">Guardar</span>
+                                <i class="fa fa-spinner fa-spin" ng-show="BSaveReport"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-12" style="background: #eee; border-radius: 5px;">
+                                <pre><strong>Descripción: </strong>{{VerInformacion}}
+                                </pre>
+                            </div>
+                        </div>
+                        <div ng-class="{'col-sm-6': BanderaReporte || BnFR, 'col-sm-12': !BanderaReporte && !BnFR}">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a ng-href='{{VerFactura.UrlArchivo}}' target='_blank'>
+                                        <i class='fa fa-file fa-2x'></i>
+                                    </a>
+                                </div>
+                                <div class="col-sm-12">
+                                    <h4>Proveedor: {{VerFactura.Proveedor}}</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <table class="table table-borderless table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th>
+                                                <th>SubTotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="d in VerFactura.Detalles">
+                                                <td>{{d.Nombre}}</td>
+                                                <td>{{d.Cantidad}}</td>
+                                                <td>{{d.Precio}}</td>
+                                                <td>{{d.Precio * d.Cantidad}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">Total:</th>
+                                                <td>
+                                                    {{GetSuma(VerFactura.Detalles)}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" ng-show="BnFR">
+                            <form role="form" name="Datosr" novalidate>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Fecha.$valid, 'has-error': Datosr.Fecha.$invalid}">
+                                            <label for="Fecha">Fecha</label>
+                                            <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" class="form-control" id="Fecha" name="Fecha"   
+                                                   ng-model="Reporte.Fecha" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Km.$valid, 'has-error': Datosr.Km.$invalid}">
+                                            <label for="Km">KM</label>
+                                            <input type="number" class="form-control" id="Km"  name="Km" required
+                                                   ng-model="Reporte.Km" readonly>
+                                            <!--min="{{MinKM}}"-->
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.TipoMantenimiento.$valid, 'has-error': Datos.TipoMantenimiento.$invalid}">
+                                            <label>
+                                                TIPO MANTENIMIENTO
+                                            </label>
+                                            <select class="form-control" ng-model="Reporte.TipoMantenimiento" name="TipoMantenimiento" required>
+                                                <option>PREVENTIVO</option>
+                                                <option>CORRECTIVO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Descripcion.$valid, 'has-error': Datosr.Descripcion.$invalid}">
+                                            <label for="Descripcion">Descripción del trabajo</label>
+                                            <textarea class="form-control" id="Descripcion" name="Descripcion" ng-model="Reporte.Descripcion" rows="2" readonly></textarea>
+                                        </div>
+                                    </div>
+<!--                                    <div class="col-sm-12">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Notas.$valid, 'has-error': Datosr.Notas.$invalid}">
+                                            <label for="Notas">Notas</label>
+                                            <textarea class="form-control" id="Notas" name="Notas" ng-model="Reporte.Notas" readonly></textarea>
+                                        </div>
+                                    </div>-->
+                                    <div style="clear: both"></div>
+                                    <div class="col-sm-12">
+                                        <legend>Actualizar el cronograma de mantenimiento:</legend>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>
+                                                    Selecione los detalles de mantenimiento
+                                                </label>
+                                                <div >
+                                                    <span ng-repeat="ds in Reporte.Detalles"> {{ds.Descripcion}},</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6" ng-show="BanderaReporte && !BnFR">
+                            <form role="form" name="Datosr" novalidate>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Fecha.$valid, 'has-error': Datosr.Fecha.$invalid}">
+                                            <label for="Fecha">Fecha</label>
+                                            <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" class="form-control" id="Fecha" name="Fecha"   
+                                                   ng-model="Reporte.Fecha" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Km.$valid, 'has-error': Datosr.Km.$invalid}">
+                                            <label for="Km">KM</label>
+                                            <input type="number" class="form-control" id="Km"  name="Km" required
+                                                   ng-model="Reporte.Km" >
+                                            <!--min="{{MinKM}}"-->
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.TipoMantenimiento.$valid, 'has-error': Datos.TipoMantenimiento.$invalid}">
+                                            <label>
+                                                TIPO MANTENIMIENTO
+                                            </label>
+                                            <select class="form-control" ng-model="Reporte.TipoMantenimiento" name="TipoMantenimiento" required>
+                                                <option>PREVENTIVO</option>
+                                                <option>CORRECTIVO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Descripcion.$valid, 'has-error': Datosr.Descripcion.$invalid}">
+                                            <label for="Descripcion">Descripción del trabajo</label>
+                                            <textarea class="form-control" id="Descripcion" name="Descripcion" ng-model="Reporte.Descripcion" rows="2" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" ng-class="{'has-success': Datosr.Notas.$valid, 'has-error': Datosr.Notas.$invalid}">
+                                            <label for="Notas">Notas</label>
+                                            <textarea class="form-control" id="Notas" name="Notas" ng-model="Reporte.Notas"></textarea>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both"></div>
+                                    <div class="col-sm-12">
+                                        <legend>Actualizar el cronograma de mantenimiento:</legend>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>
+                                                    Selecione los detalles de mantenimiento
+                                                </label>
+                                                <multiselect  class="no-print" ng-model="DetallesSeleccionados" show-search="true"  
+                                                              labels="labels" id-prop="DetalleId" display-prop="Descripcion" options="Detalles" classes-btn="'btn-default'">
+                                                </multiselect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="SolicitudModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title" ng-hide="UpdateBandera">Crear Solicitud</h2>
+                        <h2 class="modal-title" ng-show="UpdateBandera">Actualizar Solicitud</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group" ng-class="{'has-success': Datos.TipoSolicitud.$valid, 'has-error': Datos.TipoSolicitud.$invalid}">
+                                    <label>
+                                        Tipo Solicitud
+                                    </label>
+                                    <select class="form-control" ng-model="Solicitud.TipoSolicitud" name="TipoSolicitud" required ng-disabled="UpdateBandera">
+                                        <option  ng-value="'INSUMO'" value='INSUMO'>INSUMO</option>
+                                        <option  ng-value="'MANTENIMIENTO'" value='MANTENIMIENTO'>MANTENIMIENTO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Solicitud.TipoSolicitud == 'MANTENIMIENTO'">
+                                <div class="form-group" ng-class="{'has-success': Datos.Sede.$valid, 'has-error': Datos.Sede.$invalid}">
+                                    <label>
+                                        Sede
+                                    </label>
+                                    <select class="form-control" ng-model="Solicitud.SedeId" name="Sede" ng-change="ChangeSede()" ng-disabled="UpdateBandera">
+                                        <option ng-repeat="s in Sedes track by $index" ng-selected="Solicitud.SedeId === s.SedeId" ng-value="'{{s.SedeId}}'" value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" ng-show="Solicitud.TipoSolicitud == 'MANTENIMIENTO'">
+                                <div class="form-group" ng-class="{'has-success': Datos.HojaVidaId.$valid, 'has-error': Datos.HojaVidaId.$invalid}">
+                                    <label>
+                                        Movil
+                                    </label>
+                                    <select class="form-control" ng-model="Solicitud.HojaVidaId" ng-change="ChangeEquipo()" name="HojaVidaId" ng-disabled="UpdateBandera">
+                                        <option ng-repeat="s in Equipos track by $index" ng-selected="s.HojaVidaId === Solicitud.HojaVidaId" ng-value="'{{s.HojaVidaId}}'" value='{{s.HojaVidaId}}'>{{s.Placa}} - {{s.Marca}} - {{s.Modelo}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group" ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                                    <label for="Fecha">Fecha</label>
+                                    <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" class="form-control" id="Fecha" name="Fecha"   
+                                           ng-model="Solicitud.Fecha" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" ng-class="{'has-success': Datos.Descripcion.$valid, 'has-error': Datos.Descripcion.$invalid}">
+                                    <label for="Descripcion">Descripción:</label>
+                                    <textarea class="form-control" id="Descripcion" name="Descripcion" ng-model="Solicitud.Descripcion" rows="5" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarSolicitud()" ng-disabled="Datos.$invalid" ng-hide="UpdateBandera">
+                            <span ng-hide="CargandoBandera">Guardar</span>
+                            <i class="fa fa-spinner fa-spin" ng-show="CargandoBandera"></i>
+                        </button>
+                        <!--<button class="btn btn-primary" ng-click="ActualizarSolicitud()" ng-disabled="Datos.$invalid" ng-show="UpdateBandera">Actualizar</button>-->
+                        <input type="reset" class="btn btn-danger" ng-click="Solicitud = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

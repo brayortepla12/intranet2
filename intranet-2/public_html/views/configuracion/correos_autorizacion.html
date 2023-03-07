@@ -1,0 +1,166 @@
+
+<div class="row" ng-controller="AutorizacionCorreoCtrl">
+    <div class="x_panel" ng-hide="CrearProtocoloView">
+        <div class="x_title">
+            <h2>Listado de protocolos<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="col-sm-2 pull-right" style="padding: 5px;">
+                <button class="btn btn-primary" ng-click="CrearProtocoloView = true;ResetBuilder()">Crear Protocolo <i class="fa fa-plus-square-o" /></button>
+            </div>
+            <div ng-hide="CrearProtocoloView">
+                <div class="col-sm-12" ng-if="cargado">
+                    <table id="Historias" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                        <thead class="bordered-blueberry">
+                            <tr>
+                                <th class="text-center" style="width: 4%">ID</th>
+                                <th class="text-center" style="width: 2%">Nombre protocolo</th>
+                                <th class="text-center" style="width: 5%">Fecha de Creación</th>
+                                <th class="text-center" style="width: 5%">Estado</th>
+                                <th class="text-center" style="width: 5%">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="x_panel" ng-show="CrearProtocoloView">
+        <div class="x_title">
+            <h2>Crear Protocolo<small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="col-sm-12" style="padding: 5px; text-align: center">
+                <button class="btn btn-default" ng-click="Reset()"><i class="fa fa-arrow-left" /> Atras </button>
+                <button class="btn btn-success" ng-click="GuardarProtocolo()">Guardar <i class="fa fa-plus" /></button>
+            </div>
+            <form name="Datos" novalidate>
+                <div class="col-sm-12">
+                    <div class="col-sm-12" ng-class="{'has-success': Datos.Nombre.$valid, 'has-error': Datos.Nombre.$invalid}">
+                        <label for="Nombre">Nombre Protocolo</label>
+                        <input type="text" ng-model="Protocolo.Nombre" name="Nombre" class="form-control" maxlength="199" minlength="2" >
+                    </div>
+                </div>
+            </form>
+            <div class="col-sm-12" style="margin-top: 25px;margin-bottom: 25px;">
+                <form name="ItemProtocolo" novalidate>
+                    <div class="col-sm-3" ng-class="{'has-success': ItemProtocolo.Destinatario.$valid, 'has-error': ItemProtocolo.Destinatario.$invalid}">
+                        <label for="Destinatario">Destinatario</label>
+                        <input type="text" ng-model="Item.Destinatario" name="Destinatario" class="form-control" maxlength="199" minlength="2" required>
+                    </div>
+                    <div class="col-sm-3" ng-class="{'has-success': ItemProtocolo.Email.$valid, 'has-error': ItemProtocolo.Email.$invalid}">
+                        <label for="Email">Email</label>
+                        <input type="text" ng-model="Item.Email" name="Email" class="form-control" maxlength="199" minlength="2" required>
+                    </div>
+                    <div class="col-sm-3" ng-class="{'has-success': ItemProtocolo.Tiempo.$valid, 'has-error': ItemProtocolo.Tiempo.$invalid}">
+                        <label for="Tiempo">Tiempo en Minutos</label>
+                        <input type="number" ng-model="Item.Tiempo" name="Tiempo" class="form-control" min="0" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-primary" ng-click="AddItem()" style="transform: translate(0px,25px)"><i class="fa fa-plus"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12">
+                <ul data-as-sortable="board.dragControlListeners" data-ng-model="Protocolo.Items">
+                    <li data-ng-repeat="item in Protocolo.Items" ng-show="item.Estado == 'Activo'" data-as-sortable-item style="padding: 10px;">
+                        <div data-as-sortable-item-handle class="row">
+                            <div class="col-sm-10">
+                                <!--<span class="btn-link"><a data-no-drag target=_top href="https://github.com/a5hik/ng-sortable">test no-drag href</a></span>-->
+                                <span class="card-title">
+                                    <div class="col-sm-5">{{item.Destinatario}} - {{item.Email}} - {{item.Tiempo}} </div>
+                                </span>
+                            </div>
+                            <div class="col-sm-2">
+                                <!--<a data-no-drag="" class=" removeCard pull-right btn btn-xs" ng-click="EditarVerificador(item)"><span class="fa fa-pencil"></span></a>-->
+                                <a data-no-drag="" class=" removeCard pull-right btn btn-xs" ng-click="Delete($index)"><span class="glyphicon glyphicon-remove"></span></a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="VerificadoresModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Asignar Verificadores</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="col-sm-3" style="margin-bottom: 20px" ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+                            <label>
+                                Sede
+                            </label>
+                            <select class="form-control" ng-model="Verificador.SedeId" name="SedeId" ng-change="ChangeSede()" required>
+                                <option value="">--</option>
+                                <option ng-repeat="s in Sedes track by $index"  ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3" style="margin-bottom: 20px" ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+                            <label>
+                                Servicio
+                            </label>
+                            <select class="form-control" ng-model="Verificador.ServicioId" name="ServicioId" ng-change="ChangeServicios()" required>
+                                <option value="">--</option>
+                                <option ng-repeat="s in Servicios track by $index"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3" style="margin-bottom: 20px" ng-class="{'has-success': Datos.UsuarioId.$valid, 'has-error': Datos.UsuarioId.$invalid}">
+                            <label>
+                                Verificador
+                            </label>
+                            <select class="form-control" ng-model="Verificador.UsuarioId" name="UsuarioId" required>
+                                <option value="">--</option>
+                                <option ng-repeat="u in Usuarios track by $index" ng-selected="u.UsuarioId === Verificador.UsuarioId" ng-value='{{u.UsuarioId}}' value='{{u.UsuarioId}}'> {{u.NombreCompleto}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3" style="transform: translate(0px,20px);margin-bottom: 20px">
+                            <button class="btn btn-primary" ng-click="AddToList()" ng-disabled="Datos.$invalid">Añadir a la lista</button>
+                        </div>
+
+                    </form>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-horvered">
+                            <tr>
+                                <th>Sede</th>
+                                <th>Servicio</th>
+                                <th>Verificador</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="v in Item.Verificadores track by $index">
+                                <td>{{v.Sede}}</td>
+                                <td>{{v.Servicio}}</td>
+                                <td>{{v.NombreCompleto}}</td>
+                                <td><a class="btn  btn-danger btn-xs icon-only white" ng-click="DeleteVerificador($index)"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="AnadirFlujo()" ng-show="Item.Verificadores.length > 0">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

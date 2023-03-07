@@ -1,0 +1,143 @@
+<div ng-controller="EquiposCtrl">
+    <!-- <div style="position: absolute;left: 500;" ng-show="Cargo == 'COORDINADOR MANT. POLIVALENTE' || Cargo == 'INGENIERO'">
+       <div class="menu">
+            <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
+            <label class="menu-open-button" for="menu-open">
+                <span class="hamburger hamburger-1"></span>
+                <span class="hamburger hamburger-2"></span>
+                <span class="hamburger hamburger-3"></span>
+            </label>
+
+            <a class="menu-item" style="cursor: pointer" ng-click="AutoFirmarTODO()"> <i class="fa fa-pencil-square-o"></i> </a>
+            <a style="cursor: pointer" class="menu-item" ng-click="ImprimirBySERVICIO()"> <i class="fa fa-file-pdf-o"></i> </a>
+                        <a href="#" class="menu-item"> <i class="fa fa-heart"></i> </a>
+                        <a href="#" class="menu-item"> <i class="fa fa-envelope"></i> </a>
+        </div>
+         filters 
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="visibility:  hidden">
+            <defs>
+                <filter id="shadowed-goo">
+
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                    <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+                    <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2" result="shadow" />
+                    <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+                    <feComposite in2="shadow" in="goo" result="goo" />
+                    <feComposite in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                    <feComposite in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+            </defs>
+        </svg>
+    </div>-->
+    <div class="col-lg-12"  ng-show="!ficha">
+        <div class="row" style="margin-bottom: 50px;">
+            <div class="col-lg-1 col-md-1 col-xs-1" ng-show="Sedes.length > 1">
+                <label>
+                    Sede
+                </label>
+            </div>
+            <div class="col-lg-2  col-md-2 col-xs-2" style="text-align: right" ng-show="Sedes.length > 1">
+                <select class="form-control" ng-model="SedeId" ng-change="ChangeSede()" name="Servicio" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                    <option>--</option>
+                    <option ng-repeat="s in Sedes track by $index" ng-selected="s.SedeId === SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>
+            <div class="col-lg-1  col-md-1 col-xs-1">
+                <label>
+                    Servicio
+                </label>
+            </div>
+            <div class="col-xs-3" style="text-align: right">
+                <select class="form-control" ng-model="ServicioId" ng-change="BuscarHojaVidas()" name="Servicio" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                    <option value="">--</option>
+                    <option value="TODO" ng-selected="ServicioId == 'TODO'">TODO</option>
+                    <option ng-repeat="s in Servicios track by $index" ng-selected="s.ServicioId === ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                </select>
+            </div>
+            <div class="col-lg-1  col-md-1 col-xs-1">
+                <label>
+                    Estado
+                </label>
+            </div>
+            <div class="col-lg-2  col-md-2 col-sm-2 col-xs-2" style="text-align: right">
+                <select class="form-control" ng-model="Estado" ng-change="BuscarHojaVidas()" name="Estado" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                    <option value="">--</option>
+                    <option>Activo</option>
+                    <option>Baja</option>
+                    <option>Inactivo</option>
+                </select>
+            </div>
+            <div class="col-lg-2  col-md-2 col-sm-2 col-xs-2 pull-left" style="text-align: right">
+                <button class="btn btn-primary" ng-click="BuscarHojaVidas()">Buscar <i class="fa fa-search "/></button>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="!ficha">
+        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" ng-if="cargado">
+            <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                <thead class="bordered-blueberry">
+                    <tr>
+                        <th class="text-center" style="width: 3%">ID</th>
+                        <th class="text-center" style="width: 10%">Equipo</th>
+                        <th class="text-center" style="width: 10%">Serie</th>
+                        <th class="text-center" style="width: 10%">Servicio</th>
+                        <th class="text-center" style="width: 10%">Ubicación</th>
+                        <th class="text-center" style="width: 10%">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="ServicioModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Consultar Listado de reportes</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c" novalidate>
+                        <div class="col-sm-12">
+                            <label>
+                                Sede
+                            </label>
+                            <select class="form-control" ng-model="SedeId" name="SedeId" required ng-change="ChangeSede()">
+                                <option ng-repeat="s in Sedes track by $index" ng-selected="SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label>
+                                Servicio
+                            </label>
+                            <select class="form-control" ng-model="ServicioId" name="ServicioId" required>
+                                <option value="0">Todos los Servicios</option>
+                                <option ng-repeat="s in Servicios track by $index" ng-selected="ServicioId === s.ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <a class="btn btn-success" ng-href="/Polivalente#/polivalente/ver_hoja_vida/{{ServicioId}}/" target="_blank" ng-disabled="c.$invalid">Vista Impresion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

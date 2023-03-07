@@ -1,0 +1,234 @@
+<style>
+    .checkbox-slider-md input + span{
+        position: absolute;
+    }
+</style>
+<div class="row" ng-controller="CrearRondaVerificacionCtrl">
+
+    <ul class="col-12 nav nav-tabs" role="tablist">
+        <li class="nav-item"  ng-repeat="m in TipoMedicamentos track by $index"><a ng-click="ChangeTipoMedicamento(m.TipoMedicamentoId)" class="nav-link" ng-class="{'active' : m.TipoMedicamentoId === RV.TipoMedicamentoId}" id="Polivalente" role="tab" data-toggle="tab" aria-expanded="true">{{m.Nombre}}</a></li>
+    </ul>
+    <div class="text-center col-12" style="margin-top: 25px;">
+        <!--<button ng-show="!HojaVidaId" class="btn btn-default" ng-click="GuardarBorrador()">Guardar Borrador</button>-->
+        <button ng-hide="RondaVerificacionId" class="btn btn-default" ng-click="ModalGuardar()">Revisar</button>
+        <button ng-hide="RondaVerificacionId" class="btn btn-primary" ng-click="SaveLocalBTn()">Guardado TEMPORAL</button>
+        <button ng-show="RondaVerificacionId" class="btn btn-success" ng-click="Actualizar()">Actualizar</button>
+        <button ng-show="RondaVerificacionId" class="btn btn-primary" ng-click="Imprimir()">Imprimir</button>        
+        <button class="btn btn-danger" ng-click="DeleteLocal(RV.TipoMedicamentoId)">Borrar Datos locales</button>
+
+        <!--<input type="reset" class="btn btn-danger" ng-click="Reset()" />-->
+    </div>
+    <form role="form" name="Datos" novalidate>
+        <div id="myTabContent" class="tab-content" ng-repeat="m in TipoMedicamentos track by $index">
+            <div ng-show="m.TipoMedicamentoId === RV.TipoMedicamentoId">
+
+                <div class="row" id="Pagina2">
+                    <div class="col-sm-12">
+                        <div class="row col-lg-12" style="margin-bottom: 25px;">
+                            <div class="row col-lg-12 col-md-12">
+                                <div class="col-lg-4 col-md-4">
+                                    <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                                </div>
+                                <div class="col-lg-4 col-md-4 pull-left text-center" bind-html-compile="Encabezado.EncabezadoHojaVida_rv">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-lg-12" style="margin-bottom: 5px;">
+                            <div class="row col-lg-12 col-md-12 col-sm-12">
+                                <div class="col-lg-4 col-md-4 col-xs-4">
+                                    <label>
+                                        Servicio:
+                                    </label>
+                                    <span ng-show="RondaVerificacionId">{{RV.Sector}}</span>
+                                    <select ng-hide="RondaVerificacionId"  ng-options="s.Sector as s.Descripcion for s in Sectores" class="form-control" ng-model="RV.Sector" ng-change="ChangeSector()" name="Sector" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                        <option value="">--</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-4">
+                                    <label>
+                                        Fecha:
+                                    </label>
+                                    <div  ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                                        <input ng-hide="RondaVerificacionId" readonly ng-change="SaveLocal()" type="text" ng-model="RV.Fecha" name="Fecha" 
+                                               class="form-control" required>
+                                        <input ng-show="RondaVerificacionId" readonly type="text" ng-model="RV.Fecha" name="Fecha" 
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-4">
+                                    <label>
+                                        NOMBRE DEL PACIENTE:
+                                    </label>
+                                    <div>
+                                        <select ng-options="paciente as paciente.PNombre +  ' ' +  paciente.SNombre +  ' ' +  paciente.PApellido +  ' ' +  paciente.SApellido  
+                                            for paciente in RV.Pacientes" class="form-control" ng-model="PacienteSeleccionado" name="PacienteSeleccionado" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                            <option value="">--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-4">
+                                    <label>
+                                        Filtro Medicamentos:
+                                    </label>
+                                    <div>
+                                        <select class="form-control" ng-model="SMedicamento" name="Medicamento" 
+                                                style="height: 25px;padding-top: 0px;padding-bottom: 0px;">
+                                            <option value="TODOS">TODOS</option>
+                                            <option ng-repeat="m in Medicamentos">{{ m.NombreAbreviado }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="col-12">
+                            <div  style="padding: 0px !important">
+                                <label>
+                                    <span><strong>{{PacienteSeleccionado.EstadoPaciente}}</strong></span>
+                                </label>
+                                <input ng-click="ChangeEstadoPaciente(PacienteSeleccionado, $index)" type="checkbox" 
+                                       ng-checked="PacienteSeleccionado.EstadoPaciente !== 'Suspender'"
+                                       style="width: 20px;height: 20px"/>
+                            </div>  
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="bordered-orange">
+                                    <tr>
+                                        <th ng-repeat="m in Medicamentos" ng-show="m.NombreAbreviado === SMedicamento || SMedicamento === 'TODOS'"> {{m.NombreAbreviado}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td ng-repeat="m in PacienteSeleccionado.ListadoMedicamentos" ng-show="Medicamentos[$index].NombreAbreviado === SMedicamento || SMedicamento === 'TODOS'">
+                                            <input type="text" ng-hide="RondaVerificacionId || m.DetalleRondaVerificacionId" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Dosis{{$index}}" ng-change="m.Crear = true;SaveLocal()" placeholder="Dosis (mg)" ng-model="m.Dosis" class="form-control" only-digits>
+                                            <input type="text" ng-hide="RondaVerificacionId || m.DetalleRondaVerificacionId || m.NoVolumen" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Volumen{{$index}}" ng-change="m.Crear = true;SaveLocal()" placeholder="Volumen (mL)" ng-model="m.Volumen" class="form-control" only-digits>
+                                            <input type="text" ng-hide="RondaVerificacionId || m.DetalleRondaVerificacionId" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Cantidad{{$index}}" ng-change="m.Crear = true;SaveLocal()" placeholder="Cantidad" ng-model="m.Cantidad" class="form-control" only-digits>
+                                            <input type="text" ng-show="RondaVerificacionId && !m.DetalleRondaVerificacionId" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Dosis_2{{$index}}" ng-change="m.Actualizar = true" placeholder="Dosis (mg)" ng-model="m.Dosis" class="form-control" only-digits>
+                                            <input type="text" ng-show="(RondaVerificacionId && !m.DetalleRondaVerificacionId) && !m.NoVolumen" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Volumen_2{{$index}}" ng-change="m.Actualizar = true" placeholder="Volumen (mL)" ng-model="m.Volumen" class="form-control" only-digits>
+                                            <input type="text" ng-show="RondaVerificacionId && !m.DetalleRondaVerificacionId" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Cantidad_2{{$index}}" ng-change="m.Actualizar = true" placeholder="Cantidad" ng-model="m.Cantidad" class="form-control" only-digits>
+                                            <select ng-hide="m.DetalleRondaVerificacionId" ng-options="v.DispositivoMedicoId as v.Nombre for v in Vehiculos" class="form-control" ng-model="m.VehiculoId" name="VehiculoId{{$index}}"  ng-change="m.Actualizar = true" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                <option ng-repeat="s in Sectores track by $index" ng-selected="s.Sector === RV.Sector" ng-value='{{s.Sector}}' value='{{s.Sector}}'> {{s.Sector}} - {{s.Descripcion}}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <!--                                <tr>
+                                                                        <th colspan="30">SI NO APARECE EL PACIENTE PUEDES AÑADIRLO MANUALMENTE ACONTINUACION</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>
+                                                                            <input type="text" ng-disabled="p.EstadoPaciente === 'Suspender'" name="PacienteNuevo{{$index}}" placeholder="Nombres" ng-model="PacienteNuevo.PNombre" class="form-control" capitalize>
+                                                                        </th>
+                                                                        <td ng-repeat="m in PacienteNuevo.ListadoMedicamentos">
+                                                                            <input type="text" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Dosis_2{{$index}}" placeholder="Dosis (mg)" ng-model="m.Dosis" class="form-control" only-digits>
+                                                                            <input type="text" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Volumen_2{{$index}}" placeholder="Volumen (mL)" ng-model="m.Volumen" class="form-control" only-digits>
+                                                                            <input type="text" ng-disabled="p.EstadoPaciente === 'Suspender'" name="Cantidad_2{{$index}}" placeholder="Cantidad" ng-model="m.Cantidad" class="form-control" only-digits>
+                                                                            <select ng-options="v.DispositivoMedicoId as v.Nombre for v in Vehiculos" class="form-control" ng-model="m.VehiculoId" name="VehiculoId{{$index}}" style="height: 25px;padding-top: 0px;padding-bottom: 0px;" required>
+                                                                                <option value="">--</option>
+                                                                                <option ng-repeat="s in Sectores track by $index" ng-selected="s.Sector === RV.Sector" ng-value='{{s.Sector}}' value='{{s.Sector}}'> {{s.Sector}} - {{s.Descripcion}}</option>
+                                                                            </select>
+                                                                        </td>
+                                                                    </tr>-->
+                                    <!--                                <tr>
+                                                                        <td colspan="30">
+                                                                            <button class="btn btn-info" ng-click="AddToPacientes()">Añadir</button>
+                                                                        </td>
+                                                                    </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        
+                    </div>
+                    <div class="col-lg-12 text-center" id="Footer" style="font-size: 0.9em">
+                        <div class="row col-lg-12">
+                            <div class="col-lg-3">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaElaboro_rv}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">ELABORÓ</strong><br>
+                                    {{Encabezado.Elaboro_rv}}<br>
+                                    {{Encabezado.CargoElaboro_rv}}
+                                </p>
+                            </div>
+                            <div class="col-lg-3">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaReviso_rv}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                                    {{Encabezado.Reviso_rv}}<br>
+                                    {{Encabezado.CargoReviso_rv}}
+                                </p>
+                            </div>
+                            <div class="col-lg-3">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaRevisoEstructural_rv}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">REVISÓ</strong><br>
+                                    {{Encabezado.RevisoEstructural_rv}}<br>
+                                    {{Encabezado.CargoRevisoEstructural_rv}}
+                                </p>
+                            </div>
+                            <div class="col-lg-3">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">APROBÓ</strong><br>
+                                    {{Encabezado.Aprobo}}<br>
+                                    {{Encabezado.CargoAprobo}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="LocalModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Datos almacenados localmente</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" ng-repeat="tm in Local">
+                        <tr>
+                            <th>Sector</th>
+                            <th ng-repeat="t in TipoMedicamentos" ng-if="t.TipoMedicamentoId === tm.TipoMedicamentoId">{{t.Nombre}}</th>
+                            <th>Error</th>
+                            <th>Opciones</th>
+                        </tr>
+                        <tr ng-repeat="o in tm.RVs">
+                            <td>{{o.Sector}}</td>
+                            <td>{{o.Pacientes.length}}</td>
+                            <td>{{o.Error}}</td>
+                            <td>
+                                <a ng-click="GotoUpdate(tm.TipoMedicamentoId, o.RondaVerificacionId)" class="btn btn-primary white">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a ng-click="DeleteLocal(tm.TipoMedicamentoId)" class="btn btn-danger white">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="Guardar()" ng-hide="Guardando">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

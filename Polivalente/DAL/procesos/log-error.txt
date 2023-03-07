@@ -1,0 +1,16 @@
+2021-02-25 16:07:16: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 query: INSERT  INTO pc_oc_ordencompra
+
+2021-02-25 16:12:40: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Detalles, ?, ?, ?, ?, ?, ?, ?, ?)' at line 1 query: Detalles, ?, ?, ?, ?, ?, ?, ?, ?)
+
+2021-02-25 16:14:59: Unknown column 'TelEmpresa' in 'field list' query: INSERT  INTO pc_oc_ordencompra (`Fecha`, `ProcesoId`, `NumeroCotizacion`, `NombreEmpresa`, `NitEmpresa`, `DireccionEmpresa`, `TelefonoEmpresa`, `EnvNombre`, `EnvEmpresa`, `EnvDireccion`, `EnvCiudad`, `EnvTel`, `SedeId`, `ServicioId`, `Sede`, `Servicio`, `NombreElaborado`, `CargoElaborado`, `ElaboradoId`, `FormaPago`, `Observacion`, `SubTotal`, `Total`, `Iva`, `Envio`, `Otro`, `ProcesoVerificacionId`, `TelEmpresa`, `OrdenEnCurso`, `CreatedBy`, `CreatedAt`, `FechaElaborado`, `EmailElaborado`, `FirmaElaborado`)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+2021-02-25 16:15:42: Unknown column 'TelefonoEmpresa' in 'field list' query: INSERT  INTO pc_oc_ordencompra (`Fecha`, `ProcesoId`, `NumeroCotizacion`, `NombreEmpresa`, `NitEmpresa`, `DireccionEmpresa`, `TelefonoEmpresa`, `EnvNombre`, `EnvEmpresa`, `EnvDireccion`, `EnvCiudad`, `EnvTel`, `SedeId`, `ServicioId`, `Sede`, `Servicio`, `NombreElaborado`, `CargoElaborado`, `ElaboradoId`, `FormaPago`, `Observacion`, `SubTotal`, `Total`, `Iva`, `Envio`, `Otro`, `ProcesoVerificacionId`, `TelEmpresa`, `OrdenEnCurso`, `CreatedBy`, `CreatedAt`, `FechaElaborado`, `EmailElaborado`, `FirmaElaborado`)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+2021-02-25 16:17:58: Unknown column 'TelEmpresa' in 'field list' query: INSERT  INTO pc_oc_ordencompra (`Fecha`, `ProcesoId`, `NumeroCotizacion`, `NombreEmpresa`, `NitEmpresa`, `DireccionEmpresa`, `TelefonoEmpresa`, `EnvNombre`, `EnvEmpresa`, `EnvDireccion`, `EnvCiudad`, `EnvTel`, `SedeId`, `ServicioId`, `Sede`, `Servicio`, `NombreElaborado`, `CargoElaborado`, `ElaboradoId`, `FormaPago`, `Observacion`, `SubTotal`, `Total`, `Iva`, `Envio`, `Otro`, `ProcesoVerificacionId`, `TelEmpresa`, `OrdenEnCurso`, `CreatedBy`, `CreatedAt`, `FechaElaborado`, `EmailElaborado`, `FirmaElaborado`)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+2021-02-25 16:24:10: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 query: INSERT  INTO pc_oc_DetalleOrdenCompra
+
+2021-02-25 16:24:57: Unknown column '0' in 'field list' query: INSERT  INTO pc_oc_DetalleOrdenCompra (`0`, `1`)  VALUES (?, ?)
+
+2021-02-25 16:29:08: Unknown column 'Precio' in 'field list' query: INSERT  INTO pc_oc_DetalleOrdenCompra (`Item`, `Descripcion`, `Cantidad`, `PrecioUnitario`, `Total`, `Precio`, `OrdenCompraId`, `CreatedBy`, `CreatedAt`)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+

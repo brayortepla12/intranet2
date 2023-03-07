@@ -1,0 +1,497 @@
+<style>
+    @media print {
+        #Solicitud{
+            margin: 20pt 30pt 20pt 30pt !important;
+        }
+    }
+</style>
+<div class="row" ng-controller="AdminSolicitudesMantAmbulanciaCtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-warning">
+            <div class="panel-heading default-primary-color">
+                <h2 class="text-primary-color">ADMINISTRAR SOLICITUDES DE MANTENIMIENTO DE AMBULANCIAS</h2>
+                <div class="ibox-tools" style="transform: translateX(-50px);">
+                    <ul class="nav navbar-right" style="color:black;">
+                        <li>
+                            <input type="text"
+                            class="form-control" name="placa" ng-model="Placa" ng-change="FiltrarPorPlaca()" placeholder="Filtrar Por Placa">
+                        </li>
+                        <li>
+                            <select class="form-control" ng-model="Mes" ng-change='BuscarSolicituds()' style="height: 35.59px !important;">
+                                <option ng-selected="Mes == 'TODOS'" value='TODOS'>Todos</option>
+                                <option ng-selected="Mes == 1" ng-value="'1'" value='1'>Enero</option>
+                                <option ng-selected="Mes == 2" ng-value="'2'" value='2'>Febrero</option>
+                                <option ng-selected="Mes == 3" ng-value="'3'" value='3'>Marzo</option>
+                                <option ng-selected="Mes == 4" ng-value="'4'" value='4'>Abril</option>
+                                <option ng-selected="Mes == 5" ng-value="'5'" value='5'>Mayo</option>
+                                <option ng-selected="Mes == 6" ng-value="'6'" value='6'>Junio</option>
+                                <option ng-selected="Mes == 7" ng-value="'7'" value='7'>Julio</option>
+                                <option ng-selected="Mes == 8" ng-value="'8'" value='8'>Agosto</option>
+                                <option ng-selected="Mes == 9" ng-value="'9'" value='9'>Septiembre</option>
+                                <option ng-selected="Mes == 10" ng-value="'10'" value='10'>Octubre</option>
+                                <option ng-selected="Mes == 11" ng-value="'11'" value='11'>Noviembre</option>
+                                <option ng-selected="Mes == 12" ng-value="'12'" value='12'>Diciembre</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="text" ng-model='Year' onfocus="(this.type = 'number')" onblur="(this.type = 'text')" ng-enter='BuscarSolicituds()' class="form-control"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-4">
+                    <label for="Estado">Filtrar Por Estado</label>
+                    <select class="form-control" ng-model="Estado" ng-change='BuscarSolicituds()' style="height: 35.59px !important;">
+                        <option value='TODOS'>TODOS</option>
+                        <option ng-selected="Estado == 'Activo'" ng-value="'Activo'" value='Activo'>Activo</option>
+                        <option ng-selected="Estado == 'Facturado'" ng-value="'Facturado'" value='Facturado'>Facturado</option>
+                        <option ng-selected="Estado == 'Pedido'" ng-value="'Pedido'" value='Pedido'>Pedido</option>
+                        <option ng-selected="Estado == 'Vinculado'" ng-value="'Vinculado'" value='Vinculado'>Vinculado</option>
+                        <option ng-selected="Estado == 'Rechazado'" ng-value="'Rechazado'" value='Rechazado'>Rechazado</option>
+                    </select>
+                </div>
+                <div class="row" ng-show="!ficha">
+                    <div class="col-sm-12" ng-if="cargado">
+                        <table id="Equipos" ui-jq="dataTable" ui-options="simpleTableOptions" class="table table-hover table-condensed table-striped table-bordered">
+                            <thead class="bordered-blueberry">
+                                <tr>
+                                    <th class="text-center" style="width: 3%">ID</th>
+                                    <th class="text-center" style="width: 7%">FECHA</th>
+                                    <th class="text-center" style="width: 7%">TIPO SOLICITUD</th>
+                                    <th class="text-center" style="width: 5%">AMBULANCIA</th>
+                                    <th class="text-center" style="width: 5%">TIEMPO ESPERA(DIAS)</th>
+                                    <th class="text-center" style="width: 15%">DESCRIPCIÓN</th>
+                                    <th class="text-center" style="width: 5%">ESTADO</th>
+                                    <th class="text-center" style="width: 3%">OPCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="VerFacturaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Factura</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div ng-class="{'col-sm-6': BnFR, 'col-sm-12': !BnFR}">
+                                <div class="row">
+                                    <div class="col-sm-12" >
+                                        <div class="col-sm-12" style="background: #eee; border-radius: 5px;">
+                                            <p>
+                                                <strong>Descripción: </strong>{{VerInformacion}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <a ng-href='{{VerFactura.UrlArchivo}}' target='_blank'>
+                                            <i class='fa fa-file fa-2x'></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <h4>Proveedor: {{VerFactura.Proveedor}}</h4>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <table class="table table-borderless table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Precio</th>
+                                                    <th>SubTotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="d in VerFactura.Detalles">
+                                                    <td>{{d.Nombre}}</td>
+                                                    <td>{{d.Cantidad}}</td>
+                                                    <td>{{d.Precio}}</td>
+                                                    <td>{{d.Precio * d.Cantidad}}</td>
+                                                </tr>
+                                                <tr >
+                                                    <th colspan="3">Total:</th>
+                                                    <td>
+                                                        {{GetSuma(VerFactura.Detalles)}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" ng-show="BnFR">
+                                <form role="form" name="Datosr" novalidate>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group" ng-class="{
+                                                'has-success': Datosr.Fecha.$valid, 'has-error': Datosr.Fecha.$invalid}">
+                                                <label for="Fecha">Fecha</label>
+                                                <input type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" class="form-control" id="Fecha" name="Fecha"   
+                                                       ng-model="Reporte.Fecha" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group" ng-class="{
+                                                'has-success':Datosr.Km.$valid, 'has-error': Datosr.Km.$invalid}">
+                                                <label for="Km">KM</label>
+                                                <input type="number" class="form-control" id="Km"  name="Km" required
+                                                       ng-model="Reporte.Km" readonly>
+                                                <!--min="{{MinKM}}"-->
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group" ng-class="{
+                                                'has-success
+                                                    ': Datosr.Descripcion.$valid, 'has-error': Datosr.Descripcion.$invalid}">
+                                                <label for="Descripcion">Descripción del trabajo</label>
+                                                <textarea class="form-control" id="Descripcion" name="Descripcion" ng-model="Reporte.Descripcion" rows="2" readonly></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group" ng-class="{
+                                                'has-success': Datosr.Notas.$valid, 'has-error': Datosr.Notas.$invalid}">
+                                                <label for="Notas">Notas</label>
+                                                <textarea class="form-control" id="Notas" name="Notas" ng-model="Reporte.Notas" readonly></textarea>
+                                            </div>
+                                        </div>
+                                        <div style="clear: both"></div>
+                                        <div class="col-sm-12">
+                                            <legend>Actualizar el cronograma de mantenimiento:</legend>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>
+                                                        Selecione los detalles de mantenimiento
+                                                    </label>
+                                                    <div >
+                                                        <span ng-repeat="ds in Reporte.Detalles"> {{ds.Descripcion}},</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div style="clear: both"></div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="VerSolicitudModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Solicitud No {{Solicitud.SolicitudMantenimientoId}}</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-success" ng-click="Imprimir('Solicitud')" >Imprimir</button>
+                    <br/>
+                    <div id="Solicitud">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                            </div>
+                            <div class="col-sm-4 text-center"  bind-html-compile="Encabezado.EncabezadoSolicitud_Ambulancia">
+                            </div>
+                            <div class="col-sm-4 text-right">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4" >
+                                <strong>Solicitud ID: </strong><br/>{{Solicitud.SolicitudMantenimientoId}}
+                            </div>
+                            <div class="col-sm-4" >
+                                <strong>Fecha: </strong><br/>{{Solicitud.Fecha}}
+                            </div>
+                            <div class="col-sm-4" >
+                                <strong>Placa: </strong><br/>{{Solicitud.Placa}}
+                            </div>
+                            <div class="col-sm-12" >
+                                <pre><strong>Descripción: </strong><br/>{{Solicitud.Descripcion}}
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="FacturaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title" ng-hide="UpdateBandera">Subir Factura</h2>
+                        <h2 class="modal-title" ng-show="UpdateBandera">Actualizar Factura</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos" novalidate>
+                        <div class="row">
+                            <div class="col-sm-12" >
+                                <div class="col-sm-12" style="background: #eee; border-radius: 5px;">
+                                    <pre><strong>Descripción: </strong>{{Informacion}}
+                                    </pre>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" ng-show="UpdateBandera"> 
+                                <label>
+                                    Archivo
+                                </label>
+                                <a ng-href='{{Factura.UrlArchivo}}' target='_blank'>
+                                    <i class='fa fa-file fa-2x'></i>
+                                </a>
+                            </div>
+                            <div class="col-sm-6" ng-hide="UpdateBandera">
+                                <div class="form-group" ng-class="{
+                                        'has-success': Datos.UrlArchivo.$valid, 'has-error': Datos.UrlArchivo.$invalid}">
+                                    <label>
+                                        Subir factura escaneada
+                                    </label>
+                                    <input name="UrlArchivo" class="form-control" type="file" multiple ng-file-model="Factura.UrlArchivo" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-xs-12" ng-show="UpdateBandera">
+                                <label>
+                                    Proveedor
+                                </label><br/>
+                                <strong>{{Factura.Proveedor}}</strong>
+                            </div>
+                            <div class="col-sm-4 col-xs-10" ng-hide="UpdateBandera">
+                                <label>
+                                    Proveedor
+                                </label>
+                                <div angucomplete-alt id="ex9"
+                                     placeholder="Proveedor"
+                                     maxlength="100"
+                                     pause="100"
+                                     selected-object="Factura.Proveedor"
+                                     local-data="Proveedores"
+                                     search-fields="Nombre"
+                                     title-field="Nombre"
+                                     minlength="1"
+                                     input-class="form-control form-control-small"
+                                     match-class="highlight"></div>
+                            </div>
+                            <div class="col-sm-2 col-xs-2" ng-hide="UpdateBandera">
+                                <a class="btn btn-warning btn-xs icon-only white" style="transform: translate(0,30px);" ng-click="AddProveedor()">
+                                    <i class="fa fa-list-alt"></i>
+                                </a>
+                            </div>
+                            <div class="col-sm-12">
+                                <table class="table table-borderless table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>SubTotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="d in Detalles">
+                                            <td>{{d.Item.originalObject.Nombre}}{{d.Nombre}}</td>
+                                            <td>{{d.Cantidad}}</td>
+                                            <td>{{d.Precio}}</td>
+                                            <td>{{d.Precio * d.Cantidad}}</td>
+                                            <td>
+                                                <a class="btn btn-danger btn-xs icon-only white" ng-click="DeleteDetalle($index)">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <th colspan="4">Total:</th>
+                                            <td>
+                                                {{GetSuma(Detalles)}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-sm-10">
+                                                        <div angucomplete-alt id="ex8"
+                                                             placeholder="Item"
+                                                             maxlength="100"
+                                                             pause="100"
+                                                             selected-object="Detalle.Item"
+                                                             local-data="Items"
+                                                             search-fields="Nombre"
+                                                             title-field="Nombre"
+                                                             minlength="1"
+                                                             input-class="form-control form-control-small"
+                                                             match-class="highlight"></div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <a class="btn btn-warning btn-xs icon-only white" style="transform: translate(0,5px);" ng-click="AddItem()">
+                                                            <i class="fa fa-list-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" onfocus="(this.type = 'number')" onblur="(this.type = 'text')" min="0" class="form-control" id="Cantidad" name="Cantidad" ng-model="Detalle.Cantidad">
+                                            </td>
+                                            <td>
+                                                <input type="text" onfocus="(this.type = 'number')" onblur="(this.type = 'text')" step=".01" class="form-control" id="Precio" name="Precio" ng-model="Detalle.Precio">
+                                            </td>
+                                            <td>{{Detalle.SubTotal}}</td>
+                                            <td>
+                                                <a class="btn btn-success btn-xs icon-only white" style="transform: translate(0,5px);" ng-click="AddDetalle()">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarFactura()" ng-disabled="Datos.$invalid" ng-hide="UpdateBandera">
+                            <span ng-hide="CargandoBandera">Guardar</span>
+                            <i class="fa fa-spinner fa-spin" ng-show="CargandoBandera"></i>
+                        </button>
+                        <button class="btn btn-primary" ng-click="ActualizarFactura()" ng-show="UpdateBandera">
+                            <span ng-hide="CargandoBandera">Actualizar</span>
+                            <i class="fa fa-spinner fa-spin" ng-show="CargandoBandera"></i>
+                        </button>
+                        <input type="reset" class="btn btn-danger" ng-click="Factura = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="ItemModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title" ng-hide="UpdateBandera">Añadir nuevo item</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos2" novalidate>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" ng-class="{
+                                        'has-success
+                                        ': Datos2.Nombre.$valid, 'has-error': Datos2.Nombre.$invalid}">
+                                    <label>
+                                        Nombre
+                                    </label>
+                                    <input name="Nombre" class="form-control" type="text" ng-model="Item.Nombre" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarItem()" ng-disabled="Datos2.$invalid">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ProveedorModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title" ng-hide="UpdateBandera">Añadir nuevo proveedor</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="Datos3" novalidate>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" ng-class="{
+                                        'has-success
+                                        ': Datos3.Nombre.$valid, 'has-error': Datos3.Nombre.$invalid}">
+                                    <label>
+                                        Nombre
+                                    </label>
+                                    <input name="Nombre" class="form-control" type="text" ng-model="Proveedor.Nombre" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarProveedor()" ng-disabled="Datos3.$invalid">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

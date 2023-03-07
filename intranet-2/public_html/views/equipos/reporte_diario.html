@@ -1,0 +1,185 @@
+<style type="text/css">
+    label{
+        transform: translate(0px,7px);
+    }
+</style>
+<div class="col-xs-12" ng-controller="ReporteDiarioCtrl">
+    <div class="text-center col-sm-12" style="margin-top: 25px;">
+        <button class="btn btn-success" ng-click="Guardar()">Guardar</button>
+        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+    </div>
+    <form role="form" name="Datos" novalidate>
+        <div class="Page" ng-repeat="p_sede in Plantas">
+            <div class="col-xs-12">
+                <img ng-src="{{Empresa.Logo}}" width="200" alt="">
+                <h4 class="text-center">CHEQUEO DIARIO PLANTAS ELECTRICAS</h4>
+            </div>
+            <div ng-repeat="p in p_sede">
+                <div class="row" ng-show="$index == 0">
+                    <div class="col-xs-6">
+                        <div class="form-group row">
+                            <label class="control-label col-sm-2" for="Ciudad">CIUDAD:</label>
+                            <div class="col-sm-10">
+                                <div ng-class="{'has-success': Datos.Ciudad.$valid, 'has-error': Datos.Ciudad.$invalid}">
+                                    <input type="text" capitalize name="Ciudad" ng-model="item[$index].reporte_diario.Ciudad" class="form-control"
+                                           maxlength="199" minlength="2" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="HoraInicio">HORA INICIO:</label>
+                            <div class="col-sm-10">
+                                <div ng-class="{'has-success': Datos.HoraInicio.$valid, 'has-error': Datos.HoraInicio.$invalid}">
+                                    <input type="text" name="HoraInicio" ng-model="item[$index].reporte_diario.HoraInicio" class="form-control"
+                                           maxlength="199" minlength="2" required  onfocus="(this.type = 'time')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 5px" ng-show="$index == 0">
+                    <div class="col-xs-6">
+                        <div class="form-group row">
+                            <label class="control-label col-sm-2" for="Fecha">FECHA:</label>
+                            <div class="col-sm-10">
+                                <div ng-class="{'has-success': Datos.Fecha.$valid, 'has-error': Datos.Fecha.$invalid}">
+                                    <input type="text" name="Fecha" ng-model="item[$index].reporte_diario.Fecha" class="form-control"
+                                           maxlength="199" minlength="2" required onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="HoraFinal">HORA FINAL:</label>
+                            <div class="col-sm-10">
+                                <div ng-class="{'has-success': Datos.HoraFinal.$valid, 'has-error': Datos.HoraFinal.$invalid}">
+                                    <input type="text" name="HoraFinal" ng-model="item[$index].reporte_diario.HoraFinal" class="form-control"
+                                           maxlength="199" minlength="2" required  onfocus="(this.type = 'time')" onblur="(this.type = 'text')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 5px">
+                    <div class="col-xs-12">
+                        <h5 ng-init="item[$index].reporte_diario = p">{{$index + 1|character}}. {{item[$index].reporte_diario.Equipo}}</h5>
+                        <h6><strong>Favor realizar el informe completamente.</strong></h6>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 5px">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="NivelCombustible">1. Nivel de combustible:</label>
+                            <div ng-class="{'has-success': Datos.NivelCombustible.$valid, 'has-error': Datos.NivelCombustible.$invalid}">
+                                <input type="text" name="NivelCombustible" ng-model="item[$index].reporte_diario.NivelCombustible" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="NivelAguaRefrigerante">2. Nivel de agua y refrigerante:</label>
+                            <div ng-class="{'has-success': Datos.NivelAguaRefrigerante.$valid, 'has-error': Datos.NivelAguaRefrigerante.$invalid}">
+                                <input type="text" name="NivelAguaRefrigerante" ng-model="item[$index].reporte_diario.NivelAguaRefrigerante" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="NivelAceite">3. Nivel de aceite:</label>
+                            <div ng-class="{'has-success': Datos.NivelAceite.$valid, 'has-error': Datos.NivelAceite.$invalid}">
+                                <input type="text" name="NivelAceite" ng-model="item[$index].reporte_diario.NivelAceite" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="NivelElectrolitoBateria">4. Nivel de electrolitos de baterías:</label>
+                            <div ng-class="{'has-success': Datos.NivelElectrolitoBateria.$valid, 'has-error': Datos.NivelElectrolitoBateria.$invalid}">
+                                <input type="text" name="NivelElectrolitoBateria" ng-model="item[$index].reporte_diario.NivelElectrolitoBateria" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="VoltajeBateria">5. Voltajes de las baterías:</label>
+                            <div ng-class="{'has-success': Datos.VoltajeBateria.$valid, 'has-error': Datos.VoltajeBateria.$invalid}">
+                                <input type="text" name="VoltajeBateria" ng-model="item[$index].reporte_diario.VoltajeBateria" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="FechaUltCambioAceite">6. Fecha del último cambio de aceite:</label>
+                            <div ng-class="{'has-success': Datos.FechaUltCambioAceite.$valid, 'has-error': Datos.FechaUltCambioAceite.$invalid}">
+                                <input type="text" name="FechaUltCambioAceite" ng-model="item[$index].reporte_diario.FechaUltCambioAceite" class="form-control"
+                                       maxlength="199" minlength="1" required onfocus="(this.type = 'date')" onblur="(this.type = 'text')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="FiltroAire">7. Limpieza y estado del filtro de aire:</label>
+                            <div ng-class="{'has-success': Datos.FiltroAire.$valid, 'has-error': Datos.FiltroAire.$invalid}">
+                                <input type="text" name="FiltroAire" ng-model="item[$index].reporte_diario.FiltroAire" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="Fugas">8. Verificación de fugas, refrigerantes, Aceites y/o combustibles:</label>
+                            <div ng-class="{'has-success': Datos.Fugas.$valid, 'has-error': Datos.Fugas.$invalid}">
+                                <input type="text" name="Fugas" ng-model="item[$index].reporte_diario.Fugas" class="form-control"
+                                       maxlength="199" minlength="1" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 5px">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label" for="Observacion">OBSERVACIONES:</label>
+                            <div ng-class="{'has-success': Datos.Observaciones.$valid, 'has-error': Datos.Observaciones.$invalid}">
+                                <textarea name="Observaciones" ng-model="item[$index].reporte_diario.Observaciones" class="form-control"
+                                          maxlength="199" minlength="1" required rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="Footer" style="margin-top: 5px">
+            <div class="col-xs-12">
+                <label class="control-label" for="ResponsableFirma">RESPONSABLE:</label>
+            </div>
+            <div class="col-xs-4">
+                <div class="form-group">
+                    <img width="100" ng-src="{{ResponsableFirma}}"/>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div>
+                    <p style="transform: translate(0px,100px)">{{ResponsableCargo}}</p>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <img width="100" ng-src="{{RecibeFirma}}"/>
+            </div>
+            <div class="col-xs-4"><h6><strong>Nombre del técnico</strong></h6></div>
+            <div class="col-xs-4"><h6><strong>Cargo</strong></h6></div>
+            <div class="col-xs-4"><h6><strong>Recibido Por:</strong></h6></div>
+        </div>
+    </form>
+    <div class="text-center col-sm-12" style="margin-top: 25px;">
+        <button class="btn btn-success" ng-click="Guardar()">Guardar</button>
+        <input type="reset" class="btn btn-danger" ng-click="Reset()" />
+    </div>
+</div>

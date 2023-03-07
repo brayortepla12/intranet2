@@ -1,0 +1,102 @@
+<div style="background: white">
+    <div class="form-group ng-scope row">
+        <label class="col-sm-4 control-label" for="Sede" >Sede</label>
+        <div class="col-sm-8">
+            {{Proceso.Sede}}
+        </div>
+    </div>
+    <div class="form-group ng-scope row">
+        <label class="col-sm-4 control-label" for="Servicio" >Servicio</label>
+        <div class="col-sm-8">
+            {{Proceso.Servicio}}
+        </div>
+    </div>
+    <div class="form-group ng-scope row">
+        <label class="col-sm-4 control-label" for="ProtocoloId" >Protocolo</label>
+        <div class="col-sm-8">
+            {{Proceso.Protocolo}}
+        </div>
+    </div>
+    <div class="form-group ng-scope row" ng-repeat="df in Proceso.DatosFormulario">
+        <label class="col-sm-4 control-label" >{{df.label}}</label>
+        <div class="col-sm-8" ng-hide="df.value[0].data">
+            {{df.value}}
+        </div>
+        <div class="col-sm-8" ng-show="df.value[0].data">
+            <div class="col-lg-4 col-sm-6" ng-repeat="f in df.value track by $index">
+                <a style="cursor: pointer" ng-click="OpenURL(f.data, f.type)"><i class="fa fa-file fa-2x"></i><br> {{f.name.substr(0, 10)}}...</a><br>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" ng-class="{'active': OrdenP === ft.Orden}" ng-repeat="ft in Proceso.FlujoTrabajo"><a ng-click="OrdenP = ft.Orden" role="tab" data-toggle="tab" aria-expanded="true">{{$index + 1}}</a>
+                </li>
+            </ul>
+            <div class="row col-sm-12">
+                <div class="col-sm-6">
+                    <div class="col-sm-12" ng-repeat="ft in Proceso.FlujoTrabajo track by $index"  ng-show="OrdenP === ft.Orden" >
+                        <div class="col-sm-12" ng-repeat="v in ft.Verificadores">
+                            <div class="form-group ng-scope row">
+                                <label class="col-sm-4 control-label">Sede</label>
+                                <div class="col-sm-8">
+                                    {{v.Sede}}
+                                </div>
+                            </div>
+                            <div class="form-group ng-scope row">
+                                <label class="col-sm-4 control-label">Servicio</label>
+                                <div class="col-sm-8">
+                                    {{v.Servicio}}
+                                </div>
+                            </div>
+                            <div class="form-group ng-scope row">
+                                <label class="col-sm-4 control-label">Nombre Verificador</label>
+                                <div class="col-sm-8">
+                                    {{v.NombreCompleto}}
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="vertical-timeline" class="vertical-container dark-timeline">
+                        <div class="vertical-timeline-block" ng-repeat="s in Seguimientos| orderBy : '-CreatedAt'">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-user"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{s.CreatedBy}}</h2>
+                                <p>{{s.Observacion}}
+                                </p>
+                                <div class="form-group ng-scope row" ng-repeat="df in s.DatosAnexos">
+                                    <label class="col-sm-4 control-label" >{{df.label}}</label>
+                                    <div class="col-sm-8" ng-hide="df.value[0].data">
+                                        {{df.value}}
+                                    </div>
+                                    <div class="col-sm-8" ng-show="df.value[0].data">
+                                        <div class="col-lg-4 col-sm-4" ng-repeat="f in df.value track by $index">
+                                            <a style="cursor: pointer" ng-click="OpenURL(f.data, f.type)"><i class="fa fa-file fa-2x"></i><br> {{f.name.substr(0, 10)}}...</a><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="btn btn-sm" ng-class="{'btn-primary': s.VB, 'btn-danger': !s.VB, 'btn-warning': s.Estado == 'Devolver'}">
+                                    <span ng-show="s.VB && s.Estado != 'Devolver'">Aprobado</span>
+                                    <span ng-show="!s.VB">Rechazado</span>
+                                    <span ng-show="s.Estado == 'Devolver'">Devuelto</span>
+                                </a>
+                                <span class="vertical-date">
+                                    {{s.CreatedAt}} <br>
+                                    <small>{{s.Sede}} -- {{s.Servicio}}</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

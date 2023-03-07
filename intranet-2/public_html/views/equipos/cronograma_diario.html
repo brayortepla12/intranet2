@@ -1,0 +1,82 @@
+<style>
+    @media print{
+        @page {size: landscape}
+        body{
+            font-size: 1em;
+        }
+        th{
+            z-index: -1;
+        }
+        td{
+            padding: 3px !important;
+        }
+    }
+</style>
+<div class="row" ng-controller="CalendarioDiarioCtrl">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Calendario de reportes diarios <small></small></h2>
+            <div class="filter">
+                <div class="inner-addon left-addon" style="width: 200px;float: right">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <input type="text" ng-model="txt" class="form-control">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="btn-group">
+                        <button
+                            class="btn btn-primary"
+                            mwl-date-modifier
+                            date="viewDate"
+                            decrement="calendarView">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
+                        <button
+                            class="btn btn-default"
+                            mwl-date-modifier
+                            date="viewDate"
+                            set-to-today>
+                            Hoy
+                        </button>
+                        <button
+                            class="btn btn-primary"
+                            mwl-date-modifier
+                            date="viewDate"
+                            increment="calendarView">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <br class="visible-xs visible-sm">
+
+                <div class="col-md-6 text-center">
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-click="changeMode('year')" ng-class="{active:calendarView === 'year'}">Año</label>
+                        <label class="btn btn-primary" ng-click="changeMode('month')" ng-class="{active:calendarView === 'month'}">Mes</label>
+                        <label class="btn btn-primary" ng-click="changeMode('week')" ng-class="{active:calendarView === 'week'}">Semana</label>
+                        <label class="btn btn-primary" ng-click="changeMode('day')" ng-class="{active:calendarView === 'day'}">Dia</label>
+                    </div>
+                </div>
+
+            </div>
+            <h1 style="text-align: center">{{calendarTitle}}</h1>
+            <mwl-calendar
+                view="calendarView"
+                view-date="viewDate"
+                events="events"
+                view-title="calendarTitle"
+                on-event-click="eventClicked(calendarEvent)"
+                on-view-change-click="viewChangeClicked(calendarDate, calendarNextView)"
+                on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+                cell-is-open="true"
+                >
+            </mwl-calendar>
+        </div>
+    </div>
+    
+</div>

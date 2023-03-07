@@ -1,0 +1,223 @@
+<style>
+    @media print{
+        @page {size: landscape}
+        body{
+            font-size: 1em;
+        }
+        th{
+            z-index: -1;
+        }
+        td{
+            padding: 3px !important;
+        }
+    }
+    p{
+        line-height: normal;
+    }
+</style>
+<div class="row" ng-controller="CMICtrl">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <!--                    <h2>Listado del personal<small></small></h2>
+                                    <div class="ibox-tools" style="transform: translateX(-50px);">
+                                        <ul class="nav navbar-right" style="color:black;">
+                                            <li>
+                                                <select class="form-control" ng-model="Mes" ng-change="GetTableHorarios()" style="height: 35.59px !important;">
+                                                    <option ng-selected="Mes == 1" ng-value='1' value='1'> Enero</option>
+                                                    <option ng-selected="Mes == 2" ng-value='2' value='2'> Febrero</option>
+                                                    <option ng-selected="Mes == 3" ng-value='3' value='3'> Marzo</option>
+                                                    <option ng-selected="Mes == 4" ng-value='4' value='4'> Abril</option>
+                                                    <option ng-selected="Mes == 5" ng-value='5' value='5'> Mayo</option>
+                                                    <option ng-selected="Mes == 6" ng-value='6' value='6'> Junio</option>
+                                                    <option ng-selected="Mes == 7" ng-value='7' value='7'> Julio</option>
+                                                    <option ng-selected="Mes == 8" ng-value='8' value='8'> Agosto</option>
+                                                    <option ng-selected="Mes == 9" ng-value='9' value='9'> Septiembre</option>
+                                                    <option ng-selected="Mes == 10" ng-value='10' value='10'> Octubre</option>
+                                                    <option ng-selected="Mes == 11" ng-value='11' value='11'> Noviembre</option>
+                                                    <option ng-selected="Mes == 12" ng-value='12' value='12'> Diciembre</option>
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <input type="text" ng-model='Year' ng-enter="GetTableHorarios()" class="form-control"/>
+                                            </li>
+                                        </ul>
+                                    </div>-->
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="form-check">
+                                    <label>
+                                        Año
+                                    </label>
+                                    <input type="number" class="form-control" min="2017" max="2100" step="1" ng-model="Year" /> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-sm-12">
+                            Seleccione el servicio que desea consultar
+                        </label>
+                        <select class="form-control" ng-model="ServicioId" name="Servicio" required>
+                            <option>--</option>
+                            <option ng-repeat="s in Servicios track by $index"  ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}} - {{s.NombreSede}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <br>
+                        <button class="btn btn-primary" ng-click="BuscarMantenimientoPreventivo()">Buscar <i class="fa fa-search "/></button>
+                        <button ng-show="CMI.Cronograma" class="btn btn-default" ng-click="Imprimir()">Imprimir <i class="fa fa-print"/></button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="MantenimientoPreventivo">
+                <div ng-show="CMI.Cronograma">
+                    <div class="break-after" >
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img ng-src="{{Empresa.Logo}}" width="180" alt="">
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <p style="font-size: 0.7em !important">
+                                    <strong style="font-size: 1.2em !important">CRONOGRAMA MANTENIMIENTO DE INFRAESTRUCTURA</strong>
+                                    <span class="text-center" bind-html-compile="Encabezado.EncabezadoCI"></span>
+                                </p>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <strong>Sede: {{CMI.Sede}}</strong> 
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <strong>Proceso/área: {{CMI.Servicio}}</strong> 
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <strong>Año: {{Year}}</strong> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="transform: translate(0px,-8px)">
+                            <div class="col-md-10 col-md-offset-1 col-sm-12"  id="myElementId">
+                                <table id="TablaCalibracion" class="table1 table table-bordered">
+                                    <thead>
+                                        <tr style="background-color: rgba(0,0,0,0.2) !important;">
+                                            <th>ITEM</th>
+                                            <th>EQUIPO</th>
+                                            <th>PERIODICIDAD</th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>ENERO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>FEBRERO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>MARZO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>ABRIL</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>MAYO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>JUNIO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>JULIO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>AGOSTO</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>SEPTIEMBRE</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>OCTUBRE</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>NOVIEMBRE</span>
+                                            </th>
+                                            <th class="verticalTableHeader vertical" style="height: 80px; font-size: 0.8em">
+                                                <span>DICIEMBRE</span>
+                                            </th>
+                                            <th>RESPONSABLE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr ng-repeat="c in CMI.Cronograma" style="font-size: 0.7em">
+                                            <td style="text-align: center" class="cajita">{{$index + 1}}</td>
+                                            <td class="cajita">{{c.Descripcion}}</td>
+                                            <td class="cajita">{{c.Periodicidad}}</td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Ene != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Feb != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Mar != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Abr != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.May != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Jun != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Jul != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Agos != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Sept != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Oct != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Nov != ''}">
+                                            </td>
+                                            <td style="z-index: 1000;" ng-class="{'oscuro': c.Dic != ''}">
+                                            </td>
+                                            <td>{{c.Responsable}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row text-center" id="Footer" style="font-size: 0.9em">
+                            <div class="col-sm-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaElaboro}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">ELABORACIÓN</strong><br>
+                                    {{Encabezado.ElaboroCI}}<br>
+                                    {{Encabezado.CargoElaboroCI}}
+                                </p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaReviso}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">REVISIÓN ESTRUCTURAL</strong><br>
+                                    {{Encabezado.RevisoCI}}<br>
+                                    {{Encabezado.CargoRevisoCI}}
+                                </p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>
+                                    <img ng-src="{{Encabezado.FirmaAprobo}}" width="150" style="position: absolute;z-index: -1;transform: translate(-35px,-60px)"/>
+                                    <strong style="font-size: 1em">APROBACIÓN</strong><br>
+                                    {{Encabezado.AproboCI}}<br>
+                                    {{Encabezado.CargoAproboCI}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

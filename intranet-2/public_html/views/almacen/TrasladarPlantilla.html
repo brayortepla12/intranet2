@@ -1,0 +1,55 @@
+<div ng-controller="TrasladarPlantillaCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading default-primary-color">
+                    <h2 class="text-primary-color">Clonar plantilla desde un usuario a otro</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12 text-center" style="margin-bottom: 25px;">
+                            <button class="btn btn-primary" ng-click="Clonar()">Clonar</button>
+                        </div>
+                        <div class="row col-sm-12">
+                            <div class="col-sm-3" ng-class="{'has-success': Datos.SedeId.$valid, 'has-error': Datos.SedeId.$invalid}">
+                                <label>
+                                    Sede
+                                </label>
+                                <select class="form-control" ng-model="SedeId" ng-change="ChangeSede()" name="SedeId" required>
+                                    <option ng-repeat="s in Sedes track by $index" ng-selected="SedeId === s.SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>
+                                    Persona (Origen)
+                                </label>
+                                <multiselect  ng-model="UsuarioOrigen" show-search="true"   selection-limit="1" 
+                                              labels="labels" id-prop="UsuarioId" display-prop="NombreCompleto" 
+                                              options="Usuarios"  search-limit="10" classes-btn="'btn-default'">
+                                </multiselect>
+                            </div>
+                            <div class="col-sm-3" ng-class="{'has-success': Datos.ServicioId.$valid, 'has-error': Datos.ServicioId.$invalid}">
+                                <label>
+                                    Servicio a clonar
+                                </label>
+                                <select class="form-control" ng-model="ServicioId" name="ServicioId" required>
+                                    <option ng-repeat="s in Servicios track by $index" ng-selected="ServicioId === s.ServicioId" ng-value='{{s.ServicioId}}' value='{{s.ServicioId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>
+                                    Persona (Destino)
+                                </label>
+                                <multiselect  ng-model="UsuarioDestino" show-search="true"   selection-limit="1" 
+                                              labels="labels" id-prop="UsuarioId" display-prop="NombreCompleto" 
+                                              options="Usuarios"  search-limit="10" classes-btn="'btn-default'">
+                                </multiselect>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

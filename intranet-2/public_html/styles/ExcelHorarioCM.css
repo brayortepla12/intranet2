@@ -1,0 +1,41 @@
+@media print {
+    .Page { 
+        position: relative;
+        display: block;
+        page-break-after: always;
+        z-index: 0;
+    }
+    .break-after {
+        display: block;
+        page-break-after: always;
+        position: relative;
+        top: 0pt;
+        bottom: 0pt;
+    }
+
+    td{
+        padding: 0px !important;
+    }
+    @page {size: landscape;}
+    th{
+        z-index: -1;
+        font-size: 1.2em;
+    }
+    td{
+        font-size: 1.2em;
+        text-align: center;
+    }
+    .row-item:nth-child(6n) {
+        page-break-after: always;
+    }
+    body {margin-top: 5pt; margin-bottom: 5pt; 
+           margin-left: 1pt; margin-right: 1pt}
+    
+    .table thead tr td,.table tbody tr td, .table tfoot tr td{
+        padding:0px !important;
+    }
+    .table thead tr th,.table tbody tr th, .table tfoot tr th{
+        padding: 3px !important;
+    }
+}
+@media print and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { body { zoom: 100%; } }

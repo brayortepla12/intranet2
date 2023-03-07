@@ -1,0 +1,11 @@
+SHOW GRANTS FOR 'central'@'%';
+REVOKE ALL PRIVILEGES ON *.* FROM 'central'@'%';
+GRANT SELECT ON polivalente.cm_consecutivo TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_detalleordenrr TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_detallerondaverificacion TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_dispositivomedico TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_dispositivomedicobyronda TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_medicamento TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_ordenrr TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_rondaverificacion TO 'central'@'%';
+GRANT SELECT ON polivalente.cm_tipomedicamento TO 'central'@'%';

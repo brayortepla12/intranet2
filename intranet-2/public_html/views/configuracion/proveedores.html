@@ -1,0 +1,128 @@
+<div class="row" ng-controller="ProveedorCtrl">
+    <div class="col-sm-2 pull-right" style="padding: 5px;">
+        <button class="btn btn-primary"  data-toggle="modal" data-target="#ProveedorModal">Crear Proveedor <i class="fa fa-plus-square-o" /></button>
+    </div>
+    <div class="col-sm-12">
+        <table style="text-align: center" class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Documento</th>
+                    <th class="text-center">TipoDocumento</th>
+                    <th class="text-center">Telefono</th>
+                    <th class="text-center">Direccion</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Proveedors" ng-include="getTemplate(item)">
+            <script type="text/ng-template" id="display">
+                <td>
+                {{item.Nombre}}
+                    </td>
+                    <td>
+                {{item.Documento}}
+                </td>
+                    <td>
+                {{item.TipoDocumento}}
+                    </td>
+                    <td>
+                {{item.Telefono}}
+                    </td>
+                    <td>
+                {{item.Direccion}}
+                    </td>
+                    <td>
+                {{item.Email}}
+                    </td>
+                <td>
+                <center>
+                <a class="btn btn-success btn-xs icon-only white" ng-click="editObj(item)" tooltip-placement="bottom" tooltip="Editar"><i class="fa fa-pencil"></i></a>
+                </center>
+                </td>
+            </script>
+            <script type="text/ng-template" id="edit">
+                <td><input type="text" ng-model="select.Nombre" class="form-control input-sm" capitalize /></td>
+                <td><input type="text" ng-model="select.Documento" class="form-control input-sm" capitalize /></td>
+                <td>
+                    <select class="form-control" ng-model="select.TipoDocumento" name="Of_Destino">
+                        <option>NIT</option>
+                        <option>CC</option>
+                    </select>
+                </td>
+                <td><input type="text" ng-model="select.Telefono" class="form-control input-sm" capitalize /></td>
+                <td><input type="text" ng-model="select.Direccion" class="form-control input-sm" capitalize /></td>
+                <td><input type="text" ng-model="select.Email" class="form-control input-sm" capitalize /></td>
+                <td>
+                <center>
+                <a class="btn btn-danger btn-xs icon-only white" ng-click="reset()" ><i class="fa fa-close"></i></a>
+                <a class="btn btn-success btn-xs icon-only white" ng-click="Actualizar()"><i class="fa fa-check"></i></a>
+                </center>
+                </td>
+            </script>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ProveedorModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-sm-11">
+                        <h2 class="modal-title">Crear Proveedor</h2>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="c.Proveedor" novalidate>
+                        <div class="col-md-12">
+                            <div class="form-group" ng-class="{ 'has-error': c.Proveedor.Nombre.$invalid && !c.Proveedor.Nombre.$pristine }">
+                                <label for="CodigoProveedor">Nombre</label>
+                                <input type="text" capitalize class="form-control" id="CodigoProveedor" ng-model="Proveedor.Nombre" maxlength="280"  name="CodigoProveedor" required>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': Datos.Proveedor.TipoDocumento.$invalid && !Datos.Proveedor.TipoDocumento.$pristine }">
+                                <label>
+                                    Tipo Documento
+                                </label>
+                                <select class="form-control" ng-model="Proveedor.TipoDocumento" name="Of_Destino">
+                                    <option>NIT</option>
+                                    <option>CC</option>
+                                </select>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': c.Proveedor.Documento.$invalid && !c.Proveedor.Documento.$pristine }">
+                                <label for="CodigoProveedor">Documento</label>
+                                <input type="text" capitalize class="form-control" id="CodigoProveedor" ng-model="Proveedor.Documento" maxlength="280"  name="CodigoProveedor" >
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': c.Proveedor.Telefono.$invalid && !c.Proveedor.Telefono.$pristine }">
+                                <label for="CodigoProveedor">Telefono</label>
+                                <input type="text" capitalize class="form-control" id="CodigoProveedor" ng-model="Proveedor.Telefono" maxlength="280"  name="CodigoProveedor" >
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': c.Proveedor.Direccion.$invalid && !c.Proveedor.Direccion.$pristine }">
+                                <label for="CodigoProveedor">Direccion</label>
+                                <input type="text" capitalize class="form-control" id="CodigoProveedor" ng-model="Proveedor.Direccion" maxlength="280"  name="CodigoProveedor" >
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error': c.Proveedor.Email.$invalid && !c.Proveedor.Email.$pristine }">
+                                <label for="CodigoProveedor">Email</label>
+                                <input type="text" capitalize class="form-control" id="CodigoProveedor" ng-model="Proveedor.Email" maxlength="280"  name="CodigoProveedor" >
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center col-sm-12" style="margin-top: 25px;">
+                        <button class="btn btn-success" ng-click="GuardarProveedor()" ng-disabled="c.Proveedor.$invalid">Guardar</button>
+                        <input type="reset" class="btn btn-danger" ng-click="Proveedor = {}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

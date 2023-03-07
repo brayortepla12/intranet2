@@ -1,0 +1,58 @@
+<style>
+    .handsontable table{
+        width:100%;
+    }
+</style>
+<div ng-controller="CronoInfraCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2>Cronograma de infraestructura<small></small></h2>
+                    <div class="ibox-tools" style="transform: translateX(-50px);">
+                        <ul class="nav navbar-right" style="color:black;">
+                            <li>
+                                <select class="form-control" ng-model="SedeId" style="height: 35.59px !important;">
+                                    <option ng-repeat="s in Sedes" ng-selected="s.SedeId == SedeId" ng-value='{{s.SedeId}}' value='{{s.SedeId}}'> {{s.Nombre}}</option>
+                                </select>
+                            </li>
+                            <li>
+                                <input type="text" ng-model='Year' class="form-control" ng-enter="ChangeVigencia()"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="margin-bottom:25px">
+                        <a class="btn btn-default" 
+                           ng-href="/Polivalente/api/CI.php?Vigencia={{Year}}&SedeId={{SedeId}}" target="_blank">
+                            Descargar Excel Cronograma
+                        </a>
+                        <button class="btn btn-primary" ng-click="openExcelModal()">
+                            <span ng-hide="SubirExcelCronograma">Cargar Excel</span>
+                            <span ng-show="SubirExcelCronograma">Atras</span>
+                        </button>
+                    </div>
+                    <div class="row" ng-hide="SubirExcelCronograma">
+                        <div class="col-sm-12">
+                            tabla de cronogramas
+                        </div>
+                    </div>
+                    <div class="row" ng-show="SubirExcelCronograma">
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <p>Seleccione el archivo que desea subir</p>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <input class="btn btn-default" type="file" ngf-select="SelectFile($file)" />
+                                <input class="btn btn-default" type="button" value="Procesar" ng-click="Preview()" />
+                                <input class="btn btn-default" ng-show="Tabla.length > 0" type="button" value="Subir Archivo" ng-click="SubirArchivo()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
